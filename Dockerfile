@@ -2,7 +2,7 @@ FROM python:3
 
 RUN apt-get update
 RUN apt-get install curl gnupg -y
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install nodejs -y
 RUN node -v
 RUN npm -v
