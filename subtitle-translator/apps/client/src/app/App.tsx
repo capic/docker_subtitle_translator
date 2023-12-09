@@ -11,7 +11,7 @@ export function App() {
   }
 
   const getUploadParams = () => {
-    return { url: 'http://localhost:3333/api' }
+    return { url: 'http://192.168.1.106:3333/api' }
   }
 
   const handleChangeStatus = ({ meta, remove }, status) => {
