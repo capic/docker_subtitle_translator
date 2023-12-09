@@ -17,10 +17,10 @@ ENV UDEV=1
 
 FROM node:boron
 
-WORKDIR /usr/src/app/subtitle-translator
+WORKDIR /usr/src/app/subtitle-translator/subtitle-translator
 RUN npm install
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/subtitle-translator
 
 # main.py will run when container starts up on the device
 CMD ./startup.sh
