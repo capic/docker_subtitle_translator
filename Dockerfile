@@ -24,3 +24,4 @@ ENV UDEV=1
 
 # main.py will run when container starts up on the device
 #CMD ./startup.sh
+CMD ["python","src/main.py","/data/input/","/data/output/"]
