@@ -1,5 +1,12 @@
 FROM python:3
 
+RUN apt-get update
+RUN apt-get install curl gnupg -y
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install nodejs -y
+RUN node -v
+RUN npm -v
+
 # Set our working directory
 WORKDIR /usr/src/app
 
@@ -15,13 +22,11 @@ COPY . ./
 # Enable udevd so that plugged dynamic hardware devices show up in our container.
 ENV UDEV=1
 
-#FROM node:boron
+WORKDIR /usr/src/app/subtitle-translator
+RUN npm install
 
-#WORKDIR /usr/src/app/subtitle-translator
-#RUN npm install
-
-#WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
 # main.py will run when container starts up on the device
-#CMD ./startup.sh
-CMD ["python","src/main.py","/data/input/","/data/output/"]
+CMD ./startup.sh
+#CMD ["python","src/main.py","/data/input/","/data/output/"]
