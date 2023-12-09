@@ -15,6 +15,8 @@ COPY . ./
 # Enable udevd so that plugged dynamic hardware devices show up in our container.
 ENV UDEV=1
 
+FROM node:boron
+
 WORKDIR /usr/src/app/subtitle-translator
 RUN npm install
 
