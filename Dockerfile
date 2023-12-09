@@ -15,5 +15,10 @@ COPY . ./
 # Enable udevd so that plugged dynamic hardware devices show up in our container.
 ENV UDEV=1
 
+WORKDIR /usr/src/app/subtitle-translator
+RUN npm install
+
+WORKDIR /usr/src/app
+
 # main.py will run when container starts up on the device
-CMD ["python","src/main.py","/data/input/","/data/output/"]
+CMD ./startup.sh
