@@ -27,6 +27,7 @@ RUN npm install
 
 WORKDIR /usr/src/app
 EXPOSE 4200
+EXPOSE 3333
 
 # main.py will run when container starts up on the device
 CMD ./startup.sh
