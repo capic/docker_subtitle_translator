@@ -8,6 +8,7 @@ import * as path from 'path';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
+import { exec } from 'child_process'
 
 const app = express();
 app.use(cors());
@@ -27,8 +28,18 @@ app.get('/api', (req, res) => {
 app.post('/api', (req, res) => {
   const moveFile = (file: fileUpload.UploadedFile) => {
     //Use the mv() method to place the file in the upload directory (i.e. "uploads")
-    file.mv('./uploads/' + file.name);
-  
+    file.mv('/home/capic/docker/translator_watcher/data/temp/' + file.name);
+    exec(`mkvextract tracks ${file.name} 2:${file.name}.srt`, (err, stdout, stderr) => {
+    if (err) {
+      //some err occurred
+      console.error(err)
+    } else {
+     // the *entire* stdout and stderr (buffered)
+     console.log(`stdout: ${stdout}`);
+     console.log(`stderr: ${stderr}`);
+    }
+  })
+
     //send response
     res.send({
       status: true,
