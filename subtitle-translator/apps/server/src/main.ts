@@ -30,7 +30,7 @@ app.post('/api', (req, res) => {
     //Use the mv() method to place the file in the upload directory (i.e. "uploads")
     file.mv('/data/temp/' + file.name);
     console.error('File uploaded')
-    exec(`cd /home/capic/docker/translator_watcher/data/temp/ && mkvextract tracks ${file.name} 2:${file.name}.srt`, (err, stdout, stderr) => {
+    exec(`cd /data/temp/ && mkvextract tracks ${file.name} 2:${file.name}.srt`, (err, stdout, stderr) => {
       if (err) {
         //some err occurred
         console.error(err)
