@@ -9,6 +9,7 @@ import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import { exec } from 'child_process'
+import fs from 'fs'
 
 const app = express();
 app.use(cors());
@@ -34,10 +35,13 @@ app.post('/api', (req, res) => {
       if (err) {
         //some err occurred
         console.error(err)
+       fs.unlinkSync(`/data/temp/${file.name}`)
       } else {
        // the *entire* stdout and stderr (buffered)
        console.log(`stdout: ${stdout}`);
        console.log(`stderr: ${stderr}`);
+
+       fs.unlinkSync(`/data/temp/${file.name}`)
       }
     })
 
