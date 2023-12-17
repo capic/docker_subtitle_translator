@@ -19,7 +19,7 @@ const App2 = () => {
     }
 
     return (<ul>
-        {data?}
+        {data?.data}
     </ul>)
 }
 
