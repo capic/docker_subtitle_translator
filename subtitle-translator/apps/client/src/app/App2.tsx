@@ -3,7 +3,7 @@ import { useQuery } from "react-query"
 import React from "react"
 
 const fetchFiles = async () => {
-    const resp = await axios.get('http://127.0.0.1:3333/api/files')
+    const resp = await axios.get('http://192.168.1.106:3333/api/files')
     return resp
 }
 
