@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
-import App from './app/App';
+import App2 from './app/App2';
 import 'react-dropzone-uploader/dist/styles.css'
 
 const root = ReactDOM.createRoot(
