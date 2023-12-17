@@ -3,13 +3,19 @@
  * This is only a minimal backend to get started.
  */
 
-import express, {Response} from 'express';
+import express, { Response } from 'express';
 import * as path from 'path';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
-import { exec } from 'child_process'
-import fs from 'fs'
+import { exec } from 'child_process';
+import fs from 'fs';
+
+const directories: {}[] = [
+  { name: 'Séries en cours', path: '/data/media/series_en_cours' },
+  { name: 'Films à regarder', path: '/data/media/films_a_regarder' },
+  { name: 'Séries VO', path: '/data/media/series_vo' },
+];
 
 const app = express();
 app.use(cors());
@@ -26,24 +32,37 @@ app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to server!' });
 });
 
+app.get<{ directoryName: string | undefined }>('/api/files', (req, res) => {
+  const { directoryName } = req.query;
+
+  if (!directoryName) {
+    res.send(JSON.stringify(directories));
+  }
+
+  res.send()
+});
+
 app.post('/api', (req, res) => {
   const moveFile = (file: fileUpload.UploadedFile) => {
     //Use the mv() method to place the file in the upload directory (i.e. "uploads")
     file.mv('/data/temp/' + file.name);
-    console.error('File uploaded')
-    exec(`mkvextract tracks /data/temp/${file.name} 2:/data/input/${file.name}.srt`, (err, stdout, stderr) => {
-      if (err) {
-        //some err occurred
-        console.error(err)
-       fs.unlinkSync(`/data/temp/${file.name}`)
-      } else {
-       // the *entire* stdout and stderr (buffered)
-       console.log(`stdout: ${stdout}`);
-       console.log(`stderr: ${stderr}`);
+    console.error('File uploaded');
+    exec(
+      `mkvextract tracks /data/temp/${file.name} 2:/data/input/${file.name}.srt`,
+      (err, stdout, stderr) => {
+        if (err) {
+          //some err occurred
+          console.error(err);
+          fs.unlinkSync(`/data/temp/${file.name}`);
+        } else {
+          // the *entire* stdout and stderr (buffered)
+          console.log(`stdout: ${stdout}`);
+          console.log(`stderr: ${stderr}`);
 
-       fs.unlinkSync(`/data/temp/${file.name}`)
+          fs.unlinkSync(`/data/temp/${file.name}`);
+        }
       }
-    })
+    );
 
     //send response
     res.send({
@@ -67,9 +86,9 @@ app.post('/api', (req, res) => {
       //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
       let file = req.files.file;
       if (Array.isArray(file)) {
-        file.forEach((f) => moveFile(f))
+        file.forEach((f) => moveFile(f));
       } else {
-        moveFile(file)
+        moveFile(file);
       }
     }
   } catch (err) {
