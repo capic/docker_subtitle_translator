@@ -5,7 +5,6 @@ set -m
 
 # Start the primary process and put it in the background
 python src/main.py /data/input/ /data/output/ &
-python src/ui.py &
 
 # Start the helper process
 cd subtitle-translator

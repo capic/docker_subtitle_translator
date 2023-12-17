@@ -27,17 +27,16 @@ export function App() {
     <>
       <div id="toast">Upload</div>
       <Dropzone
-        accept=".mkv"
         getUploadParams={getUploadParams}
         onChangeStatus={handleChangeStatus}
-        multiple={true}
-        canCancel={true}
+        maxFiles={1}
+        multiple={false}
+        canCancel={false}
         inputContent="Drop A File"
         styles={{
           dropzone: { width: 400, height: 200 },
           dropzoneActive: { borderColor: 'green' },
         }}
-        PreviewComponent={Preview}
       />
     </>
   )
