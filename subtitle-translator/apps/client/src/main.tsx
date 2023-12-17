@@ -14,7 +14,7 @@ const client = new QueryClient()
 root.render(
   <StrictMode>
     <QueryClientProvider client={client}>
-      <App />
+      <App2 />
     </QueryClientProvider>
   </StrictMode>
 );
