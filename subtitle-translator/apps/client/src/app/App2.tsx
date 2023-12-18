@@ -22,9 +22,11 @@ const App2 = () => {
 
   return (
     <ul>
-      <li>
-        <button>{data?.data.map((directory) => directory.name)}</button>
-      </li>
+      {data?.data.map((directory) => (
+        <li>
+          <button>directory.name</button>
+        </li>
+      ))}
     </ul>
   );
 };
