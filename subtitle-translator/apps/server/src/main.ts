@@ -36,7 +36,7 @@ app.get<{ directoryName: string | undefined }>('/api/files', (req, res) => {
   const { directoryName } = req.query;
 
   if (!directoryName) {
-    res.send({data:JSON.stringify(directories)});
+    res.send(JSON.stringify(directories));
   }
 
   res.send()

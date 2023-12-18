@@ -3,7 +3,7 @@ import { useQuery } from "react-query"
 import React from "react"
 
 const fetchFiles = async () => {
-    const resp = await axios.get('http://192.168.1.106:3333/api/files')
+    const resp = await axios.get<{name: string, path: string}[]>('http://192.168.1.106:3333/api/files')
     return resp
 }
 
@@ -19,7 +19,7 @@ const App2 = () => {
     }
 
     return (<ul>
-        {data?.data}
+        <li><button onClick={}>{data?.data.map(directory => directory.name)}</button></li>
     </ul>)
 }
 
