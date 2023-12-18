@@ -24,7 +24,7 @@ const App2 = () => {
     <ul>
       {data?.data.map((directory) => (
         <li>
-          <button>directory.name</button>
+          <button>{directory.name}</button>
         </li>
       ))}
     </ul>
