@@ -10,11 +10,30 @@ import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import fs from 'fs';
+import dree, { Dree, Type } from 'dree';
 
-const directories: {}[] = [
-  { name: 'Séries en cours', path: '/data/media/series_en_cours' },
-  { name: 'Films à regarder', path: '/data/media/films_a_regarder' },
-  { name: 'Séries VO', path: '/data/media/series_vo' },
+const children: Dree[] = [
+  {
+    name: 'Séries en cours',
+    path: '/data/media/series_en_cours',
+    type: Type.DIRECTORY,
+    relativePath: '.',
+    isSymbolicLink: false,
+  },
+  {
+    name: 'Films à regarder',
+    path: '/data/media/films_a_regarder',
+    type: Type.DIRECTORY,
+    relativePath: '.',
+    isSymbolicLink: false,
+  },
+  {
+    name: 'Séries VO',
+    path: '/data/media/series_vo',
+    type: Type.DIRECTORY,
+    relativePath: '.',
+    isSymbolicLink: false,
+  },
 ];
 
 const app = express();
@@ -32,14 +51,55 @@ app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to server!' });
 });
 
-app.get<{ directoryName: string | undefined }>('/api/files', (req, res) => {
-  const { directoryName } = req.query;
+app.get('/api/files', (req, res) => {
+  const tree: Dree = {
+    name: 'root',
+    path: '/',
+    type: Type.DIRECTORY,
+    relativePath: '.',
+    isSymbolicLink: false,
+    children: children.map((item) =>
+      dree.scan(item.path, { extensions: ['mkv'] })
+    ),
+  };
 
-  if (!directoryName) {
-    res.send(JSON.stringify(directories));
+  res.send(JSON.stringify(tree));
+});
+
+app.post('/api/translate', (req, res) => {
+  const { filePath } = req.body;
+
+  if (!filePath) {
+    res.send({
+      status: false,
+      message: 'No file path',
+    });
   }
 
-  res.send()
+  
+  exec(
+    `mkvextract tracks /${filePath} 2:/data/input/${path.basename(filePath)}.srt`,
+    (err, stdout, stderr) => {
+      if (err) {
+        //some err occurred
+        console.error(err);
+      } else {
+        // the *entire* stdout and stderr (buffered)
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+      }
+    }
+  );
+
+  res.send({
+    status: true,
+    message: 'Srt extracted',
+    data: {
+      //name: avatar.name,
+      //mimetype: avatar.mimetype,
+      //size: avatar.size
+    },
+  });
 });
 
 app.post('/api', (req, res) => {

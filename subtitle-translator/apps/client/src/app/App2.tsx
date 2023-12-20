@@ -1,16 +1,31 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import React from 'react';
+import FolderTree from './components/FolderTree';
+import Styled from 'styled-components';
+import { Dree } from 'dree';
+
+const StyledContainer = Styled.div`
+position: absolute;
+top: 50%;
+left:50%;
+transform: translate(-50%, -50%);
+width : 400px;
+height: 600px;
+overflow-y: auto;
+background-color:papayawhip;
+padding: 2rem;
+border-radius:20px;
+`;
 
 const fetchFiles = async () => {
-  const resp = await axios.get<{ name: string; path: string }[]>(
-    'http://192.168.1.106:3333/api/files'
-  );
-  return resp;
+  return await axios.get<Dree>(
+    'http://192.168.1.106:3333/api/files');
 };
 
 const App2 = () => {
-  const { data, error, isFetching } = useQuery('files', fetchFiles);
+  const { data, error, isFetching } = useQuery('listRootDirectories', () =>
+    fetchFiles()
+  );
 
   if (isFetching) {
     return <>Loading....</>;
@@ -20,14 +35,14 @@ const App2 = () => {
     return <>{error}</>;
   }
 
+  if (!data) {
+    return <>No data</>
+  }
+
   return (
-    <ul>
-      {data?.data.map((directory) => (
-        <li>
-          <button>{directory.name}</button>
-        </li>
-      ))}
-    </ul>
+    <StyledContainer>
+      <FolderTree json={data.data} />
+    </StyledContainer>
   );
 };
 
