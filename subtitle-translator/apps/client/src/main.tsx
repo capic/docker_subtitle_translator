@@ -23,7 +23,7 @@ async function enableMocking() {
   return worker.start()
 }
  
-enableMocking().then(() => {
+//enableMocking().then(() => {
   root.render(
     <StrictMode>
       <QueryClientProvider client={client}>
@@ -31,6 +31,6 @@ enableMocking().then(() => {
       </QueryClientProvider>
     </StrictMode>
   );
-})
+//})
 
 
