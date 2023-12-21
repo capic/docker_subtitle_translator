@@ -13,13 +13,13 @@ import fs from 'fs';
 import * as dree from 'dree';
 
 const children: dree.Dree[] = [
-  /*{
+  {
     name: 'Séries en cours',
     path: '/data/media/series_en_cours',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-  },*/
+  },
   {
     name: 'Films à regarder',
     path: '/data/media/films_a_regarder',
@@ -30,6 +30,7 @@ const children: dree.Dree[] = [
   {
     name: 'Séries VO',
     path: '/data/media/series_vo',
+    //path: '/mnt/c',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
@@ -59,11 +60,19 @@ app.get('/api/files', (req, res) => {
     relativePath: '.',
     isSymbolicLink: false,
     children: children.map((item) =>
-      dree.scan(item.path)
+      dree.scan(item.path, {
+        //depth: 2,
+        stat: false,
+        symbolicLinks: false,
+        followLinks: false,
+        size: false,
+        hash: false,
+        showHidden: false,
+        emptyDirectory: false,
+        descendants: false,
+      })
     ),
   };
-
-  console.log({tree})
 
   res.send(JSON.stringify(tree));
 });
@@ -78,9 +87,10 @@ app.post('/api/translate', (req, res) => {
     });
   }
 
-  
   exec(
-    `mkvextract tracks /${filePath} 2:/data/input/${path.basename(filePath)}.srt`,
+    `mkvextract tracks /${filePath} 2:/data/input/${path.basename(
+      filePath
+    )}.srt`,
     (err, stdout, stderr) => {
       if (err) {
         //some err occurred
