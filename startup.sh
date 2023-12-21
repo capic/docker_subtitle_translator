@@ -8,8 +8,8 @@ python src/main.py /data/input/ /data/output/ &
 
 # Start the helper process
 cd subtitle-translator
-npx nx serve server &
-npx nx serve client --host 0.0.0.0 --disableHostCheck &
+npx nx serve server --production &
+npx nx serve client --host 0.0.0.0 --disableHostCheck --production &
 
 # the my_helper_process might need to know how to wait on the
 # primary process to start before it does its work and returns
