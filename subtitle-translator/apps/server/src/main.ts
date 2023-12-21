@@ -13,13 +13,13 @@ import fs from 'fs';
 import * as dree from 'dree';
 
 const children: dree.Dree[] = [
-  {
+  /*{
     name: 'Séries en cours',
     path: '/data/media/series_en_cours',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-  },
+  },*/
   {
     name: 'Films à regarder',
     path: '/data/media/films_a_regarder',
@@ -27,13 +27,13 @@ const children: dree.Dree[] = [
     relativePath: '.',
     isSymbolicLink: false,
   },
-  {
+  /*{
     name: 'Séries VO',
     path: '/data/media/series_vo',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-  },
+  },*/
 ];
 
 const app = express();
