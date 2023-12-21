@@ -59,9 +59,11 @@ app.get('/api/files', (req, res) => {
     relativePath: '.',
     isSymbolicLink: false,
     children: children.map((item) =>
-      dree.scan(item.path, { extensions: ['mkv'] })
+      dree.scan(item.path)
     ),
   };
+
+  console.log({tree})
 
   res.send(JSON.stringify(tree));
 });
