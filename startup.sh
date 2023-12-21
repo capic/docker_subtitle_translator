@@ -8,7 +8,6 @@ python src/main.py /data/input/ /data/output/ &
 
 # Start the helper process
 cd subtitle-translator
-npm i
 npx nx serve server &
 npx nx serve client --host 0.0.0.0 --disableHostCheck &
 

@@ -10,27 +10,27 @@ import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
 import { exec } from 'child_process';
 import fs from 'fs';
-import dree, { Dree, Type } from 'dree';
+import * as dree from 'dree';
 
-const children: Dree[] = [
+const children: dree.Dree[] = [
   {
     name: 'Séries en cours',
     path: '/data/media/series_en_cours',
-    type: Type.DIRECTORY,
+    type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
   },
   {
     name: 'Films à regarder',
     path: '/data/media/films_a_regarder',
-    type: Type.DIRECTORY,
+    type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
   },
   {
     name: 'Séries VO',
     path: '/data/media/series_vo',
-    type: Type.DIRECTORY,
+    type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
   },
@@ -52,10 +52,10 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/api/files', (req, res) => {
-  const tree: Dree = {
+  const tree: dree.Dree = {
     name: 'root',
     path: '/',
-    type: Type.DIRECTORY,
+    type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
     children: children.map((item) =>
