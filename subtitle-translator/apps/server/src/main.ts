@@ -27,13 +27,13 @@ const children: dree.Dree[] = [
     relativePath: '.',
     isSymbolicLink: false,
   },
-  /*{
+  {
     name: 'Séries VO',
     path: '/data/media/series_vo',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-  },*/
+  },
 ];
 
 const app = express();
