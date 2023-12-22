@@ -99,10 +99,9 @@ app.post('/api/translate', (req, res) => {
         // the *entire* stdout and stderr (buffered)
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
-        fs.renameSync(
-          `/data/temp/${path.basename(filePath)}.srt`,
-          `/data/input/${path.basename(filePath)}.srt`
-        );
+        fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
+        `/data/input/${path.basename(filePath)}.srt`)
+        fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`)
       }
     }
   );
