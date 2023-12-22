@@ -70,7 +70,7 @@ app.get('/api/files', (req, res) => {
         showHidden: false,
         emptyDirectory: false,
         descendants: false,
-        extensions: ['mkv']
+        extensions: ['mkv'],
       })
     ),
   };
@@ -102,11 +102,13 @@ app.post('/api/translate', (req, res) => {
         console.log(`stderr: ${stderr}`);
         /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
         `/data/input/${path.basename(filePath)}.srt`) */
-        exec(`subtrans translate "/data/temp/${path.basename(
-          filePath
-        )}.srt" --src en --dest fr`)
+        exec(
+          `subtrans translate "/data/temp/${path.basename(
+            filePath
+          )}.srt" --src en --dest fr`
+        );
 
-        fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`)
+        fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`);
       }
     }
   );
