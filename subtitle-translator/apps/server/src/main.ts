@@ -88,7 +88,7 @@ app.post('/api/translate', (req, res) => {
   }
 
   exec(
-    `mkvextract tracks /${filePath} 2:/data/input/${path.basename(
+    `mkvextract tracks /${filePath} 2:/data/temp/${path.basename(
       filePath
     )}.srt`,
     (err, stdout, stderr) => {
