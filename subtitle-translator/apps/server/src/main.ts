@@ -105,10 +105,13 @@ app.post('/api/translate', (req, res) => {
         exec(
           `subtrans translate "/data/temp/${path.basename(
             filePath
-          )}.srt" --src en --dest fr`
+          )}.srt" --src en --dest fr`,
+          (err, stdout, stderr) => {
+            fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`);
+          }
         );
 
-        fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`);
+       
       }
     }
   );
