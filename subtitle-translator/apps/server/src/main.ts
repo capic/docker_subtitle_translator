@@ -70,6 +70,7 @@ app.get('/api/files', (req, res) => {
         showHidden: false,
         emptyDirectory: false,
         descendants: false,
+        extensions: ['mkv']
       })
     ),
   };

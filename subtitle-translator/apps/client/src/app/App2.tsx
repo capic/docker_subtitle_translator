@@ -40,9 +40,9 @@ const App2 = () => {
   }
 
   return (
-    <StyledContainer>
+
       <FolderTree json={data.data} />
-    </StyledContainer>
+
   );
 };
 
