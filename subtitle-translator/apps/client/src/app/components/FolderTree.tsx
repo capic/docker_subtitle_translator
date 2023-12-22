@@ -26,7 +26,7 @@ const FolderTree = ({ json }: Props) => {
     }
 
     const sendFile = (file: Dree) => {
-        mutation.mutate(file.name)
+        mutation.mutate(file.path)
     }
 
     if (json.type === Type.DIRECTORY) {
