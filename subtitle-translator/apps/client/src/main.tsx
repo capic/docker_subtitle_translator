@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(
 );
 
 const client = new QueryClient();
-
+/*
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
     return;
@@ -21,8 +21,8 @@ async function enableMocking() {
   // once the Service Worker is up and ready to intercept requests.
   return worker.start();
 }
-
-enableMocking().then(() => {
+*/
+//enableMocking().then(() => {
   root.render(
     <StrictMode>
       <QueryClientProvider client={client}>
@@ -30,4 +30,4 @@ enableMocking().then(() => {
       </QueryClientProvider>
     </StrictMode>
   );
-});
+//});
