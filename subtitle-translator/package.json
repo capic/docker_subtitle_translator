@@ -16,6 +16,7 @@
     "dree": "^4.6.0",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.3",
+    "matroska-subtitles": "3.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone-uploader": "^2.11.0",
@@ -23,6 +24,7 @@
     "react-query": "^3.39.3",
     "server": "^1.0.38",
     "styled-components": "^5.3.3",
+    "ts-ebml": "^2.0.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

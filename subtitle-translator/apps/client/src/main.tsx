@@ -8,21 +8,21 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const client = new QueryClient()
+const client = new QueryClient();
 
-/* async function enableMocking() {
+async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
-    return
+    return;
   }
- 
-  const { worker } = await import('./mocks/browser')
- 
+
+  const { worker } = await import('./mocks/browser');
+
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
-  return worker.start()
-} */
- 
-//enableMocking().then(() => {
+  return worker.start();
+}
+
+enableMocking().then(() => {
   root.render(
     <StrictMode>
       <QueryClientProvider client={client}>
@@ -30,6 +30,4 @@ const client = new QueryClient()
       </QueryClientProvider>
     </StrictMode>
   );
-//})
-
-
+});

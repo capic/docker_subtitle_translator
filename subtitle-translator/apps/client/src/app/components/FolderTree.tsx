@@ -4,6 +4,7 @@ import RowContainer from './RowContainer';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import { Dree, Type } from 'dree';
+import Subtitles from './Subtitles'
 
 const Container = Styled.div`
     padding:0rem 1.5rem;
@@ -21,8 +22,14 @@ const FolderTree = ({ json }: Props) => {
         },
       })
     const [expand, setExpand] = useState(false);
+    const [showSubtitles, setShowSubtitles] = useState<boolean>(false)
+
     const handleClick = () => {
         setExpand(!expand);
+    }
+
+    const exploreSubtitles = (file: Dree) => {
+        mutationExploreSubtitle.mutate(file.path)
     }
 
     const sendFile = (file: Dree) => {
@@ -32,7 +39,7 @@ const FolderTree = ({ json }: Props) => {
     if (json.type === Type.DIRECTORY) {
         return (
             <Container>
-                <RowContainer type={'folder'} name={json.name} handleClick={handleClick} />
+                <RowContainer type="folder" name={json.name} handleClick={handleClick} />
 
                 <div style={{ display: expand ? 'block' : 'none' }}>
                     {json.children?.map(child => {
@@ -44,7 +51,8 @@ const FolderTree = ({ json }: Props) => {
     } else {
         return (
             <Container>
-                <RowContainer type={'file'} name={json.name} handleClick={() => sendFile(json)}/>
+                <RowContainer type="file" name={json.name} handleClick={() => setShowSubtitles(!showSubtitles)}/>
+                {showSubtitles ? <Subtitles hash={json.hash} /> : null }
             </Container>
         )
     }

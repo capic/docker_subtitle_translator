@@ -135,17 +135,31 @@ const json = {
     },
   ],
 };
+
 export const handlers = [
   http.get('http://192.168.1.106:3333/api/files', () => {
     return HttpResponse.json(json);
   }),
-  http.post<{}, { filePath: string }>(
-    'http://192.168.1.106:3333/api/translate',
-    async ({ request }) => {
-      const { filePath } = await request.json();
+  http.get(
+    `http://192.168.1.106:3333/api/files/:hash/subtitles`,
+    async ({ params }) => {
+      const { hash } = params;
 
-      console.log({ filePath });
+      console.log({ hash });
 
+      return new HttpResponse(
+        JSON.stringify([
+          { number: 3, language: undefined, type: 'utf8' },
+          { number: 4, language: undefined, type: 'utf8', name: 'SDH' },
+          { number: 5, language: 'fre', type: 'utf8' },
+        ])
+      );
+    }
+  ),
+  http.post<{}, { hash: string; number: Number }>(
+    'http://192.168.1.106:3333/api/files/:hash/subtitles/:number/translate',
+    async ({ params }) => {
+      const { hash, number } = params;
       return new HttpResponse(null, { status: 201 });
     }
   ),

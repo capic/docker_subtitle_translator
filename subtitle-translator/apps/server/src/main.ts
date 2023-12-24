@@ -8,9 +8,10 @@ import * as path from 'path';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import * as dree from 'dree';
+import { SubtitleParser } from 'matroska-subtitles';
 
 const children: dree.Dree[] = [
   {
@@ -36,6 +37,30 @@ const children: dree.Dree[] = [
     isSymbolicLink: false,
   },
 ];
+
+const findFileByHash = (children: dree.Dree[], hash: string) => {
+  let filePath = null
+  children.map((item) =>
+    dree.scan(item.path, {
+      //depth: 2,
+      stat: false,
+      symbolicLinks: false,
+      followLinks: false,
+      size: false,
+      hash: true,
+      showHidden: false,
+      emptyDirectory: false,
+      descendants: false,
+      extensions: ['mkv'],
+    }, (element, stat) => {
+      if (element.hash === hash) {
+        filePath = element.path
+      }
+    })
+  );
+
+  return filePath
+}
 
 const app = express();
 app.use(cors());
@@ -66,7 +91,7 @@ app.get('/api/files', (req, res) => {
         symbolicLinks: false,
         followLinks: false,
         size: false,
-        hash: false,
+        hash: true,
         showHidden: false,
         emptyDirectory: false,
         descendants: false,
@@ -78,8 +103,48 @@ app.get('/api/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.post('/api/translate', (req, res) => {
-  const { filePath } = req.body;
+app.get('/api/files/:hash/subtitles', (req, res) => {
+  const { hash } = req.params;
+
+  if (!hash) {
+    res.send({
+      status: false,
+      message: 'No file hash',
+    });
+  }
+
+  const filePath = findFileByHash(children, hash)
+
+  if (!filePath) {
+    res.send({
+      status: false,
+      message: 'No file found',
+    });
+  }
+
+  const parser = new SubtitleParser();
+  parser.once('tracks', (tracks) => {
+    res.send({
+      status: true,
+      message: 'Srt extracted',
+      data: JSON.stringify(tracks),
+    });
+  });
+
+  fs.createReadStream(filePath).pipe(parser);
+});
+
+app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
+  const { hash, number } = req.params;
+
+  if (!hash || !number) {
+    res.send({
+      status: false,
+      message: 'No file hash or track number',
+    });
+  }
+
+  const filePath = findFileByHash(children, hash)
 
   if (!filePath) {
     res.send({
@@ -89,7 +154,7 @@ app.post('/api/translate', (req, res) => {
   }
 
   exec(
-    `mkvextract tracks "${filePath}" 2:"/data/temp/${path.basename(
+    `mkvextract tracks "${filePath}" ${number}:"/data/temp/${path.basename(
       filePath
     )}.srt"`,
     (err, stdout, stderr) => {
@@ -110,8 +175,6 @@ app.post('/api/translate', (req, res) => {
             fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`);
           }
         );
-
-       
       }
     }
   );
