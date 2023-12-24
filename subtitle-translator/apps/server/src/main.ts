@@ -91,7 +91,7 @@ app.get('/api/files', (req, res) => {
         symbolicLinks: false,
         followLinks: false,
         size: false,
-        hash: true,
+        hash: false,
         showHidden: false,
         emptyDirectory: false,
         descendants: false,
