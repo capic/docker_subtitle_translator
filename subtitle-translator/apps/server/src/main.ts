@@ -12,6 +12,7 @@ import { exec, execSync } from 'child_process';
 import fs from 'fs';
 import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
+import { v4 as uuidv4 } from 'uuid';
 
 const children: dree.Dree[] = [
   {
@@ -30,8 +31,8 @@ const children: dree.Dree[] = [
   },
   {
     name: 'Séries VO',
-    path: '/data/media/series_vo',
-    //path: '/mnt/c',
+    //path: '/data/media/series_vo',
+    path: '/mnt/c/Users/Vincent/Downloads',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
@@ -39,28 +40,35 @@ const children: dree.Dree[] = [
 ];
 
 const findFileByHash = (children: dree.Dree[], hash: string) => {
-  let filePath = null
+  let filePath = null;
   children.map((item) =>
-    dree.scan(item.path, {
-      //depth: 2,
-      stat: false,
-      symbolicLinks: false,
-      followLinks: false,
-      size: false,
-      hash: true,
-      showHidden: false,
-      emptyDirectory: false,
-      descendants: false,
-      extensions: ['mkv'],
-    }, (element, stat) => {
-      if (element.hash === hash) {
-        filePath = element.path
+    dree.scan(
+      item.path,
+      {
+        //depth: 2,
+        stat: false,
+        symbolicLinks: false,
+        followLinks: false,
+        size: false,
+        hash: false,
+        showHidden: false,
+        emptyDirectory: false,
+        descendants: false,
+        extensions: ['mkv'],
+      },
+      (element, stat) => {
+        if (element.hash === hash) {
+          filePath = element.path;
+        }
       }
-    })
+    )
   );
 
-  return filePath
-}
+  return filePath;
+};
+
+const directoryMap = new Map<string, dree.Dree>();
+const fileMap = new Map<string, dree.Dree>();
 
 const app = express();
 app.use(cors());
@@ -77,6 +85,13 @@ app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to server!' });
 });
 
+const fileCallback = function (file) {
+  fileMap.set(file.hash, file);
+};
+const directoryCallback = function (directory) {
+  directoryMap.set(directory.hash, directory);
+};
+
 app.get('/api/files', (req, res) => {
   const tree: dree.Dree = {
     name: 'root',
@@ -85,18 +100,57 @@ app.get('/api/files', (req, res) => {
     relativePath: '.',
     isSymbolicLink: false,
     children: children.map((item) =>
-      dree.scan(item.path, {
-        //depth: 2,
-        stat: false,
-        symbolicLinks: false,
-        followLinks: false,
-        size: false,
-        hash: true,
-        showHidden: false,
-        emptyDirectory: false,
-        descendants: false,
-        extensions: ['mkv'],
-      })
+      dree.scan(
+        item.path,
+        {
+          depth: 1,
+          stat: false,
+          symbolicLinks: false,
+          followLinks: false,
+          size: false,
+          hash: true,
+          showHidden: false,
+          emptyDirectory: false,
+          descendants: false,
+          extensions: ['mkv'],
+        },
+        fileCallback,
+        directoryCallback
+      )
+    ),
+  };
+
+  res.send(JSON.stringify(tree));
+});
+
+app.get('/api/directory/:hash/files', (req, res) => {
+  const { hash } = req.params;
+  
+  const tree: dree.Dree = {
+    name: 'root',
+    path: directoryMap.get(hash)?.path,
+    type: dree.Type.DIRECTORY,
+    relativePath: '.',
+    isSymbolicLink: false,
+    children: children.map(
+      (item) =>
+        dree.scan(
+          item.path,
+          {
+            depth: 1,
+            stat: false,
+            symbolicLinks: false,
+            followLinks: false,
+            size: false,
+            hash: true,
+            showHidden: false,
+            emptyDirectory: false,
+            descendants: false,
+            extensions: ['mkv'],
+          },
+          (file) => fileMap.set(file.hash, file)
+        ),
+      (directory) => directoryMap.set(directory.hash, directory)
     ),
   };
 
@@ -113,7 +167,7 @@ app.get('/api/files/:hash/subtitles', (req, res) => {
     });
   }
 
-  const filePath = findFileByHash(children, hash)
+  const filePath = findFileByHash(children, hash);
 
   if (!filePath) {
     res.send({
@@ -144,7 +198,7 @@ app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
     });
   }
 
-  const filePath = findFileByHash(children, hash)
+  const filePath = findFileByHash(children, hash);
 
   if (!filePath) {
     res.send({

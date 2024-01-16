@@ -17,7 +17,7 @@ const Name = Styled.h5`
 interface Props {
     type: string
     name: string
-    handleClick: () => void
+    handleClick?: () => void
 }
 
 const RowContainer = ({ type, name, handleClick }: Props) => {
