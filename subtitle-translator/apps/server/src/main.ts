@@ -31,8 +31,8 @@ const children: dree.Dree[] = [
   },
   {
     name: 'Séries VO',
-    //path: '/data/media/series_vo',
-    path: '/mnt/c/Users/Vincent/Downloads',
+    path: '/data/media/series_vo',
+    //path: '/mnt/c/Users/Vincent/Downloads',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,

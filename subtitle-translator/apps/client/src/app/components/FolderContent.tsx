@@ -54,9 +54,9 @@ const FolderContent = ({ hash }: Props) => {
     <ul>
       {data.data.children?.map((child) =>
         child.type === Type.DIRECTORY ? (
-          <FolderNode node={child} />
+          <FolderNode key={child.hash} node={child} />
         ) : (
-          <FileNode node={child} />
+          <FileNode key={child.hash} node={child} />
         )
       )}
     </ul>
