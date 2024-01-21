@@ -30,7 +30,7 @@ interface Props {
 
 const FolderContent = ({ hash }: Props) => {
   const { data, error, isLoading } = useQuery<{}, {}, { data: Dree }>({
-    queryKey: 'fetchFolderContent',
+    queryKey:[ 'fetchFolderContent', hash],
     queryFn: () => fetchFolder(hash),
   });
 

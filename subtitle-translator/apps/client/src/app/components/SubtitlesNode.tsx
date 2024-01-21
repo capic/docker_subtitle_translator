@@ -19,7 +19,7 @@ const SubtitlesNode = ({ hash }: Props) => {
     {},
     { data: { number: number; language: string; type: string }[] }
   >({
-    queryKey: 'fetchSubtitles',
+    queryKey: ['fetchSubtitles', hash],
     queryFn: () => fetchSubtiles(hash),
   });
 
