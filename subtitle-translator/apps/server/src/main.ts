@@ -21,6 +21,7 @@ const children: dree.Dree[] = [
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
+    hash: '0'
   },
   {
     name: 'Films à regarder',
@@ -28,6 +29,7 @@ const children: dree.Dree[] = [
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
+    hash: '1'
   },
   {
     name: 'Séries VO',
@@ -36,6 +38,7 @@ const children: dree.Dree[] = [
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
+    hash: '2'
   },
 ];
 
