@@ -100,7 +100,7 @@ app.get('/api/directories/:hash/files', (req, res) => {
   const directory = directoryMap.get(hash);
 
   const tree: dree.Dree = dree.scan(directory.path, {
-    depth: 0,
+    depth: 1,
     stat: false,
     symbolicLinks: false,
     followLinks: false,
