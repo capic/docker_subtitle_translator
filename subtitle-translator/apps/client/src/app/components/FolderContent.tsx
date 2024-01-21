@@ -21,11 +21,7 @@ const Row = styled.div`
 `;
 
 const fetchFolder = async (hash?: string) => {
-  const url = hash
-    ? `http://192.168.1.106:3333/api/directories/${hash}/files`
-    : `http://192.168.1.106:3333/api/files`;
-
-  return await axios.get(url);
+  return await axios.get(`http://192.168.1.106:3333/api/directories/${hash}/files`);
 };
 
 interface Props {

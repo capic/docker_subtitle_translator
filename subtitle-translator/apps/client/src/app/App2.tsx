@@ -36,9 +36,9 @@ const App2 = () => {
       <ul>
         {data.data.children?.map((child) =>
           child.type === Type.DIRECTORY ? (
-            <FolderNode key={child.hash} node={child} />
+            <FolderNode  node={child} />
           ) : (
-            <FileNode key={child.hash} node={child} />
+            <FileNode node={child} />
           )
         )}
       </ul>

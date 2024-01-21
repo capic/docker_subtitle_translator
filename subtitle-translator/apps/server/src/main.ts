@@ -125,34 +125,21 @@ app.get('/api/files', (req, res) => {
 
 app.get('/api/directories/:hash/files', (req, res) => {
   const { hash } = req.params;
-  
-  const tree: dree.Dree = {
-    name: 'root',
-    path: directoryMap.get(hash)?.path,
-    type: dree.Type.DIRECTORY,
-    relativePath: '.',
-    isSymbolicLink: false,
-    children: children.map(
-      (item) =>
-        dree.scan(
-          item.path,
-          {
-            depth: 1,
-            stat: false,
-            symbolicLinks: false,
-            followLinks: false,
-            size: false,
-            hash: true,
-            showHidden: false,
-            emptyDirectory: false,
-            descendants: false,
-            extensions: ['mkv'],
-          },
-          (file) => fileMap.set(file.hash, file)
-        ),
-      (directory) => directoryMap.set(directory.hash, directory)
-    ),
-  };
+
+  const directory = directoryMap.get(hash);
+
+  const tree: dree.Dree = dree.scan(directory.path, {
+    depth: 1,
+    stat: false,
+    symbolicLinks: false,
+    followLinks: false,
+    size: false,
+    hash: true,
+    showHidden: false,
+    emptyDirectory: false,
+    descendants: false,
+    extensions: ['mkv'],
+  });
 
   res.send(JSON.stringify(tree));
 });
