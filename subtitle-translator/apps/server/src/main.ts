@@ -39,34 +39,6 @@ const children: dree.Dree[] = [
   },
 ];
 
-const findFileByHash = (children: dree.Dree[], hash: string) => {
-  let filePath = null;
-  children.map((item) =>
-    dree.scan(
-      item.path,
-      {
-        //depth: 2,
-        stat: false,
-        symbolicLinks: false,
-        followLinks: false,
-        size: false,
-        hash: false,
-        showHidden: false,
-        emptyDirectory: false,
-        descendants: false,
-        extensions: ['mkv'],
-      },
-      (element, stat) => {
-        if (element.hash === hash) {
-          filePath = element.path;
-        }
-      }
-    )
-  );
-
-  return filePath;
-};
-
 const directoryMap = new Map<string, dree.Dree>();
 const fileMap = new Map<string, dree.Dree>();
 
@@ -80,10 +52,6 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to server!' });
-});
 
 const fileCallback = function (file) {
   fileMap.set(file.hash, file);
@@ -103,7 +71,7 @@ app.get('/api/files', (req, res) => {
       dree.scan(
         item.path,
         {
-          depth: 1,
+          depth: 0,
           stat: false,
           symbolicLinks: false,
           followLinks: false,
@@ -129,7 +97,7 @@ app.get('/api/directories/:hash/files', (req, res) => {
   const directory = directoryMap.get(hash);
 
   const tree: dree.Dree = dree.scan(directory.path, {
-    depth: 1,
+    depth: 0,
     stat: false,
     symbolicLinks: false,
     followLinks: false,
@@ -154,9 +122,9 @@ app.get('/api/files/:hash/subtitles', (req, res) => {
     });
   }
 
-  const filePath = findFileByHash(children, hash);
+  const file = fileMap.get(hash);
 
-  if (!filePath) {
+  if (!file) {
     res.send({
       status: false,
       message: 'No file found',
@@ -172,7 +140,7 @@ app.get('/api/files/:hash/subtitles', (req, res) => {
     });
   });
 
-  fs.createReadStream(filePath).pipe(parser);
+  fs.createReadStream(file.path).pipe(parser);
 });
 
 app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
@@ -185,9 +153,9 @@ app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
     });
   }
 
-  const filePath = findFileByHash(children, hash);
+  const file = fileMap.get(hash);
 
-  if (!filePath) {
+  if (!file) {
     res.send({
       status: false,
       message: 'No file path',
@@ -195,8 +163,8 @@ app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
   }
 
   exec(
-    `mkvextract tracks "${filePath}" ${number}:"/data/temp/${path.basename(
-      filePath
+    `mkvextract tracks "${file.path}" ${number}:"/data/temp/${path.basename(
+      file.path
     )}.srt"`,
     (err, stdout, stderr) => {
       if (err) {
@@ -210,10 +178,10 @@ app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
         `/data/input/${path.basename(filePath)}.srt`) */
         exec(
           `subtrans translate "/data/temp/${path.basename(
-            filePath
+            file.path
           )}.srt" --src en --dest fr`,
           (err, stdout, stderr) => {
-            fs.rmSync(`/data/temp/${path.basename(filePath)}.srt`);
+            fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
           }
         );
       }
@@ -229,61 +197,6 @@ app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
       //size: avatar.size
     },
   });
-});
-
-app.post('/api', (req, res) => {
-  const moveFile = (file: fileUpload.UploadedFile) => {
-    //Use the mv() method to place the file in the upload directory (i.e. "uploads")
-    file.mv('/data/temp/' + file.name);
-    console.error('File uploaded');
-    exec(
-      `mkvextract tracks /data/temp/${file.name} 2:/data/input/${file.name}.srt`,
-      (err, stdout, stderr) => {
-        if (err) {
-          //some err occurred
-          console.error(err);
-          fs.unlinkSync(`/data/temp/${file.name}`);
-        } else {
-          // the *entire* stdout and stderr (buffered)
-          console.log(`stdout: ${stdout}`);
-          console.log(`stderr: ${stderr}`);
-
-          fs.unlinkSync(`/data/temp/${file.name}`);
-        }
-      }
-    );
-
-    //send response
-    res.send({
-      status: true,
-      message: 'File is uploaded',
-      data: {
-        //name: avatar.name,
-        //mimetype: avatar.mimetype,
-        //size: avatar.size
-      },
-    });
-  };
-
-  try {
-    if (!req.files) {
-      res.send({
-        status: false,
-        message: 'No file uploaded',
-      });
-    } else {
-      //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-      let file = req.files.file;
-      if (Array.isArray(file)) {
-        file.forEach((f) => moveFile(f));
-      } else {
-        moveFile(file);
-      }
-    }
-  } catch (err) {
-    console.log({ err });
-    res.status(500).send(err);
-  }
 });
 
 const port = process.env.PORT || 3333;
