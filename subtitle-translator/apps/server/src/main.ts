@@ -34,7 +34,7 @@ const children: dree.Dree[] = [
   {
     name: 'Séries VO',
     path: '/data/media/series_vo',
-    //path: '/mnt/c/Users/Vincent/Downloads',
+    // path: '/mnt/c/Users/Vincent/Downloads',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
@@ -57,9 +57,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 const fileCallback = function (file) {
+  console.log(`add file to map`, {file})
   fileMap.set(file.hash, file);
 };
 const directoryCallback = function (directory) {
+  console.log(`add directory to map`, {directory})
   directoryMap.set(directory.hash, directory);
 };
 
@@ -110,7 +112,9 @@ app.get('/api/directories/:hash/files', (req, res) => {
     emptyDirectory: false,
     descendants: false,
     extensions: ['mkv'],
-  });
+  },
+  fileCallback,
+  directoryCallback);
 
   res.send(JSON.stringify(tree));
 });
