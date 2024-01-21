@@ -123,7 +123,7 @@ app.get('/api/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.get('/api/directory/:hash/files', (req, res) => {
+app.get('/api/directories/:hash/files', (req, res) => {
   const { hash } = req.params;
   
   const tree: dree.Dree = {
