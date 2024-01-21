@@ -8088,7 +8088,7 @@ export const handlers = [
       path: '/',
       type: 'directory',
       relativePath: '.',
-      hash: '1',
+      hash: '0',
       isSymbolicLink: false,
       children: [
         {
@@ -8096,7 +8096,7 @@ export const handlers = [
           path: '/data/media/series_en_cours',
           relativePath: '.',
           type: 'directory',
-          hash: '1',
+          hash: '2',
           isSymbolicLink: false,
           sizeInBytes: 383100360543,
         },
@@ -8105,7 +8105,7 @@ export const handlers = [
           path: '/data/media/series_vo/Westworld/Westworld.S04E07.720p.WEB.x265-MiNX.mkv',
           relativePath: 'Westworld/Westworld.S04E07.720p.WEB.x265-MiNX.mkv',
           type: 'file',
-          hash: '2',
+          hash: '3',
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 267802658,
@@ -8115,7 +8115,7 @@ export const handlers = [
           path: '/data/media/series_vo/Westworld/Westworld.S04E08.720p.WEB.x265-MiNX.mkv',
           relativePath: 'Westworld/Westworld.S04E08.720p.WEB.x265-MiNX.mkv',
           type: 'file',
-          hash: '3',
+          hash: '4',
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 308738316,
@@ -8127,6 +8127,7 @@ export const handlers = [
     return HttpResponse.json({
       name: 'The Witcher',
       path: '/data/media/series_vo/The Witcher',
+      hash: '1',
       relativePath: 'The Witcher',
       type: 'directory',
       isSymbolicLink: false,

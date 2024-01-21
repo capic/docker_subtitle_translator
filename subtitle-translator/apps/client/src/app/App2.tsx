@@ -1,31 +1,48 @@
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import FolderTree from './components/FolderTree';
 import Styled from 'styled-components';
-import { Dree } from 'dree';
+import Tree from './components/Tree';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { Dree, Type } from 'dree';
+import FolderNode from './components/FolderNode';
+import styled from 'styled-components';
+import FileNode from './components/FileNode';
 
-import RowContainer from './components/RowContainer';
-
-const StyledContainer = Styled.div`
-position: absolute;
-top: 50%;
-left:50%;
-transform: translate(-50%, -50%);
-width : 400px;
-height: 600px;
-overflow-y: auto;
-background-color:papayawhip;
-padding: 2rem;
-border-radius:20px;
-`;
-
+const fetch = () => {
+  return axios.get('http://192.168.1.106:3333/api/files');
+};
 
 const App2 = () => {
+  const { data, error, isLoading } = useQuery<{}, {}, { data: Dree }>({
+    queryKey: 'fetch',
+    queryFn: fetch,
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+
+  if (error) {
+    return <>Error: {error}</>;
+  }
+
+  if (!data) {
+    return <>No data</>;
+  }
+
   return (
-    <>
-      <RowContainer type="folder" name="/" />
-      <FolderTree />
-    </>
+    <div className="App">
+      <div>{data.data.name}</div>
+      <ul>
+        {data.data.children?.map((child) =>
+          child.type === Type.DIRECTORY ? (
+            <FolderNode node={child} />
+          ) : (
+            <FileNode node={child} />
+          )
+        )}
+      </ul>
+    </div>
   );
 };
 

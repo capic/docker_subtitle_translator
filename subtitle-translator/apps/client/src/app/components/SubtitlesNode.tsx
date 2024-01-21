@@ -1,26 +1,27 @@
 import axios from 'axios';
+import { Dree } from 'dree';
 import React from 'react';
 import { useMutation, useQuery } from 'react-query';
 
-interface Props {
-  hash?: string;
-}
-
-const getSubtitles = async (hash?: string) => {
-  if (!hash) {
-    return [];
-  }
-  return await axios.get<{ hash: string }>(
-    `http://192.168.1.106:3333/api/files/${hash}/subtitles`
+const fetchSubtiles = async (hash: Dree['hash']) => {
+  return await axios.get(
+    `http://192.168.1.106:3333/api/file/${hash}/subtitles`
   );
 };
 
-const Subtitles = ({ hash }: Props) => {
-  const { data, error, isLoading } = useQuery<
+interface Props {
+  hash: Dree['hash'];
+}
+
+const SubtitlesNode = ({ hash }: Props) => {
+  const { error, data, isLoading } = useQuery<
     {},
     {},
     { data: { number: number; language: string; type: string }[] }
-  >({ queryKey: 'getSubtitles', queryFn: () => getSubtitles(hash) });
+  >({
+    queryKey: 'fetchSubtitles',
+    queryFn: () => fetchSubtiles(hash),
+  });
 
   const mutationTranslate = useMutation({
     mutationFn: (number: Number) => {
@@ -43,8 +44,6 @@ const Subtitles = ({ hash }: Props) => {
     return <>No data</>;
   }
 
-  console.log({ data });
-
   return (
     <ul>
       {data.data.map((subtitle) => (
@@ -56,4 +55,4 @@ const Subtitles = ({ hash }: Props) => {
   );
 };
 
-export default Subtitles;
+export default SubtitlesNode;
