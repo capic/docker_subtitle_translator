@@ -2,32 +2,33 @@ import axios from 'axios';
 import { Dree } from 'dree';
 import React from 'react';
 import { useMutation, useQuery } from 'react-query';
+import { ModifiedDree } from '../type';
 
-const fetchSubtiles = async (hash: Dree['hash']) => {
+const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   return await axios.get(
-    `http://192.168.1.106:3333/api/file/${hash}/subtitles`
+    `http://192.168.1.106:3333/api/file/${uuid}/subtitles`
   );
 };
 
 interface Props {
-  hash: Dree['hash'];
+  uuid: ModifiedDree<Dree>['uuid'];
 }
 
-const SubtitlesNode = ({ hash }: Props) => {
+const SubtitlesNode = ({ uuid }: Props) => {
   const { error, data, isLoading } = useQuery<
     {},
     {},
     { data: { number: number; language: string; type: string }[] }
   >({
-    queryKey: ['fetchSubtitles', hash],
-    queryFn: () => fetchSubtiles(hash),
+    queryKey: ['fetchSubtitles', uuid],
+    queryFn: () => fetchSubtiles(uuid),
   });
 
   const mutationTranslate = useMutation({
     mutationFn: (number: Number) => {
       return axios.post(
-        'http://192.168.1.106:3333/api/files/:hash/subtitles/:number/translate',
-        { hash, number }
+        'http://192.168.1.106:3333/api/files/:uuid/subtitles/:number/translate',
+        { uuid, number }
       );
     },
   });

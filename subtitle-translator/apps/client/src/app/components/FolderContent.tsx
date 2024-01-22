@@ -1,37 +1,28 @@
-import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { FcFile, FcFolder } from 'react-icons/fc';
-import styled from 'styled-components';
 import { Dree, Type } from 'dree';
 import FolderNode from './FolderNode';
 import FileNode from './FileNode';
+import type { ModifiedDree } from '../type';
 
-const Name = styled.h5`
-  margin-left: 0.5rem;
-`;
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: ${({ type }: { type: string }) =>
-    type === 'folder' ? 'pointer' : null};
-  padding: 0rem;
-  margin: 0rem;
-  height: 2rem;
-`;
-
-const fetchFolder = async (hash?: string) => {
-  return await axios.get(`http://192.168.1.106:3333/api/directories/${hash}/files`);
+const fetchFolder = async (uuid: string) => {
+  return await axios.get(
+    `http://192.168.1.106:3333/api/directories/${uuid}/files`
+  );
 };
 
 interface Props {
-  hash: Dree['hash'];
+  uuid: string;
 }
 
-const FolderContent = ({ hash }: Props) => {
-  const { data, error, isLoading } = useQuery<{}, {}, { data: Dree }>({
-    queryKey:[ 'fetchFolderContent', hash],
-    queryFn: () => fetchFolder(hash),
+const FolderContent = ({ uuid }: Props) => {
+  const { data, error, isLoading } = useQuery<
+    {},
+    {},
+    { data: ModifiedDree<Dree> }
+  >({
+    queryKey: ['fetchFolderContent', uuid],
+    queryFn: () => fetchFolder(uuid),
   });
 
   if (isLoading) {
@@ -50,7 +41,7 @@ const FolderContent = ({ hash }: Props) => {
     <ul>
       {data.data.children?.map((child) =>
         child.type === Type.DIRECTORY ? (
-          <FolderNode key={child.hash} node={child} />
+          <FolderNode key={child.uuid} node={child} />
         ) : (
           <FileNode key={child.hash} node={child} />
         )

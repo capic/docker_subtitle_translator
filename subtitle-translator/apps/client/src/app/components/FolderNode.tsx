@@ -1,12 +1,11 @@
 import { Dree } from 'dree';
 import { useState } from 'react';
 import FolderContent from './FolderContent';
-import React from 'react';
-import styled from 'styled-components';
 import { FcFolder } from 'react-icons/fc';
+import { ModifiedDree } from '../type';
 
 interface Props {
-  node: Dree;
+  node: ModifiedDree<Dree>;
 }
 
 const FolderNode = ({ node }: Props) => {
@@ -18,7 +17,7 @@ const FolderNode = ({ node }: Props) => {
         <FcFolder />
         {node.name}
       </div>
-      {open && <FolderContent hash={node.hash} />}
+      {open && <FolderContent uuid={node.uuid} />}
     </li>
   );
 };

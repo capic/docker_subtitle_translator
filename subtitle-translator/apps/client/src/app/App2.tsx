@@ -6,13 +6,14 @@ import { Dree, Type } from 'dree';
 import FolderNode from './components/FolderNode';
 import styled from 'styled-components';
 import FileNode from './components/FileNode';
+import { ModifiedDree } from './type';
 
 const fetch = () => {
   return axios.get('http://192.168.1.106:3333/api/files');
 };
 
 const App2 = () => {
-  const { data, error, isLoading } = useQuery<{}, {}, { data: Dree }>({
+  const { data, error, isLoading } = useQuery<{}, {}, { data: ModifiedDree<Dree> }>({
     queryKey: 'fetch',
     queryFn: fetch,
     refetchOnWindowFocus: false,

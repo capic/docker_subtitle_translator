@@ -21,7 +21,6 @@ const children: dree.Dree[] = [
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-    hash: '0'
   },
   {
     name: 'Films à regarder',
@@ -29,16 +28,14 @@ const children: dree.Dree[] = [
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-    hash: '1'
   },
   {
     name: 'Séries VO',
-    path: '/data/media/series_vo',
-    // path: '/mnt/c/Users/Vincent/Downloads',
+    //path: '/data/media/series_vo',
+    path: '/mnt/c/Users/Vincent/Downloads',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
-    hash: '2'
   },
 ];
 
@@ -57,12 +54,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 const fileCallback = function (file) {
+  file.uuid = uuidv4()
   console.log(`add file to map`, {file})
-  fileMap.set(file.hash, file);
+  fileMap.set(file.uuid, file);
 };
 const directoryCallback = function (directory) {
+  directory.uuid = uuidv4()
   console.log(`add directory to map`, {directory})
-  directoryMap.set(directory.hash, directory);
+  directoryMap.set(directory.uuid, directory);
 };
 
 app.get('/api/files', (req, res) => {
@@ -81,7 +80,7 @@ app.get('/api/files', (req, res) => {
           symbolicLinks: false,
           followLinks: false,
           size: false,
-          hash: true,
+          hash: false,
           showHidden: false,
           emptyDirectory: false,
           descendants: false,
@@ -107,7 +106,7 @@ app.get('/api/directories/:hash/files', (req, res) => {
     symbolicLinks: false,
     followLinks: false,
     size: false,
-    hash: true,
+    hash: false,
     showHidden: false,
     emptyDirectory: false,
     descendants: false,
