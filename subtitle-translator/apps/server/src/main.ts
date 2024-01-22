@@ -167,7 +167,7 @@ app.post('/api/subtitles/translate', (req, res) => {
 
   try {
     exec(
-      `mkvextract tracks "${file.path}" ${number - 1}:"/data/temp/${path.basename(
+      `mkvextract tracks "${file.path}" ${Number(number) - 1}:"/data/temp/${path.basename(
         file.path
       )}.srt"`,
       (err, stdout, stderr) => {
