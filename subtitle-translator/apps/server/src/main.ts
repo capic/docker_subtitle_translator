@@ -167,41 +167,49 @@ app.post('/api/subtitles/translate', (req, res) => {
     });
   }
 
-  exec(
-    `mkvextract tracks "${file.path}" ${number}:"/data/temp/${path.basename(
-      file.path
-    )}.srt"`,
-    (err, stdout, stderr) => {
-      if (err) {
-        //some err occurred
-        console.error(err);
-      } else {
-        // the *entire* stdout and stderr (buffered)
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
-        /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
-        `/data/input/${path.basename(filePath)}.srt`) */
-        exec(
-          `subtrans translate "/data/temp/${path.basename(
-            file.path
-          )}.srt" --src en --dest fr`,
-          (err, stdout, stderr) => {
-            fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
-          }
-        );
+  try {
+    exec(
+      `mkvextract tracks "${file.path}" ${number}:"/data/temp/${path.basename(
+        file.path
+      )}.srt"`,
+      (err, stdout, stderr) => {
+        if (err) {
+          //some err occurred
+          console.error(err);
+        } else {
+          // the *entire* stdout and stderr (buffered)
+          console.log(`stdout: ${stdout}`);
+          console.log(`stderr: ${stderr}`);
+          /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
+          `/data/input/${path.basename(filePath)}.srt`) */
+          exec(
+            `subtrans translate "/data/temp/${path.basename(
+              file.path
+            )}.srt" --src en --dest fr`,
+            (err, stdout, stderr) => {
+              fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
+            }
+          );
+        }
       }
-    }
-  );
-
-  res.send({
-    status: true,
-    message: 'Srt extracted',
-    data: {
-      //name: avatar.name,
-      //mimetype: avatar.mimetype,
-      //size: avatar.size
-    },
-  });
+    );
+  
+    res.send({
+      status: true,
+      message: 'Srt extracted',
+      data: {
+        //name: avatar.name,
+        //mimetype: avatar.mimetype,
+        //size: avatar.size
+      },
+    });
+  } catch(error) {
+    res.send({
+      status: false,
+      message: error.message,
+    });
+  }
+  
 });
 
 const port = process.env.PORT || 3333;
