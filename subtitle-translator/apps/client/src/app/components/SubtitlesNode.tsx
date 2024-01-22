@@ -18,7 +18,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
   const { error, data, isLoading } = useQuery<
     {},
     {},
-    { data: { number: number; language: string; type: string }[] }
+    { data: { number: number; language: string; type: string, name?: string }[] }
   >({
     queryKey: ['fetchSubtitles', uuid],
     queryFn: () => fetchSubtiles(uuid),

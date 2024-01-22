@@ -55,12 +55,10 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 const fileCallback = function (file) {
   file.uuid = uuidv4();
-  console.log(`add file to map`, { file });
   fileMap.set(file.uuid, file);
 };
 const directoryCallback = function (directory) {
   directory.uuid = uuidv4();
-  console.log(`add directory to map`, { directory });
   directoryMap.set(directory.uuid, directory);
 };
 
@@ -169,7 +167,7 @@ app.post('/api/subtitles/translate', (req, res) => {
 
   try {
     exec(
-      `mkvextract tracks "${file.path}" ${number}:"/data/temp/${path.basename(
+      `mkvextract tracks "${file.path}" ${number - 1}:"/data/temp/${path.basename(
         file.path
       )}.srt"`,
       (err, stdout, stderr) => {
