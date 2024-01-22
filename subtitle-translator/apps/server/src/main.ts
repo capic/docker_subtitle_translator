@@ -182,9 +182,14 @@ app.post('/api/subtitles/translate', (req, res) => {
         } else {
           // the *entire* stdout and stderr (buffered)
           console.log(`stdout: ${stdout}`);
-          console.log(`stderr: ${stderr}`);
+          //console.log(`stderr: ${stderr}`);
           /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
           `/data/input/${path.basename(filePath)}.srt`) */
+          console.log(
+            `subtrans translate "/data/temp/${path.basename(
+              file.path
+            )}.srt" --src en --dest fr`
+          );
           exec(
             `subtrans translate "/data/temp/${path.basename(
               file.path
