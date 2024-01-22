@@ -9,8 +9,8 @@ const root = ReactDOM.createRoot(
 );
 
 const client = new QueryClient();
-
-/* async function enableMocking() {
+/*
+async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
     return;
   }

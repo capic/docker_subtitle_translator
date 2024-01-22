@@ -54,13 +54,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 const fileCallback = function (file) {
-  file.uuid = uuidv4()
-  console.log(`add file to map`, {file})
+  file.uuid = uuidv4();
+  console.log(`add file to map`, { file });
   fileMap.set(file.uuid, file);
 };
 const directoryCallback = function (directory) {
-  directory.uuid = uuidv4()
-  console.log(`add directory to map`, {directory})
+  directory.uuid = uuidv4();
+  console.log(`add directory to map`, { directory });
   directoryMap.set(directory.uuid, directory);
 };
 
@@ -100,20 +100,23 @@ app.get('/api/directories/:hash/files', (req, res) => {
 
   const directory = directoryMap.get(hash);
 
-  const tree: dree.Dree = dree.scan(directory.path, {
-    depth: 1,
-    stat: false,
-    symbolicLinks: false,
-    followLinks: false,
-    size: false,
-    hash: false,
-    showHidden: false,
-    emptyDirectory: false,
-    descendants: false,
-    extensions: ['mkv'],
-  },
-  fileCallback,
-  directoryCallback);
+  const tree: dree.Dree = dree.scan(
+    directory.path,
+    {
+      depth: 1,
+      stat: false,
+      symbolicLinks: false,
+      followLinks: false,
+      size: false,
+      hash: false,
+      showHidden: false,
+      emptyDirectory: false,
+      descendants: false,
+      extensions: ['mkv'],
+    },
+    fileCallback,
+    directoryCallback
+  );
 
   res.send(JSON.stringify(tree));
 });
@@ -139,11 +142,7 @@ app.get('/api/files/:hash/subtitles', (req, res) => {
 
   const parser = new SubtitleParser();
   parser.once('tracks', (tracks) => {
-    res.send({
-      status: true,
-      message: 'Srt extracted',
-      data: JSON.stringify(tracks),
-    });
+    res.send(JSON.stringify(tracks));
   });
 
   fs.createReadStream(file.path).pipe(parser);

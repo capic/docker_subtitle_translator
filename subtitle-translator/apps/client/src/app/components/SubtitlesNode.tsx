@@ -44,12 +44,12 @@ const SubtitlesNode = ({ uuid }: Props) => {
   if (!data) {
     return <>No data</>;
   }
-
+console.log({data})
   return (
     <ul>
       {data.data.map((subtitle) => (
         <li onClick={() => mutationTranslate.mutate(subtitle.number)}>
-          {subtitle.language}
+          {subtitle.language ?? 'default'} - {subtitle.name}
         </li>
       ))}
     </ul>
