@@ -6,7 +6,7 @@ import { ModifiedDree } from '../type';
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   return await axios.get(
-    `http://192.168.1.106:3333/api/file/${uuid}/subtitles`
+    `http://192.168.1.106:3333/api/files/${uuid}/subtitles`
   );
 };
 
