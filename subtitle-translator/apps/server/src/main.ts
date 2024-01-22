@@ -95,10 +95,10 @@ app.get('/api/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.get('/api/directories/:hash/files', (req, res) => {
-  const { hash } = req.params;
+app.get('/api/directories/:uuid/files', (req, res) => {
+  const { uuid } = req.params;
 
-  const directory = directoryMap.get(hash);
+  const directory = directoryMap.get(uuid);
 
   const tree: dree.Dree = dree.scan(
     directory.path,
@@ -121,17 +121,17 @@ app.get('/api/directories/:hash/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.get('/api/files/:hash/subtitles', (req, res) => {
-  const { hash } = req.params;
+app.get('/api/files/:uuid/subtitles', (req, res) => {
+  const { uuid } = req.params;
 
-  if (!hash) {
+  if (!uuid) {
     res.send({
       status: false,
       message: 'No file hash',
     });
   }
 
-  const file = fileMap.get(hash);
+  const file = fileMap.get(uuid);
 
   if (!file) {
     res.send({
@@ -148,17 +148,17 @@ app.get('/api/files/:hash/subtitles', (req, res) => {
   fs.createReadStream(file.path).pipe(parser);
 });
 
-app.post('/api/files/:hash/subtitles/:number/translate', (req, res) => {
-  const { hash, number } = req.params;
+app.post('/api/subtitles/translate', (req, res) => {
+  const { uuid, number } = req.body;
 
-  if (!hash || !number) {
+  if (!uuid || !number) {
     res.send({
       status: false,
-      message: 'No file hash or track number',
+      message: 'No file uuid or track number',
     });
   }
 
-  const file = fileMap.get(hash);
+  const file = fileMap.get(uuid);
 
   if (!file) {
     res.send({

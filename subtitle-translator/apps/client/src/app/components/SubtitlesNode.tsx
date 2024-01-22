@@ -27,7 +27,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
   const mutationTranslate = useMutation({
     mutationFn: (number: Number) => {
       return axios.post(
-        'http://192.168.1.106:3333/api/files/:uuid/subtitles/:number/translate',
+        'http://192.168.1.106:3333/api/subtitles/translate',
         { uuid, number }
       );
     },
