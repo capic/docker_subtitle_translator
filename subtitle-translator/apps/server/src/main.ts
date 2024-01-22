@@ -166,10 +166,15 @@ app.post('/api/subtitles/translate', (req, res) => {
   }
 
   try {
+    console.log(
+      `mkvextract tracks "${file.path}" ${
+        Number(number) - 1
+      }:"/data/temp/${path.basename(file.path)}.srt"`
+    );
     exec(
-      `mkvextract tracks "${file.path}" ${Number(number) - 1}:"/data/temp/${path.basename(
-        file.path
-      )}.srt"`,
+      `mkvextract tracks "${file.path}" ${
+        Number(number) - 1
+      }:"/data/temp/${path.basename(file.path)}.srt"`,
       (err, stdout, stderr) => {
         if (err) {
           //some err occurred
@@ -191,7 +196,7 @@ app.post('/api/subtitles/translate', (req, res) => {
         }
       }
     );
-  
+
     res.send({
       status: true,
       message: 'Srt extracted',
@@ -201,13 +206,12 @@ app.post('/api/subtitles/translate', (req, res) => {
         //size: avatar.size
       },
     });
-  } catch(error) {
+  } catch (error) {
     res.send({
       status: false,
       message: error.message,
     });
   }
-  
 });
 
 const port = process.env.PORT || 3333;
