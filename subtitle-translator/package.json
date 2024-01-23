@@ -26,7 +26,8 @@
     "styled-components": "^5.3.3",
     "ts-ebml": "^2.0.2",
     "tslib": "^2.3.0",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@nx/cypress": "17.1.3",

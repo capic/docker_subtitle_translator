@@ -13,6 +13,7 @@ import fs from 'fs';
 import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
 import { v4 as uuidv4 } from 'uuid';
+import logger from './logger';
 
 const children: dree.Dree[] = [
   {
@@ -53,16 +54,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-const fileCallback = function (file) {
+const fileCallback = function (file: dree.Dree & { uuid: string }) {
   file.uuid = uuidv4();
+  logger.debug(`Add file ${file.name} to map with uuid ${file.uuid}`);
   fileMap.set(file.uuid, file);
 };
-const directoryCallback = function (directory) {
+const directoryCallback = function (directory: dree.Dree & { uuid: string }) {
   directory.uuid = uuidv4();
+  logger.debug(`Add file ${directory.name} to map with uuid ${directory.uuid}`);
   directoryMap.set(directory.uuid, directory);
 };
 
 app.get('/api/files', (req, res) => {
+  logger.debug(`Get root files/directories`);
   const tree: dree.Dree = {
     name: 'root',
     path: '/',
@@ -96,7 +100,25 @@ app.get('/api/files', (req, res) => {
 app.get('/api/directories/:uuid/files', (req, res) => {
   const { uuid } = req.params;
 
+  if (!uuid) {
+    logger.error(`No uuid provided`);
+    res.send({
+      status: false,
+      message: 'No file hash',
+    });
+  }
+
   const directory = directoryMap.get(uuid);
+
+  if (!uuid) {
+    logger.error(`No directory found with ${uuid}`);
+    res.send({
+      status: false,
+      message: 'No file hash',
+    });
+  }
+
+  logger.debug(`Get files from directory ${directory.name}`);
 
   const tree: dree.Dree = dree.scan(
     directory.path,
@@ -123,6 +145,7 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
   const { uuid } = req.params;
 
   if (!uuid) {
+    logger.error(`No uuid provided`);
     res.send({
       status: false,
       message: 'No file hash',
@@ -132,24 +155,34 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
   const file = fileMap.get(uuid);
 
   if (!file) {
+    logger.error(`No directory found with ${uuid}`);
     res.send({
       status: false,
       message: 'No file found',
     });
   }
 
-  const parser = new SubtitleParser();
-  parser.once('tracks', (tracks) => {
-    res.send(JSON.stringify(tracks));
-  });
+  logger.debug(`Get files from directory ${file.name}`);
 
-  //fs.createReadStream(file.path).pipe(parser);
+  try {
+    const parser = new SubtitleParser();
+
+    parser.once('tracks', (tracks) => {
+      logger.debug(`Tracks found ${tracks}`);
+      res.send(JSON.stringify(tracks));
+    });
+
+    fs.createReadStream(file.path).pipe(parser);
+  } catch (error) {
+    logger.debug(`Error: ${error}`);
+  }
 });
 
 app.post('/api/subtitles/translate', (req, res) => {
   const { uuid, number } = req.body;
 
   if (!uuid || !number) {
+    logger.error(`No uuid or number provided`);
     res.send({
       status: false,
       message: 'No file uuid or track number',
@@ -159,6 +192,7 @@ app.post('/api/subtitles/translate', (req, res) => {
   const file = fileMap.get(uuid);
 
   if (!file) {
+    logger.error(`No file found with ${uuid}`);
     res.send({
       status: false,
       message: 'No file path',
@@ -166,7 +200,7 @@ app.post('/api/subtitles/translate', (req, res) => {
   }
 
   try {
-    console.log(
+    logger.debug(
       `mkvextract tracks "${file.path}" ${
         Number(number) - 1
       }:"/data/temp/${path.basename(file.path)}.srt"`
@@ -176,12 +210,16 @@ app.post('/api/subtitles/translate', (req, res) => {
         Number(number) - 1
       }:"/data/temp/${path.basename(file.path)}.srt"`,
       (err, stdout, stderr) => {
+        if (err) {
+          logger.error(`Error: ${err.message}`);
+        }
         // the *entire* stdout and stderr (buffered)
-        console.log(`stdout: ${stdout}`);
+        console.info(stdout);
+        console.info(stderr);
         //console.log(`stderr: ${stderr}`);
         /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
           `/data/input/${path.basename(filePath)}.srt`) */
-        console.log(
+        logger.debug(
           `subtrans translate "/data/temp/${path.basename(
             file.path
           )}.srt" --src en --dest fr`
@@ -191,9 +229,16 @@ app.post('/api/subtitles/translate', (req, res) => {
             file.path
           )}.srt" --src en --dest fr`,
           (err, stdout, stderr) => {
+            if (err) {
+              logger.error(`Error: ${err.message}`);
+            }
+            console.info(stdout);
+            console.info(stderr);
+
+            logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
             fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
           }
-        ); 
+        );
       }
     );
 
@@ -207,6 +252,7 @@ app.post('/api/subtitles/translate', (req, res) => {
       },
     });
   } catch (error) {
+    logger.error(`Error: ${error.message}`);
     res.send({
       status: false,
       message: error.message,
