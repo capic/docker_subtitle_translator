@@ -23,6 +23,7 @@ const FolderContent = ({ uuid }: Props) => {
   >({
     queryKey: ['fetchFolderContent', uuid],
     queryFn: () => fetchFolder(uuid),
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {

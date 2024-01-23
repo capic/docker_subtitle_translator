@@ -22,6 +22,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
   >({
     queryKey: ['fetchSubtitles', uuid],
     queryFn: () => fetchSubtiles(uuid),
+    refetchOnWindowFocus: false,
   });
 
   const mutationTranslate = useMutation({
