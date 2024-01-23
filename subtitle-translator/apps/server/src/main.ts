@@ -168,6 +168,7 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
     const parser = new SubtitleParser();
 
     parser.once('tracks', (tracks) => {
+      parser.destroy()
       logger.debug(`Tracks found ${tracks}`);
       res.send(JSON.stringify(tracks));
     });
