@@ -235,7 +235,8 @@ app.post('/api/subtitles/translate', (req, res) => {
     logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
     fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
     logger.debug(`move file to ${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`);
-    fs.renameSync(`/data/temp/${path.basename(file.path)}.fr.srt`, `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`)
+    fs.copyFileSync(`/data/temp/${path.basename(file.path)}.fr.srt`, `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`)
+    fs.rmSync(`/data/temp/${path.basename(file.path)}.fr.srt`);
 
     res.send({
       status: true,
