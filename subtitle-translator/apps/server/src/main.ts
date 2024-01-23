@@ -162,15 +162,27 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
     });
   }
 
-  logger.debug(`Get files from directory ${file.name}`);
-
   try {
+    logger.debug(`Get ssubtitle files from ${path.dirname(file.path)}`);
+    const subs = fs
+      .readdirSync(path.dirname(file.path))
+      .filter(
+        (fileName) =>
+          path.extname(fileName) === 'srt' &&
+          path.basename(fileName).includes(file.path)
+      ).map(filteredFileName => {
+        const language = filteredFileName.split('.').at(-2)
+        return {language, name: 'external'}
+      });
+      logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
+
+    logger.debug(`Get subtitles from file ${file.name}`);
     const parser = new SubtitleParser();
 
     parser.once('tracks', (tracks) => {
       parser.destroy();
       logger.debug(`Tracks found ${tracks}`);
-      res.send(JSON.stringify(tracks));
+      res.send(JSON.stringify([...tracks, ...subs]));
     });
 
     fs.createReadStream(file.path).pipe(parser);
@@ -234,8 +246,15 @@ app.post('/api/subtitles/translate', (req, res) => {
 
     logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
     fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
-    logger.debug(`move file to ${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`);
-    fs.copyFileSync(`/data/temp/${path.basename(file.path)}.fr.srt`, `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`)
+    logger.debug(
+      `move file to ${path.dirname(file.path)}/${path.basename(
+        file.path
+      )}.fr.srt`
+    );
+    fs.copyFileSync(
+      `/data/temp/${path.basename(file.path)}.fr.srt`,
+      `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`
+    );
     fs.rmSync(`/data/temp/${path.basename(file.path)}.fr.srt`);
 
     res.send({
