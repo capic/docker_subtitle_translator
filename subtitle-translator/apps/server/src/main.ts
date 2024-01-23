@@ -205,40 +205,36 @@ app.post('/api/subtitles/translate', (req, res) => {
         Number(number) - 1
       }:"/data/temp/${path.basename(file.path)}.srt"`
     );
-    exec(
+
+    const stdout = execSync(
       `mkvextract tracks "${file.path}" ${
         Number(number) - 1
-      }:"/data/temp/${path.basename(file.path)}.srt"`,
+      }:"/data/temp/${path.basename(file.path)}.srt"`
+    );
+
+    // the *entire* stdout and stderr (buffered)
+    console.info(stdout);
+    //console.log(`stderr: ${stderr}`);
+    /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
+      `/data/input/${path.basename(filePath)}.srt`) */
+    logger.debug(
+      `subtrans translate "/data/temp/${path.basename(
+        file.path
+      )}.srt" --src en --dest fr`
+    );
+    exec(
+      `subtrans translate "/data/temp/${path.basename(
+        file.path
+      )}.srt" --src en --dest fr`,
       (err, stdout, stderr) => {
         if (err) {
           logger.error(`Error: ${err.message}`);
         }
-        // the *entire* stdout and stderr (buffered)
         console.info(stdout);
         console.info(stderr);
-        //console.log(`stderr: ${stderr}`);
-        /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
-          `/data/input/${path.basename(filePath)}.srt`) */
-        logger.debug(
-          `subtrans translate "/data/temp/${path.basename(
-            file.path
-          )}.srt" --src en --dest fr`
-        );
-        exec(
-          `subtrans translate "/data/temp/${path.basename(
-            file.path
-          )}.srt" --src en --dest fr`,
-          (err, stdout, stderr) => {
-            if (err) {
-              logger.error(`Error: ${err.message}`);
-            }
-            console.info(stdout);
-            console.info(stderr);
 
-            logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
-            fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
-          }
-        );
+        logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
+        fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
       }
     );
 
