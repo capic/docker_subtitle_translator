@@ -163,18 +163,23 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
   }
 
   try {
-    logger.debug(`Get ssubtitle files from ${path.dirname(file.path)}`);
+    logger.debug(
+      `Get subtitle files from ${path.dirname(file.path)} for ${path.basename(
+        file.path
+      )}`
+    );
     const subs = fs
       .readdirSync(path.dirname(file.path))
       .filter(
         (fileName) =>
-          path.extname(fileName) === 'srt' &&
-          path.basename(fileName).includes(file.path)
-      ).map(filteredFileName => {
-        const language = filteredFileName.split('.').at(-2)
-        return {language, name: 'external'}
+          path.extname(fileName) === '.srt' &&
+          path.basename(fileName).includes(path.basename(file.path))
+      )
+      .map((filteredFileName) => {
+        const language = filteredFileName.split('.').at(-2);
+        return { language, name: 'External' };
       });
-      logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
+    logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
 
     logger.debug(`Get subtitles from file ${file.name}`);
     const parser = new SubtitleParser();
