@@ -168,7 +168,7 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
     const parser = new SubtitleParser();
 
     parser.once('tracks', (tracks) => {
-      parser.destroy()
+      parser.destroy();
       logger.debug(`Tracks found ${tracks}`);
       res.send(JSON.stringify(tracks));
     });
@@ -207,14 +207,14 @@ app.post('/api/subtitles/translate', (req, res) => {
       }:"/data/temp/${path.basename(file.path)}.srt"`
     );
 
-    const stdout = execSync(
+    const stdoutMkvextract = execSync(
       `mkvextract tracks "${file.path}" ${
         Number(number) - 1
       }:"/data/temp/${path.basename(file.path)}.srt"`
     );
 
     // the *entire* stdout and stderr (buffered)
-    console.info(stdout);
+    console.info(stdoutMkvextract);
     //console.log(`stderr: ${stderr}`);
     /* fs.copyFileSync(`/data/temp/${path.basename(filePath)}.srt`,
       `/data/input/${path.basename(filePath)}.srt`) */
@@ -223,21 +223,19 @@ app.post('/api/subtitles/translate', (req, res) => {
         file.path
       )}.srt" --src en --dest fr`
     );
-    exec(
+
+    const stdoutSubtrans = execSync(
       `subtrans translate "/data/temp/${path.basename(
         file.path
-      )}.srt" --src en --dest fr`,
-      (err, stdout, stderr) => {
-        if (err) {
-          logger.error(`Error: ${err.message}`);
-        }
-        console.info(stdout);
-        console.info(stderr);
-
-        logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
-        fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
-      }
+      )}.srt" --src en --dest fr`
     );
+
+    console.info(stdoutSubtrans);
+
+    logger.debug(`remove /data/temp/${path.basename(file.path)}.srt`);
+    fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
+    logger.debug(`move file to ${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`);
+    fs.renameSync(`/data/temp/${path.basename(file.path)}.fr.srt`, `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`)
 
     res.send({
       status: true,
