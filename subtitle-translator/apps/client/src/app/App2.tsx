@@ -1,10 +1,7 @@
-import Styled from 'styled-components';
-import Tree from './components/Tree';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { Dree, Type } from 'dree';
 import FolderNode from './components/FolderNode';
-import styled from 'styled-components';
 import FileNode from './components/FileNode';
 import { ModifiedDree } from './type';
 

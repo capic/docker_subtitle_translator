@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Dree } from 'dree';
-import React from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { ModifiedDree } from '../type';
+import { ThreeDots } from 'react-loading-icons'
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   return await axios.get(
@@ -50,7 +50,7 @@ console.log({data})
     <ul>
       {data.data.map((subtitle) => (
         <li onClick={() => mutationTranslate.mutate(subtitle.number)}>
-          {subtitle.language ?? 'default'} - {subtitle.name}
+          {subtitle.language ?? 'default'} - {subtitle.name} {mutationTranslate.isLoading && <ThreeDots />}
         </li>
       ))}
     </ul>
