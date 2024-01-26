@@ -8424,8 +8424,8 @@ export const handlers = [
   ),
   http.post<{}, { hash: string; number: Number }>(
     'http://192.168.1.106:3333/api/files/:hash/subtitles/:number/translate',
-    async ({ params }) => {
-      const { hash, number } = params;
+    async () => {
+
       return new HttpResponse(null, { status: 201 });
     }
   ),
