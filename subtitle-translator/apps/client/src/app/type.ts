@@ -1,9 +1,16 @@
-import { Dree } from "dree"
+import { Dree } from 'dree';
 
-export type ModifiedDree<T extends Dree> = { uuid: string } & { [K in keyof T]:
-    K extends "children" ? ModifiedDreeProps<T[K]> : T[K]
-  }
-  
-  type ModifiedDreeProps<T> = { [K in keyof T]:
-    T[K] extends Dree ? ModifiedDree<T[K]> : T[K]
-  }
+export type ModifiedDree<T extends Dree> = { uuid: string } & {
+  [K in keyof T]: K extends 'children' ? ModifiedDreeProps<T[K]> : T[K];
+};
+
+type ModifiedDreeProps<T> = {
+  [K in keyof T]: T[K] extends Dree ? ModifiedDree<T[K]> : T[K];
+};
+
+export interface Subtitle {
+  number: number;
+  language: string;
+  type: string;
+  name?: string;
+}

@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import path from 'path';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/client',
@@ -30,5 +31,12 @@ export default defineConfig({
     },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    setupFiles:['./setupTests.ts']
+  },
+
+  resolve: {
+    alias: {
+      'msw/native': require.resolve(path.resolve(__dirname, '../../node_modules/msw/lib/native/index.mjs')),
+    },
   },
 });

@@ -35,6 +35,15 @@
           "codeCoverage": true
         }
       }
+    },
+    "build-storybook": {
+      "cache": true,
+      "inputs": [
+        "default",
+        "^production",
+        "{projectRoot}/.storybook/**/*",
+        "{projectRoot}/tsconfig.storybook.json"
+      ]
     }
   },
   "namedInputs": {
@@ -47,7 +56,10 @@
       "!{projectRoot}/eslint.config.js",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s"
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+      "!{projectRoot}/.storybook/**/*",
+      "!{projectRoot}/tsconfig.storybook.json"
     ],
     "sharedGlobals": []
   },
@@ -68,5 +80,12 @@
       }
     }
   },
-  "nxCloudAccessToken": "N2MwNGJiZDMtNDQ3Mi00YTZlLWFhZjMtY2Q4NmU0ODRhY2UwfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "N2MwNGJiZDMtNDQ3Mi00YTZlLWFhZjMtY2Q4NmU0ODRhY2UwfHJlYWQtd3JpdGU=",
+  "tasksRunnerOptions": {
+    "default": {
+      "options": {
+        "cacheableOperations": ["build-storybook"]
+      }
+    }
+  }
 }
