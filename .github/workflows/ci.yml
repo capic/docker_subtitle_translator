@@ -14,9 +14,6 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ../subtitle-translator
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,10 +23,16 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci
+      - name: npm ci
+        run: npm ci
+        working-directory: ./subtitle-translator
       - uses: nrwl/nx-set-shas@v3
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track main origin/main
 
-      - run: npx nx-cloud record -- nx format:check
-      - run: npx nx affected -t lint,test,build --parallel=3
+      - name: npx nx-cloud record
+        run: npx nx-cloud record -- nx format:check
+        working-directory: ./subtitle-translator
+      - name: npx nx affected
+        run: npx nx affected -t lint,test,build --parallel=3
+        working-directory: ./subtitle-translator
