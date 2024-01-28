@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          cache-dependency-path: "./subtitle-translator/package-lock.json"
       - run: npm ci
       - uses: nrwl/nx-set-shas@v3
       # This line is needed for nx affected to work when CI is running on a PR
