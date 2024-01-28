@@ -6,6 +6,10 @@ on:
       - main
   pull_request:
 
+defaults:
+  run:
+    working-directory: ./subtitle-translator
+
 # Needed for nx-set-shas when run on the main branch
 permissions:
   actions: read
@@ -23,16 +27,9 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - name: npm ci
-        run: npm ci
-        working-directory: ./subtitle-translator
+      - run: npm ci
       - uses: nrwl/nx-set-shas@v3
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track main origin/main
-
-      - name: npx nx-cloud record
-        run: npx nx-cloud record -- nx format:check
-        working-directory: ./subtitle-translator
-      - name: npx nx affected
-        run: npx nx affected -t lint,test,build --parallel=3
-        working-directory: ./subtitle-translator
+      - run: npx nx-cloud record -- nx format:check
+      - run: npx nx affected -t lint,test,build --parallel=3
