@@ -14,6 +14,9 @@ permissions:
 jobs:
   main:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./subtitle-translator
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,9 +26,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - name: npm ci
-          run: npm ci
-          working-directory: './subtitle-translator'
+      - un: npm ci
       - uses: nrwl/nx-set-shas@v3
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track main origin/main
