@@ -11,7 +11,7 @@ const fetch = () => {
 
 const App2 = () => {
   const { data, error, isLoading } = useQuery<{}, {}, { data: ModifiedDree<Dree> }>({
-    queryKey: 'fetch',
+    queryKey: ['fetch'],
     queryFn: fetch,
     refetchOnWindowFocus: false,
   });
@@ -34,7 +34,7 @@ const App2 = () => {
       <ul>
         {data.data.children?.map((child) =>
           child.type === Type.DIRECTORY ? (
-            <FolderNode  node={child} />
+            <FolderNode node={child} />
           ) : (
             <FileNode node={child} />
           )
