@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { handlers } from '../../../mocks/handlers'
 
 import SubtitleText from '.';
 import React from 'react';

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dree } from 'dree';
-import { useMutation, useQuery } from 'react-query';
-import { subtitlesSchema, type ModifiedDree, type Subtitle, Subtitles } from '../../type';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { subtitlesSchema, type ModifiedDree, Subtitles } from '../../type';
 import SubtitleText from '../SubtitleText';
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
@@ -17,14 +17,14 @@ interface Props {
 }
 
 const SubtitlesNode = ({ uuid }: Props) => {
-  const { error, data, isLoading } = useQuery<{}, {}, Subtitles>({
+  const { error, data, isLoading } = useQuery<Subtitles>({
     queryKey: ['fetchSubtitles', uuid],
     queryFn: () => fetchSubtiles(uuid),
     refetchOnWindowFocus: false,
   });
 
   const mutationTranslate = useMutation({
-    mutationFn: (number: Number) => {
+    mutationFn: (number: number) => {
       return axios.post('http://192.168.1.106:3333/api/subtitles/translate', {
         uuid,
         number,

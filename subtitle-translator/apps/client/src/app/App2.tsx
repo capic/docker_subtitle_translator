@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Dree, Type } from 'dree';
 import FolderNode from './components/FolderNode';
@@ -10,8 +10,8 @@ const fetch = () => {
 };
 
 const App2 = () => {
-  const { data, error, isLoading } = useQuery<{}, {}, { data: ModifiedDree<Dree> }>({
-    queryKey: 'fetch',
+  const { data, error, isLoading } = useQuery<unknown, unknown, { data: ModifiedDree<Dree> }>({
+    queryKey: ['fetch'],
     queryFn: fetch,
     refetchOnWindowFocus: false,
   });
@@ -34,7 +34,7 @@ const App2 = () => {
       <ul>
         {data.data.children?.map((child) =>
           child.type === Type.DIRECTORY ? (
-            <FolderNode  node={child} />
+            <FolderNode node={child} />
           ) : (
             <FileNode node={child} />
           )

@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
+/*
 const json = {
   name: 'root',
   path: '/',
@@ -8080,7 +8081,7 @@ const json = {
     },
   ],
 };
-
+*/
 export const handlers = [
   http.get('http://192.168.1.106:3333/api/files', () => {
     return HttpResponse.json({
@@ -8422,7 +8423,7 @@ export const handlers = [
       );
     }
   ),
-  http.post<{}, { hash: string; number: Number }>(
+  http.post<{ hash: string; number: string }>(
     'http://192.168.1.106:3333/api/files/:hash/subtitles/:number/translate',
     async () => {
       return new HttpResponse(null, { status: 201 });

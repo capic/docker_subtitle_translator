@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Dree, Type } from 'dree';
 import FolderNode from '../FolderNode'
 import FileNode from '../FileNode';
@@ -18,8 +18,8 @@ interface Props {
 
 const FolderContent = ({ uuid }: Props) => {
   const { data, error, isLoading } = useQuery<
-    {},
-    {},
+    unknown,
+    unknown,
     { data: ModifiedDree<Dree> }
   >({
     queryKey: ['fetchFolderContent', uuid],
