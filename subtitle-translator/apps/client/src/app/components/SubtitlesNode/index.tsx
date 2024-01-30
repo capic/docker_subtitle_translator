@@ -50,7 +50,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
         <li onClick={() => mutationTranslate.mutate(subtitle.number)}>
           <SubtitleText
             subtitle={subtitle}
-            isLoading={mutationTranslate.isLoading}
+            isLoading={mutationTranslate.isPending}
           />
         </li>
       ))}
