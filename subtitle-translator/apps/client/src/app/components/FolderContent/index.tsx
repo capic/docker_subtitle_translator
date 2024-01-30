@@ -18,8 +18,8 @@ interface Props {
 
 const FolderContent = ({ uuid }: Props) => {
   const { data, error, isLoading } = useQuery<
-    {},
-    {},
+    unknown,
+    unknown,
     { data: ModifiedDree<Dree> }
   >({
     queryKey: ['fetchFolderContent', uuid],

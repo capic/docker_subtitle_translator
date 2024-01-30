@@ -10,7 +10,7 @@ const fetch = () => {
 };
 
 const App2 = () => {
-  const { data, error, isLoading } = useQuery<{}, {}, { data: ModifiedDree<Dree> }>({
+  const { data, error, isLoading } = useQuery<unknown, unknown, { data: ModifiedDree<Dree> }>({
     queryKey: ['fetch'],
     queryFn: fetch,
     refetchOnWindowFocus: false,

@@ -3,12 +3,12 @@
  * This is only a minimal backend to get started.
  */
 
-import express, { Response } from 'express';
+import express from 'express';
 import * as path from 'path';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import bodyParser from 'body-parser';
-import { exec, execSync } from 'child_process';
+import { execSync } from 'child_process';
 import fs from 'fs';
 import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
