@@ -24,9 +24,10 @@ ENV UDEV=1
 
 WORKDIR /usr/src/app/subtitle-translator
 RUN npm install
+RUN npm nx run client:build
 
 WORKDIR /usr/src/app
-EXPOSE 4200
+EXPOSE 4300
 EXPOSE 3333
 
 # main.py will run when container starts up on the device
