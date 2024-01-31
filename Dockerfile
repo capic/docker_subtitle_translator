@@ -24,7 +24,7 @@ ENV UDEV=1
 
 WORKDIR /usr/src/app/subtitle-translator
 RUN npm install
-RUN npm nx run client:build
+RUN npx nx run client:build
 
 WORKDIR /usr/src/app
 EXPOSE 4300
