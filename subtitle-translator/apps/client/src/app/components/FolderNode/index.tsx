@@ -12,7 +12,7 @@ const FolderNode = ({ node }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <li>
+    <li key={node.uuid}>
       <div onClick={() => setOpen(!open)}>
         <FcFolder />
         {node.name}

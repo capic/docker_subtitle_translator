@@ -11,12 +11,12 @@ type ModifiedDreeProps<T> = {
 
 
 const subtitleSchema = z.object({
-  number: z.number(),
-  language: z.string(),
-  type: z.string(),
+  number: z.number().optional(),
+  language: z.string().optional(),
+  type: z.string().optional(),
   name: z.string().optional(),
 })
-export const subtitlesSchema = z.array(subtitleSchema);
+export const subtitlesSchema = subtitleSchema.array();
 
 
 export type Subtitle = z.infer<typeof subtitleSchema>

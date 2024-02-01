@@ -9,7 +9,14 @@ const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
     `http://192.168.1.106:3333/api/files/${uuid}/subtitles`
   );
 
-  return subtitlesSchema.parse(data);
+  const parsed = subtitlesSchema.safeParse(data);
+
+  if (!parsed.success) {
+    console.log(parsed.error.message)
+    throw new Error(parsed.error.message)
+  }
+
+  return parsed.data
 };
 
 interface Props {
@@ -31,6 +38,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
       });
     },
   });
+  console.log({ data })
 
   if (isLoading) {
     return <>Loading...</>;
@@ -47,7 +55,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
   return (
     <ul>
       {data.map((subtitle) => (
-        <li onClick={() => mutationTranslate.mutate(subtitle.number)}>
+        <li key={subtitle.number} onClick={() => mutationTranslate.mutate(subtitle.number)}>
           <SubtitleText
             subtitle={subtitle}
             isLoading={mutationTranslate.isPending}
