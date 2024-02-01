@@ -38,7 +38,6 @@ const SubtitlesNode = ({ uuid }: Props) => {
       });
     },
   });
-  console.log({ data })
 
   if (isLoading) {
     return <>Loading...</>;
@@ -52,10 +51,18 @@ const SubtitlesNode = ({ uuid }: Props) => {
     return <>No data</>;
   }
 
+  const translate = (number?: number) => {
+    if (!number) {
+      return
+    }
+
+    mutationTranslate.mutate(number)
+  }
+
   return (
     <ul>
       {data.map((subtitle) => (
-        <li key={subtitle.number} onClick={() => mutationTranslate.mutate(subtitle.number)}>
+        <li key={subtitle.number} onClick={() => translate(subtitle.number)}>
           <SubtitleText
             subtitle={subtitle}
             isLoading={mutationTranslate.isPending}
