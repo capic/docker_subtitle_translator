@@ -4,12 +4,12 @@ import { addic7edURL, formatShowNumber, headers } from './helpers';
 import logger from '../logger';
 
 export default async function search({ show, season, episode, languages }: {show:string, season?:string, episode?:string, languages?: string[]}) {
-    const searchTlogger.debug(`Search url: ${addic7edSearchURL}`)itle = `${show.trim()} ${season ? formatShowNumber(season) : ''} ${episode ? formatShowNumber(episode) : ''}`.trim();
-    const addic7edSearchURL = `${addic7edURL}/srch.php?search=${searchTitle}&Submit=Search`
+  const searchTitle = `${show.trim()} ${season ? formatShowNumber(season) : ''} ${episode ? formatShowNumber(episode) : ''}`.trim();
+  const addic7edSearchURL = `${addic7edURL}/srch.php?search=${searchTitle}&Submit=Search`
 
+logger.debug(`Search url: ${addic7edSearchURL}`)
 
-
-    const response = await fetch(addic7edSearchURL, {headers});
+  const response = await fetch(addic7edSearchURL, {headers});
     const body = await response.text();
 
     if (!/<b>\d+ results found<\/b>/.test(body)) {
