@@ -1,18 +1,24 @@
 import fetch from 'node-fetch';
 import langs from 'langs';
 import { addic7edURL, formatShowNumber, headers } from './helpers';
+import logger from '../logger';
 
 export default async function search({ show, season, episode, languages }: {show:string, season?:string, episode?:string, languages?: string[]}) {
-    const searchTitle = `${show.trim()} ${season ? formatShowNumber(season) : ''} ${episode ? formatShowNumber(episode) : ''}`.trim();
+    const searchTlogger.debug(`Search url: ${addic7edSearchURL}`)itle = `${show.trim()} ${season ? formatShowNumber(season) : ''} ${episode ? formatShowNumber(episode) : ''}`.trim();
+    const addic7edSearchURL = `${addic7edURL}/srch.php?search=${searchTitle}&Submit=Search`
 
-    const response = await fetch(`${addic7edURL}/srch.php?search=${searchTitle}&Submit=Search`, {headers});
+
+
+    const response = await fetch(addic7edSearchURL, {headers});
     const body = await response.text();
 
     if (!/<b>\d+ results found<\/b>/.test(body)) {
+      logger.debug(`Result found`)
         return findSubtitles({ body, languages })
     }
 
     if (~body.indexOf('<b>0 results found<\/b>')) {
+      logger.debug(`No result`)
         // No results
         // ==========
         return [];
@@ -34,10 +40,13 @@ export default async function search({ show, season, episode, languages }: {show
     const url = urlMatch && urlMatch[1];
 
     if (!url) {
+      logger.debug(`No url`)
         return [];
     }
 
-    const urlResponse = await fetch(`${addic7edURL}/${url}`, {headers});
+    const otherSearchUrl = `${addic7edURL}/${url}`
+    logger.debug(`Other search url: ${otherSearchUrl}`)
+    const urlResponse = await fetch(otherSearchUrl, {headers});
     const urlBody = await urlResponse.text();
     return findSubtitles({ type: season ? 'tv' : 'movie', body: urlBody, languages });
 }
