@@ -14,6 +14,7 @@ import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
 import { v4 as uuidv4 } from 'uuid';
 import logger from './logger';
+import search from './addic7ed-api/search';
 
 const children: dree.Dree[] = [
   {
@@ -141,7 +142,7 @@ app.get('/api/directories/:uuid/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.get('/api/files/:uuid/subtitles', (req, res) => {
+app.get('/api/files/:uuid/subtitles', async (req, res) => {
   const { uuid } = req.params;
 
   if (!uuid) {
@@ -180,6 +181,14 @@ app.get('/api/files/:uuid/subtitles', (req, res) => {
         return { language, name: 'External' };
       });
     logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
+
+    const show = path.dirname(file.path).split('/').at(-1)
+    const match = path.basename(file.path).match(/S([0-9]*)E([0-9]*)/)
+    const season = match[1]
+    const episode = match[2]
+    logger.debug(`Search addic7ed subtitles for ${show} S${season}E${episode}`);
+    const addic7edSubtitles = await search({ show, season, episode, languages: ['fr'] })
+    logger.debug(`Subtitles found on accic7ed: ${addic7edSubtitles}`)
 
     logger.debug(`Get subtitles from file ${file.name}`);
     const parser = new SubtitleParser();
@@ -285,3 +294,4 @@ const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });
 server.on('error', console.error);
+
