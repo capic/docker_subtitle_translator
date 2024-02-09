@@ -6,5 +6,5 @@ export const headers = {
 
 export function formatShowNumber(number: string) {
     const i = parseInt(number, 10);
-    return i < 10 ? '0' + number : number;
+    return i < 10 ? '0' + String(i) : String(i);
 }
