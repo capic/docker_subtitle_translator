@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { addic7edURL, headers } from './helpers.ts';
+import { addic7edURL, headers } from './helpers';
 
 const regexp = /<option value="\d+" >([^<]*)<\/option>/gm;
 
