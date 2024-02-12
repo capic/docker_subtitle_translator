@@ -11,10 +11,9 @@ import bodyParser from 'body-parser';
 import { execSync } from 'child_process';
 import fs from 'fs';
 import * as dree from 'dree';
-import { SubtitleParser } from 'matroska-subtitles';
 import { v4 as uuidv4 } from 'uuid';
 import logger from './logger';
-import search from './addic7ed-api/search';
+import { getSubtitlesFromAddic7ed, getSubtitlesFromDirectory, getSubtitlesFromFile } from './getSubtitles';
 
 const children: dree.Dree[] = [
   {
@@ -142,7 +141,11 @@ app.get('/api/directories/:uuid/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.get('/api/files/:uuid/subtitles', async (req, res) => {
+app.get<{uuid: string}, {number?: number,
+  language?: string,
+  type?: string,
+  name?: string,
+  downloadUrl?: string}[] | {status: boolean, message: string}>('/api/files/:uuid/subtitles', async (req, res) => {
   const { uuid } = req.params;
 
   if (!uuid) {
@@ -164,47 +167,13 @@ app.get('/api/files/:uuid/subtitles', async (req, res) => {
   }
 
   try {
-    logger.debug(
-      `Get subtitle files from ${path.dirname(file.path)} for ${path.basename(
-        file.path,
-      )}`,
-    );
-    const subs = fs
-      .readdirSync(path.dirname(file.path))
-      .filter(
-        (fileName) =>
-          path.extname(fileName) === '.srt' &&
-          path.basename(fileName).includes(path.basename(file.path)),
-      )
-      .map((filteredFileName) => {
-        const language = filteredFileName.split('.').at(-2);
-        return { language, name: 'External' };
-      });
-    logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
+    const subtitlesFromDirectory = getSubtitlesFromDirectory(file)
 
-    const show = path.dirname(file.path).split('/').at(-1);
-    const match = path.basename(file.path).match(/S([0-9]*)E([0-9]*)/);
-    const season = match[1];
-    const episode = match[2];
-    logger.debug(`Search addic7ed subtitles for ${show} S${season}E${episode}`);
-    const addic7edSubtitles = await search({
-      show,
-      season,
-      episode,
-      languages: ['french'],
-    });
-    logger.debug(`Subtitles found on accict7ed: ${addic7edSubtitles}`);
+    const subtitlesFromAddic7ed= await getSubtitlesFromAddic7ed(file)
 
-    logger.debug(`Get subtitles from file ${file.name}`);
-    const parser = new SubtitleParser();
+    const subtitlesFromFile = await getSubtitlesFromFile(file)
 
-    parser.once('tracks', (tracks) => {
-      parser.destroy();
-      logger.debug(`Tracks found ${tracks}`);
-      res.send(JSON.stringify([...tracks, ...subs]));
-    });
-
-    fs.createReadStream(file.path).pipe(parser);
+    res.json([...subtitlesFromDirectory, ...subtitlesFromFile, ...subtitlesFromAddic7ed]);
   } catch (error) {
     logger.debug(`Error: ${error}`);
   }
