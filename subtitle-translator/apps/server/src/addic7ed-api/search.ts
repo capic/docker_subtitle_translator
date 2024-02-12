@@ -21,7 +21,12 @@ export default async function search({
 
   logger.debug(`Search url: ${addic7edSearchURL}`);
 
-  const response = await axios.get(addic7edSearchURL, { headers });
+  const response = await axios.get(addic7edSearchURL, {
+    headers,
+    validateStatus: function (status) {
+      return status < 500; // Resolve only if the status code is less than 500
+    },
+  });
   const body = await response.data;
 
   if (!/<b>\d+ results found<\/b>/.test(body)) {
@@ -62,7 +67,12 @@ export default async function search({
 
   const otherSearchUrl = `${addic7edURL}/${url}`;
   logger.debug(`Other search url: ${otherSearchUrl}`);
-  const urlResponse = await axios.get(otherSearchUrl, { headers });
+  const urlResponse = await axios.get(otherSearchUrl, {
+    headers,
+    validateStatus: function (status) {
+      return status < 500; // Resolve only if the status code is less than 500
+    },
+  });
   const urlBody = await urlResponse.data;
   return findSubtitles2({
     type: season ? 'tv' : 'movie',
@@ -93,9 +103,9 @@ function getVersionInfo(availableSubtitle: HTMLElement) {
 
   const distribution = distributionMatch
     ? distributionMatch[0]
-      .toUpperCase()
-      .replace(/WEB(.DL|.?RIP)?|WR/, 'WEB-DL')
-      .replace(/BRRIP|BDRIP|BLURAY/, 'BLURAY')
+        .toUpperCase()
+        .replace(/WEB(.DL|.?RIP)?|WR/, 'WEB-DL')
+        .replace(/BRRIP|BDRIP|BLURAY/, 'BLURAY')
     : 'UNKNOWN';
 
   const team =
@@ -107,7 +117,7 @@ function getVersionInfo(availableSubtitle: HTMLElement) {
       .trim()
       .toUpperCase() || 'UNKNOWN';
 
-  return {version, distribution, team}
+  return { version, distribution, team };
 }
 
 function findSubtitles2({
@@ -121,20 +131,38 @@ function findSubtitles2({
 }) {
   const dom = parse(body);
   const { episodeTitle, showTitle } = getTitleInfo(dom);
-  const referer = dom.getElementById('qsSeason').text
+  const referer = dom.getElementById('qsSeason').text;
 
-  const availableSubtitles = dom.querySelectorAll('table.tabel95:has(td.NewsTitle)');
+  const availableSubtitles = dom.querySelectorAll(
+    'table.tabel95:has(td.NewsTitle)',
+  );
 
   const downloadableSubtitles = availableSubtitles.map((availableSubtitle) => {
-    const downloads = availableSubtitle.querySelector('td.newsDate:not(:has(img[src="https://www.addic7ed.com/images/invisible.gif"]))').text.split(' . ').at(1)
-    const lang = availableSubtitle.querySelector('td.language').text.trim()
-    const {team, version, distribution} = getVersionInfo(availableSubtitle)
-    const link = availableSubtitle.querySelector('a.buttonDownload').getAttribute('href')
+    const downloads = availableSubtitle
+      .querySelector(
+        'td.newsDate:not(:has(img[src="https://www.addic7ed.com/images/invisible.gif"]))',
+      )
+      .text.split(' . ')
+      .at(1);
+    const lang = availableSubtitle.querySelector('td.language').text.trim();
+    const { team, version, distribution } = getVersionInfo(availableSubtitle);
+    const link = availableSubtitle
+      .querySelector('a.buttonDownload')
+      .getAttribute('href');
 
-    return { episodeTitle, showTitle, version, downloads, lang, /*langId*/team, distribution, link, /*hearingImpaired*/ }
+    return {
+      episodeTitle,
+      showTitle,
+      version,
+      downloads,
+      lang,
+      /*langId*/ team,
+      distribution,
+      link /*hearingImpaired*/,
+    };
   });
 
- return {episodeTitle, showTitle, referer, ...downloadableSubtitles}
+  return { episodeTitle, showTitle, referer, ...downloadableSubtitles };
 }
 
 function findSubtitles({
