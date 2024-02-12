@@ -49,7 +49,7 @@ app.use(cors());
 app.use(
   fileUpload({
     createParentPath: true,
-  })
+  }),
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -90,8 +90,8 @@ app.get('/api/files', (req, res) => {
           extensions: ['mkv'],
         },
         fileCallback,
-        directoryCallback
-      )
+        directoryCallback,
+      ),
     ),
   };
 
@@ -136,7 +136,7 @@ app.get('/api/directories/:uuid/files', (req, res) => {
       extensions: ['mkv'],
     },
     fileCallback,
-    directoryCallback
+    directoryCallback,
   );
 
   res.send(JSON.stringify(tree));
@@ -166,15 +166,15 @@ app.get('/api/files/:uuid/subtitles', async (req, res) => {
   try {
     logger.debug(
       `Get subtitle files from ${path.dirname(file.path)} for ${path.basename(
-        file.path
-      )}`
+        file.path,
+      )}`,
     );
     const subs = fs
       .readdirSync(path.dirname(file.path))
       .filter(
         (fileName) =>
           path.extname(fileName) === '.srt' &&
-          path.basename(fileName).includes(path.basename(file.path))
+          path.basename(fileName).includes(path.basename(file.path)),
       )
       .map((filteredFileName) => {
         const language = filteredFileName.split('.').at(-2);
@@ -182,13 +182,18 @@ app.get('/api/files/:uuid/subtitles', async (req, res) => {
       });
     logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
 
-    const show = path.dirname(file.path).split('/').at(-1)
-    const match = path.basename(file.path).match(/S([0-9]*)E([0-9]*)/)
-    const season = match[1]
-    const episode = match[2]
+    const show = path.dirname(file.path).split('/').at(-1);
+    const match = path.basename(file.path).match(/S([0-9]*)E([0-9]*)/);
+    const season = match[1];
+    const episode = match[2];
     logger.debug(`Search addic7ed subtitles for ${show} S${season}E${episode}`);
-    const addic7edSubtitles = await search({ show, season, episode, languages: ['fr'] })
-    logger.debug(`Subtitles found on accic7ed: ${addic7edSubtitles}`)
+    const addic7edSubtitles = await search({
+      show,
+      season,
+      episode,
+      languages: ['french'],
+    });
+    logger.debug(`Subtitles found on accict7ed: ${addic7edSubtitles}`);
 
     logger.debug(`Get subtitles from file ${file.name}`);
     const parser = new SubtitleParser();
@@ -230,13 +235,13 @@ app.post('/api/subtitles/translate', (req, res) => {
     logger.debug(
       `mkvextract tracks "${file.path}" ${
         Number(number) - 1
-      }:"/data/temp/${path.basename(file.path)}.srt"`
+      }:"/data/temp/${path.basename(file.path)}.srt"`,
     );
 
     const stdoutMkvextract = execSync(
       `mkvextract tracks "${file.path}" ${
         Number(number) - 1
-      }:"/data/temp/${path.basename(file.path)}.srt"`
+      }:"/data/temp/${path.basename(file.path)}.srt"`,
     );
 
     // the *entire* stdout and stderr (buffered)
@@ -246,14 +251,14 @@ app.post('/api/subtitles/translate', (req, res) => {
       `/data/input/${path.basename(filePath)}.srt`) */
     logger.debug(
       `subtrans translate "/data/temp/${path.basename(
-        file.path
-      )}.srt" --src en --dest fr`
+        file.path,
+      )}.srt" --src en --dest fr`,
     );
 
     const stdoutSubtrans = execSync(
       `subtrans translate "/data/temp/${path.basename(
-        file.path
-      )}.srt" --src en --dest fr`
+        file.path,
+      )}.srt" --src en --dest fr`,
     );
 
     console.info(stdoutSubtrans);
@@ -262,12 +267,12 @@ app.post('/api/subtitles/translate', (req, res) => {
     fs.rmSync(`/data/temp/${path.basename(file.path)}.srt`);
     logger.debug(
       `move file to ${path.dirname(file.path)}/${path.basename(
-        file.path
-      )}.fr.srt`
+        file.path,
+      )}.fr.srt`,
     );
     fs.copyFileSync(
       `/data/temp/${path.basename(file.path)}.fr.srt`,
-      `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`
+      `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`,
     );
     fs.rmSync(`/data/temp/${path.basename(file.path)}.fr.srt`);
 
@@ -294,4 +299,3 @@ const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });
 server.on('error', console.error);
-
