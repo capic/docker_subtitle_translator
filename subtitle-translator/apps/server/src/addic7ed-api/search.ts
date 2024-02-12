@@ -38,7 +38,7 @@ export default async function search({
     logger.debug(`No result`);
     // No results
     // ==========
-    return [];
+    return null;
   }
 
   // Multiple results
@@ -62,7 +62,7 @@ export default async function search({
 
   if (!url) {
     logger.debug(`No url`);
-    return [];
+    return null;
   }
 
   const otherSearchUrl = `${addic7edURL}/${url}`;
@@ -162,7 +162,7 @@ function findSubtitles2({
     };
   });
 
-  return { episodeTitle, showTitle, referer, ...downloadableSubtitles };
+  return { episodeTitle, showTitle, referer, downloadableSubtitles };
 }
 
 function findSubtitles({
