@@ -2,7 +2,6 @@ import logger from './logger';
 import path from 'path';
 import fs from 'fs';
 import * as dree from 'dree';
-//@ts-expect-error no ts
 import { SubtitleParser } from 'matroska-subtitles';
 import search from './addic7ed-api/search';
 
