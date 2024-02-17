@@ -131,7 +131,7 @@ function findSubtitles2({
 }) {
   const dom = parse(body);
   const { episodeTitle, showTitle } = getTitleInfo(dom);
-  const referer = dom.getElementById('qsSeason').text;
+  const referer = dom.querySelector('span#qsSeason a').getAttribute('href');
 
   const availableSubtitles = dom.querySelectorAll(
     'table.tabel95:has(td.NewsTitle)',

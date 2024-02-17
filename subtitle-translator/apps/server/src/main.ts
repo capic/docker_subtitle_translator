@@ -13,7 +13,11 @@ import fs from 'fs';
 import * as dree from 'dree';
 import { v4 as uuidv4 } from 'uuid';
 import logger from './logger';
-import { getSubtitlesFromAddic7ed, getSubtitlesFromDirectory, getSubtitlesFromFile } from './getSubtitles';
+import {
+  getSubtitlesFromAddic7ed,
+  getSubtitlesFromDirectory,
+  getSubtitlesFromFile,
+} from './getSubtitles';
 
 const children: dree.Dree[] = [
   {
@@ -141,11 +145,17 @@ app.get('/api/directories/:uuid/files', (req, res) => {
   res.send(JSON.stringify(tree));
 });
 
-app.get<{uuid: string}, {number?: number,
-  language?: string,
-  type?: string,
-  name?: string,
-  downloadUrl?: string}[] | {status: boolean, message: string}>('/api/files/:uuid/subtitles', async (req, res) => {
+app.get<
+  { uuid: string },
+  | {
+      number?: number;
+      language?: string;
+      type?: string;
+      name?: string;
+      downloadUrl?: string;
+    }[]
+  | { status: boolean; message: string }
+>('/api/files/:uuid/subtitles', async (req, res) => {
   const { uuid } = req.params;
 
   if (!uuid) {
@@ -167,13 +177,17 @@ app.get<{uuid: string}, {number?: number,
   }
 
   try {
-    const subtitlesFromDirectory = getSubtitlesFromDirectory(file)
+    const subtitlesFromDirectory = getSubtitlesFromDirectory(file);
 
-    const subtitlesFromAddic7ed= await getSubtitlesFromAddic7ed(file)
+    const subtitlesFromAddic7ed = await getSubtitlesFromAddic7ed(file);
 
-    const subtitlesFromFile = await getSubtitlesFromFile(file)
+    const subtitlesFromFile = await getSubtitlesFromFile(file);
 
-    res.json([...subtitlesFromDirectory, ...subtitlesFromFile, ...subtitlesFromAddic7ed]);
+    res.json([
+      ...subtitlesFromDirectory,
+      ...subtitlesFromFile,
+      ...subtitlesFromAddic7ed,
+    ]);
   } catch (error) {
     logger.debug(`Error: ${error}`);
   }

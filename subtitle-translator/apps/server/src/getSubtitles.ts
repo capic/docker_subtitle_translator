@@ -13,15 +13,16 @@ export const getSubtitlesFromFile = async (file: dree.Dree) => {
     parser.once('tracks', (tracks) => {
       parser.destroy();
       logger.debug(`Tracks found ${tracks}`);
-      resolve(tracks)
-    })});
+      resolve(tracks);
+    });
+  });
 
   fs.createReadStream(file.path).pipe(parser);
 
-  return await promise
-}
+  return await promise;
+};
 
-export const getSubtitlesFromDirectory= (file: dree.Dree) => {
+export const getSubtitlesFromDirectory = (file: dree.Dree) => {
   logger.debug(
     `Get subtitle files from ${path.dirname(file.path)} for ${path.basename(
       file.path,
@@ -40,12 +41,12 @@ export const getSubtitlesFromDirectory= (file: dree.Dree) => {
     });
   logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
 
-  return subs
-}
+  return subs;
+};
 
-export const getSubtitlesFromAddic7ed =async  (file: dree.Dree) => {
+export const getSubtitlesFromAddic7ed = async (file: dree.Dree) => {
   const show = path.dirname(file.path).split('/').at(-1);
-  const match = path.basename(file.path).match(/S([0-9]*)E([0-9]*)/);
+  const match = path.basename(file.path).match(/S([0-9]*)E([0-9]*)/i);
   const season = match[1];
   const episode = match[2];
   logger.debug(`Search addic7ed subtitles for ${show} S${season}E${episode}`);
@@ -55,7 +56,13 @@ export const getSubtitlesFromAddic7ed =async  (file: dree.Dree) => {
     episode,
     languages: ['french'],
   });
-  logger.debug(`Subtitles found on accict7ed: ${JSON.stringify(addic7edSubtitles)}`);
+  logger.debug(
+    `Subtitles found on accict7ed: ${JSON.stringify(addic7edSubtitles)}`,
+  );
 
-  return addic7edSubtitles?.downloadableSubtitles.map((addic7edSubtitle) => ({language: 'fr', name: addic7edSubtitle.version, donwloadUrl: addic7edSubtitle.link}))
-}
+  return addic7edSubtitles?.downloadableSubtitles.map((addic7edSubtitle) => ({
+    language: 'fr',
+    name: addic7edSubtitle.version,
+    donwloadUrl: addic7edSubtitle.link,
+  }));
+};

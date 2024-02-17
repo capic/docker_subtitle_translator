@@ -9,16 +9,14 @@ type ModifiedDreeProps<T> = {
   [K in keyof T]: T[K] extends Dree ? ModifiedDree<T[K]> : T[K];
 };
 
-
 const subtitleSchema = z.object({
   number: z.number().optional(),
   language: z.string().optional(),
   type: z.string().optional(),
   name: z.string().optional(),
-  downloadUrl: z.string().optional()
-})
+  downloadUrl: z.string().optional(),
+});
 export const subtitlesSchema = subtitleSchema.array();
 
-
-export type Subtitle = z.infer<typeof subtitleSchema>
-export type Subtitles = z.infer<typeof subtitlesSchema>
+export type Subtitle = z.infer<typeof subtitleSchema>;
+export type Subtitles = z.infer<typeof subtitlesSchema>;
