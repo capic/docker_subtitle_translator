@@ -122,7 +122,7 @@ export default async function (fastify: FastifyInstance) {
     return tree;
   })
 
-  fastify.get<{Params: {uuid: string}}>('/api/files/:uuid/subtitles', async (request, reply) => {
+  fastify.get<{Params: {uuid: string}}>('/api/files/:uuid/subtitles', async (request) => {
     const { uuid } = request.params;
 
     if (!uuid) {
@@ -168,7 +168,7 @@ export default async function (fastify: FastifyInstance) {
       parser.once('tracks', (tracks) => {
         parser.destroy();
         logger.debug(`Tracks found ${tracks}`);
-        reply.send(JSON.stringify([...tracks, ...subs]))
+        return [...tracks, ...subs];
       });
 
       fs.createReadStream(file.path).pipe(parser);
