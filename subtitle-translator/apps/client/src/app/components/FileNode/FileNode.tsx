@@ -1,7 +1,7 @@
 import { Dree } from 'dree';
 import React, { useState } from 'react';
 import { FcFile } from 'react-icons/fc';
-import SubtitlesNode from '../SubtitlesNode';
+import SubtitlesNode from '../SubtitlesNode/SubtitlesNode';
 import { ModifiedDree } from '../../type';
 
 const FileNode = ({ node }: { node: ModifiedDree<Dree> }) => {

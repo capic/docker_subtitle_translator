@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { Dree, Type } from 'dree';
-import FolderNode from '../FolderNode'
-import FileNode from '../FileNode';
+import FolderNode from '../FolderNode/FolderNode'
+import FileNode from '../FileNode/FileNode';
 import type { ModifiedDree } from '../../type';
 import React from 'react';
 

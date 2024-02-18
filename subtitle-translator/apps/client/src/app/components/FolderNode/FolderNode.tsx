@@ -1,6 +1,6 @@
 import { Dree } from 'dree';
 import { useState } from 'react';
-import FolderContent from '../FolderContent';
+import FolderContent from '../FolderContent/FolderContent';
 import { FcFolder } from 'react-icons/fc';
 import { ModifiedDree } from '../../type';
 
