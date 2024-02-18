@@ -168,7 +168,7 @@ export default async function (fastify: FastifyInstance) {
       parser.once('tracks', (tracks) => {
         parser.destroy();
         logger.debug(`Tracks found ${tracks}`);
-        reply.send([...tracks, ...subs])
+        reply.send(JSON.stringify([...tracks, ...subs]))
       });
 
       fs.createReadStream(file.path).pipe(parser);
