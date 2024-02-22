@@ -13,7 +13,7 @@ export const getSubtitlesFromFile = async (file: dree.Dree) => {
     parser.once('tracks', (tracks) => {
       parser.destroy();
       logger.debug(`Tracks found ${tracks}`);
-      resolve(tracks);
+      resolve({ ...tracks, origin: 'Internal' });
     });
   });
 
@@ -37,7 +37,7 @@ export const getSubtitlesFromDirectory = (file: dree.Dree) => {
     )
     .map((filteredFileName) => {
       const language = filteredFileName.split('.').at(-2);
-      return { language, name: 'External' };
+      return { language, origin: 'External', name: filteredFileName };
     });
   logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
 
@@ -64,5 +64,6 @@ export const getSubtitlesFromAddic7ed = async (file: dree.Dree) => {
     language: 'fr',
     name: addic7edSubtitle.version,
     donwloadUrl: addic7edSubtitle.link,
+    origin: 'Addic7ed'
   }));
 };

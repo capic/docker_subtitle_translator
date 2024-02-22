@@ -15,6 +15,7 @@ const subtitleSchema = z.object({
   type: z.string().optional(),
   name: z.string().optional(),
   downloadUrl: z.string().optional(),
+  origin: z.string()
 });
 export const subtitlesSchema = subtitleSchema.array();
 
