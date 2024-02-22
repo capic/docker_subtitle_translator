@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import logger from '../../logger';
 import path from 'path';
 import fs from 'fs';
-import { SubtitleParser } from 'matroska-subtitles';
 import { execSync } from 'child_process';
 import {
   getSubtitlesFromAddic7ed,
@@ -30,7 +29,7 @@ const children: dree.Dree[] = [
   {
     name: 'Séries VO',
     path: '/data/media/series_vo',
-    // path: '/mnt/c/Users/Vincent/Downloads',
+    // path: '/mnt/c/_D',
     type: dree.Type.DIRECTORY,
     relativePath: '.',
     isSymbolicLink: false,
@@ -257,4 +256,16 @@ export default async function (fastify: FastifyInstance) {
       }
     },
   );
+
+  fastify.get('/api/subtitles', async() => {
+    const file: dree.Dree = {
+      name: 'Séries VO',
+      // path: '/data/media/series_vo',
+      path: '/mnt/c/_D/Reacher/Reacher.S01E01.Welcome.to.Margrave.1080p.10bit.WEBRip.6CH.x265.HEVC-PSA.mkv',
+      type: dree.Type.FILE,
+      relativePath: '.',
+      isSymbolicLink: false,
+    }
+    return  await getSubtitlesFromAddic7ed(file)
+  })
 }
