@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'server',
+  displayName: 'api',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
@@ -8,5 +8,5 @@ export default {
   },
   setupFilesAfterEnv: ['./setupTests.ts'],
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/server',
+  coverageDirectory: '../../coverage/apps/api',
 };

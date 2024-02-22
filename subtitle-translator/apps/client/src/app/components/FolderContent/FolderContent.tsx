@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { Dree, Type } from 'dree';
-import FolderNode from '../FolderNode'
-import FileNode from '../FileNode';
+import FolderNode from '../FolderNode/FolderNode';
+import FileNode from '../FileNode/FileNode';
 import type { ModifiedDree } from '../../type';
 import React from 'react';
 
 const fetchFolder = async (uuid: string) => {
   return await axios.get(
-    `http://192.168.1.106:3333/api/directories/${uuid}/files`
+    `http://192.168.1.106:3333/api/directories/${uuid}/files`,
   );
 };
 
@@ -46,7 +46,7 @@ const FolderContent = ({ uuid }: Props) => {
           <FolderNode key={child.uuid} node={child} />
         ) : (
           <FileNode key={child.hash} node={child} />
-        )
+        ),
       )}
     </ul>
   );

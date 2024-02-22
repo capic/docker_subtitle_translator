@@ -2,21 +2,21 @@ import axios from 'axios';
 import { Dree } from 'dree';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { subtitlesSchema, type ModifiedDree, Subtitles } from '../../type';
-import SubtitleText from '../SubtitleText';
+import SubtitleText from '../SubtitleText/SubtitleText';
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   const { data } = await axios.get(
-    `http://192.168.1.106:3333/api/files/${uuid}/subtitles`
+    `http://192.168.1.106:3333/api/files/${uuid}/subtitles`,
   );
 
   const parsed = subtitlesSchema.safeParse(data);
 
   if (!parsed.success) {
-    console.log(parsed.error.message)
-    throw new Error(parsed.error.message)
+    console.log(parsed.error.message);
+    throw new Error(parsed.error.message);
   }
 
-  return parsed.data
+  return parsed.data;
 };
 
 interface Props {
@@ -53,11 +53,11 @@ const SubtitlesNode = ({ uuid }: Props) => {
 
   const translate = (number?: number) => {
     if (!number) {
-      return
+      return;
     }
 
-    mutationTranslate.mutate(number)
-  }
+    mutationTranslate.mutate(number);
+  };
 
   return (
     <ul>
