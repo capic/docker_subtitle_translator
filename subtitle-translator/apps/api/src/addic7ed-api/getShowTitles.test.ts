@@ -1,3 +1,3 @@
 describe('getShowTitles', () => {
-  it.todo('get the sopw titles');
+  it.todo('get the show titles');
 });

@@ -5,7 +5,9 @@ import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
 import search from './addic7ed-api/search';
 
-export const getSubtitlesFromFile = async (file: dree.Dree) => {
+export const getSubtitlesFromFile = async (
+  file: dree.Dree,
+): Promise<{ number?: number; language?: string; type?: string; name?: string }[]> => {
   logger.debug(`Get subtitles from file ${file.name}`);
   const parser = new SubtitleParser();
 

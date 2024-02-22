@@ -29,12 +29,12 @@ export default async function search({
   });
   const body = await response.data;
 
-  if (!/<b>\d+ results found<\/b>/.test(body)) {
+  /* if (!/<b>\d+ results found<\/b>/.test(body)) {
     logger.debug(`Result found`);
     return findSubtitles2({ body, languages });
-  }
+  }*/
 
-  if (~body.indexOf('<b>0 results found</b>')) {
+  if (/0 results found/.test(body)) {
     logger.debug(`No result`);
     // No results
     // ==========
@@ -131,7 +131,10 @@ function findSubtitles2({
 }) {
   const dom = parse(body);
   const { episodeTitle, showTitle } = getTitleInfo(dom);
-  const referer = dom.querySelector('span#qsSeason a').getAttribute('href');
+  const referer = dom
+    .querySelector("[href^='/show/']")
+    .getAttribute('href')
+    .replace(addic7edURL, '');
 
   const availableSubtitles = dom.querySelectorAll(
     'table.tabel95:has(td.NewsTitle)',
