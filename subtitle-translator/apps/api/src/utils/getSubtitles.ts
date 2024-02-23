@@ -7,7 +7,9 @@ import search from '../addic7ed-api/search';
 
 export const getSubtitlesFromFile = async (
   file: dree.Dree,
-): Promise<{ number?: number; language?: string; type?: string; name?: string }[]> => {
+): Promise<
+  { number?: number; language?: string; type?: string; name?: string }[]
+> => {
   logger.debug(`Get subtitles from file ${file.name}`);
   const parser = new SubtitleParser();
 
@@ -15,7 +17,7 @@ export const getSubtitlesFromFile = async (
     parser.once('tracks', (tracks) => {
       parser.destroy();
       logger.debug(`Tracks found in the file: ${JSON.stringify(tracks)}`);
-      resolve({ ...tracks, origin: 'Internal' });
+      resolve(tracks.map((track) => ({ ...track, origin: 'Internal' })));
     });
   });
 
@@ -35,10 +37,13 @@ export const getSubtitlesFromDirectory = (file: dree.Dree) => {
     .filter(
       (fileName) =>
         path.extname(fileName) === '.srt' &&
-        path.basename(fileName).toLowerCase().includes(path.basename(file.path).toLowerCase()),
+        path
+          .basename(fileName)
+          .toLowerCase()
+          .includes(path.basename(file.path).toLowerCase()),
     )
     .map((filteredFileName) => {
-      logger.debug(`Get language from ${filteredFileName}`)
+      logger.debug(`Get language from ${filteredFileName}`);
       const language = filteredFileName.split('.').at(-2);
       return { language, origin: 'External', name: filteredFileName };
     });
@@ -67,6 +72,6 @@ export const getSubtitlesFromAddic7ed = async (file: dree.Dree) => {
     language: 'fr',
     name: addic7edSubtitle.version,
     downloadUrl: addic7edSubtitle.link,
-    origin: 'Addic7ed'
+    origin: 'Addic7ed',
   }));
 };
