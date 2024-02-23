@@ -14,7 +14,7 @@ export const getSubtitlesFromFile = async (
   const promise = new Promise<[]>((resolve) => {
     parser.once('tracks', (tracks) => {
       parser.destroy();
-      logger.debug(`Tracks found ${JSON.stringify(tracks)}`);
+      logger.debug(`Tracks found in the file: ${JSON.stringify(tracks)}`);
       resolve({ ...tracks, origin: 'Internal' });
     });
   });

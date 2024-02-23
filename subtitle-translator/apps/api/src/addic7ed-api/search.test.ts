@@ -109,12 +109,6 @@ describe('search', () => {
             },
           ),
         );
-        const expected = {
-          episodeTitle: 'The Demon of Parenthood Subtitle',
-          referer: '/show/7414',
-          showTitle: 'Evil',
-          downloadableSubtitles: [],
-        };
         expect(
           await search({ show: 'Evil', season: '03', episode: '08', languages: ['fre'] }),
         ).toBeNull();

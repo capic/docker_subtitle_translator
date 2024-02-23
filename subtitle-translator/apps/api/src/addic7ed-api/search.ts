@@ -1,4 +1,4 @@
-import langs from 'langs';
+//import langs from 'langs';
 import { addic7edURL, formatShowNumber, headers } from './helpers';
 import logger from '../utils/logger';
 import axios from 'axios';
@@ -121,9 +121,9 @@ function getVersionInfo(availableSubtitle: HTMLElement) {
 }
 
 function findSubtitles2({
-  type,
+  //type,
   body,
-  languages,
+ // languages,
 }: {
   type?: string;
   body: string;
@@ -182,7 +182,7 @@ function findSubtitles2({
 
   return { episodeTitle, showTitle, referer, downloadableSubtitles };
 }
-
+/*
 function findSubtitles({
   type,
   body,
@@ -289,3 +289,4 @@ function findSubtitles({
 
   return subs;
 }
+*/

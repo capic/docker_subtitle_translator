@@ -57,11 +57,11 @@ describe('getSubtitles', () => {
       };
 
       jest.spyOn(fs, 'readdirSync').mockReturnValue([
-        //@ts-ignore
+        //@ts-expect-error string
         'fake1.srt',
-        //@ts-ignore
+        //@ts-expect-error string
         'fake2.srt',
-        //@ts-ignore
+        //@ts-expect-error string
         'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv.fr.srt',
       ]);
 
@@ -87,11 +87,11 @@ describe('getSubtitles', () => {
       };
 
       jest.spyOn(fs, 'readdirSync').mockReturnValue([
-        //@ts-ignore
+        //@ts-expect-error string
         'fake1.srt',
-        //@ts-ignore
+        //@ts-expect-error string
         'fake2.srt',
-        //@ts-ignore
+        //@ts-expect-error string
         'DDLValley.me_83_A.Murder.at.the.End.of.the.World.s01e05.1080p.WEB.h264-ETHEL.mkv.fr.srt',
       ]);
 

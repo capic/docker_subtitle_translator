@@ -11,7 +11,6 @@ import {
   getSubtitlesFromFile,
 } from '../../utils/getSubtitles';
 import { ModifiedDree } from '@subtitle-translator/shared';
-import { Dree } from 'dree';
 
 const children: dree.Dree[] = [
   {
