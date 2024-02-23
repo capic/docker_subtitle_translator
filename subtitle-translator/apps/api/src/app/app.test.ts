@@ -236,15 +236,16 @@ describe('app', () => {
     });
 
     describe('ok', () => {
-      const subtitlesFromDirectory = [{ name: 'External', language: 'fr' }];
+      const subtitlesFromDirectory = [{ name: 'External', language: 'fr', origin: 'External' }];
       const subtitlesFromFile = [
-        { language: 'fr', name: 'sous titre français' },
+        { language: 'fr', name: 'sous titre français', origin: 'Internal' },
       ];
       const subtitlesFromAddic7ed = [
         {
           language: 'fr',
           name: 'sous titre français addic7ed',
           downloadUrl: 'http://fake.com',
+          origin: 'Addic7ed'
         },
       ];
       beforeEach(() => {

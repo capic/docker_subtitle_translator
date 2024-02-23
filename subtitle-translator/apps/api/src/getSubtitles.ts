@@ -14,7 +14,7 @@ export const getSubtitlesFromFile = async (
   const promise = new Promise<[]>((resolve) => {
     parser.once('tracks', (tracks) => {
       parser.destroy();
-      logger.debug(`Tracks found ${tracks}`);
+      logger.debug(`Tracks found ${JSON.stringify(tracks)}`);
       resolve({ ...tracks, origin: 'Internal' });
     });
   });
@@ -35,9 +35,10 @@ export const getSubtitlesFromDirectory = (file: dree.Dree) => {
     .filter(
       (fileName) =>
         path.extname(fileName) === '.srt' &&
-        path.basename(fileName).includes(path.basename(file.path)),
+        path.basename(fileName).toLowerCase().includes(path.basename(file.path).toLowerCase()),
     )
     .map((filteredFileName) => {
+      logger.debug(`Get language from ${filteredFileName}`)
       const language = filteredFileName.split('.').at(-2);
       return { language, origin: 'External', name: filteredFileName };
     });
@@ -59,13 +60,13 @@ export const getSubtitlesFromAddic7ed = async (file: dree.Dree) => {
     languages: ['french'],
   });
   logger.debug(
-    `Subtitles found on accict7ed: ${JSON.stringify(addic7edSubtitles)}`,
+    `Subtitles found on addic7ed: ${JSON.stringify(addic7edSubtitles)}`,
   );
 
   return addic7edSubtitles?.downloadableSubtitles.map((addic7edSubtitle) => ({
     language: 'fr',
     name: addic7edSubtitle.version,
-    donwloadUrl: addic7edSubtitle.link,
+    downloadUrl: addic7edSubtitle.link,
     origin: 'Addic7ed'
   }));
 };

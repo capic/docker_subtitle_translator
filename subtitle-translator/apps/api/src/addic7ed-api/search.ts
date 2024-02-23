@@ -129,6 +129,7 @@ function findSubtitles2({
   body: string;
   languages?: string[];
 }) {
+  console.log('findSubtitles')
   const dom = parse(body);
   const { episodeTitle, showTitle } = getTitleInfo(dom);
   const referer = dom
@@ -139,6 +140,8 @@ function findSubtitles2({
   const availableSubtitles = dom.querySelectorAll(
     'table.tabel95:has(td.NewsTitle)',
   );
+
+  logger.debug(`${availableSubtitles.length} found`)
 
   const downloadableSubtitles = availableSubtitles.map((availableSubtitle) => {
     const downloads = availableSubtitle
@@ -153,6 +156,18 @@ function findSubtitles2({
       .querySelector('a.buttonDownload')
       .getAttribute('href');
 
+    logger.debug(
+      `Subtitle found: ${{
+        episodeTitle,
+        showTitle,
+        version,
+        downloads,
+        lang,
+        /*langId*/ team,
+        distribution,
+        link /*hearingImpaired*/,
+      }}`,
+    );
     return {
       episodeTitle,
       showTitle,

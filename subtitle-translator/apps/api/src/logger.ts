@@ -17,7 +17,7 @@ const logger = winston.createLogger({
       filename: '/data/log.txt',
       silent: process.env.NODE_ENV === 'test',
     }),
-    new winston.transports.Console({ silent: process.env.NODE_ENV === 'test' }),
+    new winston.transports.Console(/*{ silent: process.env.NODE_ENV === 'test' }*/),
   ],
 });
 
