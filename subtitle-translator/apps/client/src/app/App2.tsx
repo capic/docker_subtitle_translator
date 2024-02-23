@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Dree, Type } from 'dree';
 import FolderNode from './components/FolderNode/FolderNode';
 import FileNode from './components/FileNode/FileNode';
-import { ModifiedDree } from './type';
+import { ModifiedDree } from '@subtitle-translator/shared';
 
 const fetch = () => {
   return axios.get('http://192.168.1.106:3333/api/files');

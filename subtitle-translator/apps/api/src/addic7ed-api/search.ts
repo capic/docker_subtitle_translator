@@ -1,6 +1,6 @@
 import langs from 'langs';
 import { addic7edURL, formatShowNumber, headers } from './helpers';
-import logger from '../logger';
+import logger from '../utils/logger';
 import axios from 'axios';
 import { parse, HTMLElement } from 'node-html-parser';
 

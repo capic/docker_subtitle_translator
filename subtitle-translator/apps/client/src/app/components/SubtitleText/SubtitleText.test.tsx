@@ -1,12 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import SubtitleText from '.';
 import React from 'react';
+import SubtitleText from './SubtitleText';
 
 describe('SubtitleText', () => {
   it('renders the component', () => {
     render(
       <SubtitleText
-        subtitle={{ language: 'fr', number: 1, type: 'utf' }}
+        subtitle={{
+          language: 'fr',
+          number: 1,
+          type: 'utf',
+          origin: 'Internal',
+        }}
         isLoading={false}
       />,
     );
@@ -17,7 +22,13 @@ describe('SubtitleText', () => {
   it('renders the subtitle name if exists', () => {
     render(
       <SubtitleText
-        subtitle={{ language: 'fr', number: 1, type: 'utf', name: 'the name' }}
+        subtitle={{
+          language: 'fr',
+          number: 1,
+          type: 'utf',
+          name: 'the name',
+          origin: 'Internal',
+        }}
         isLoading={false}
       />,
     );
@@ -28,7 +39,13 @@ describe('SubtitleText', () => {
   it('renders the loading', () => {
     render(
       <SubtitleText
-        subtitle={{ language: 'fr', number: 1, type: 'utf', name: 'the name' }}
+        subtitle={{
+          language: 'fr',
+          number: 1,
+          type: 'utf',
+          name: 'the name',
+          origin: 'Internal',
+        }}
         isLoading={true}
       />,
     );

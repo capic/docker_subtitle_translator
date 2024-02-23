@@ -6,11 +6,12 @@ import {
 import * as dree from 'dree';
 import { Type } from 'dree';
 import fs from 'fs';
+import { ModifiedDree } from '@subtitle-translator/shared';
 
 describe('getSubtitles', () => {
   describe.skip('getSubtitlesFromFile', () => {
     it('returns the subtitles', () => {
-      const file: dree.Dree = {
+      const file: ModifiedDree<dree.Dree> = {
         name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         relativePath:
@@ -19,14 +20,13 @@ describe('getSubtitles', () => {
         isSymbolicLink: false,
         extension: 'mkv',
         sizeInBytes: 1822536247,
-        //@ts-ignore
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
       expect(getSubtitlesFromFile(file)).toStrictEqual([]);
     });
     it('returns empty array if no subtitles', () => {
-      const file: dree.Dree = {
+      const file: ModifiedDree<dree.Dree> = {
         name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         relativePath:
@@ -35,7 +35,6 @@ describe('getSubtitles', () => {
         isSymbolicLink: false,
         extension: 'mkv',
         sizeInBytes: 1822536247,
-        //@ts-ignore
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
@@ -45,7 +44,7 @@ describe('getSubtitles', () => {
 
   describe('getSubtitlesFromDirectory', () => {
     it('returns the subtitles', () => {
-      const file: dree.Dree = {
+      const file: ModifiedDree<dree.Dree> = {
         name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         relativePath:
@@ -54,7 +53,6 @@ describe('getSubtitles', () => {
         isSymbolicLink: false,
         extension: 'mkv',
         sizeInBytes: 1822536247,
-        //@ts-ignore
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
@@ -76,7 +74,7 @@ describe('getSubtitles', () => {
       ]);
     });
     it('is not sensitive', () => {
-      const file: dree.Dree = {
+      const file: ModifiedDree<dree.Dree> = {
         name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         relativePath:
@@ -85,7 +83,6 @@ describe('getSubtitles', () => {
         isSymbolicLink: false,
         extension: 'mkv',
         sizeInBytes: 1822536247,
-        //@ts-ignore
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
@@ -107,7 +104,7 @@ describe('getSubtitles', () => {
       ]);
     });
     it('returns empty array if no subtitles', () => {
-      const file: dree.Dree = {
+      const file: ModifiedDree<dree.Dree> = {
         name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
         relativePath:
@@ -116,7 +113,6 @@ describe('getSubtitles', () => {
         isSymbolicLink: false,
         extension: 'mkv',
         sizeInBytes: 1822536247,
-        //@ts-ignore
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
@@ -128,7 +124,7 @@ describe('getSubtitles', () => {
 
   describe('getSubtitlesFromAddic7ed', () => {
     it('returns the subtitles', async () => {
-      const file: dree.Dree = {
+      const file: ModifiedDree<dree.Dree> = {
         name: 'DDLValley.me_83_A.Evil.S03E08.1080p.WEB.h264-ETHEL.mkv',
         path: '/data/media/series_en_cours/Evil/DDLValley.me_83_A.Evil.S03E08.1080p.WEB.h264-ETHEL.mkv',
         relativePath: 'DDLValley.me_83_A.Evil.S03E08.1080p.WEB.h264-ETHEL.mkv',
@@ -136,7 +132,6 @@ describe('getSubtitles', () => {
         isSymbolicLink: false,
         extension: 'mkv',
         sizeInBytes: 1822536247,
-        //@ts-ignore
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 

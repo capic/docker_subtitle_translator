@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Dree, Type } from 'dree';
 import FolderNode from '../FolderNode/FolderNode';
 import FileNode from '../FileNode/FileNode';
-import type { ModifiedDree } from '../../type';
 import React from 'react';
+import type { ModifiedDree } from '@subtitle-translator/shared';
 
 const fetchFolder = async (uuid: string) => {
   return await axios.get(

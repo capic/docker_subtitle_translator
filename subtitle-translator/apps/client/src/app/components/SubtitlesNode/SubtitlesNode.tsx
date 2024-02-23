@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Dree } from 'dree';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { subtitlesSchema, type ModifiedDree, Subtitles } from '../../type';
 import SubtitleText from '../SubtitleText/SubtitleText';
+import { ModifiedDree, Subtitles, subtitlesSchema } from '@subtitle-translator/shared';
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   const { data } = await axios.get(

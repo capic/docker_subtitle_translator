@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
-import search from './addic7ed-api/search';
+import search from '../addic7ed-api/search';
 
 export const getSubtitlesFromFile = async (
   file: dree.Dree,

@@ -1,5 +1,5 @@
 import { ThreeDots } from 'react-loading-icons';
-import type { Subtitle } from '../../type';
+import { Subtitle } from '@subtitle-translator/shared';
 
 interface Props {
   subtitle: Subtitle;

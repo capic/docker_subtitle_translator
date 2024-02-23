@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import * as dree from 'dree';
 import { v4 as uuidv4 } from 'uuid';
-import logger from '../../logger';
+import logger from '../../utils/logger';
 import path from 'path';
 import fs from 'fs';
 import { execSync } from 'child_process';
@@ -9,7 +9,9 @@ import {
   getSubtitlesFromAddic7ed,
   getSubtitlesFromDirectory,
   getSubtitlesFromFile,
-} from '../../getSubtitles';
+} from '../../utils/getSubtitles';
+import { ModifiedDree } from '@subtitle-translator/shared';
+import { Dree } from 'dree';
 
 const children: dree.Dree[] = [
   {
@@ -39,12 +41,12 @@ const children: dree.Dree[] = [
 export const directoryMap = new Map<string, dree.Dree>();
 export const fileMap = new Map<string, dree.Dree>();
 
-const fileCallback = function (file: dree.Dree & { uuid: string }) {
+const fileCallback = function (file: ModifiedDree<dree.Dree>) {
   file.uuid = uuidv4();
   logger.debug(`Add file ${file.name} to map with uuid ${file.uuid}`);
   fileMap.set(file.uuid, file);
 };
-const directoryCallback = function (directory: dree.Dree & { uuid: string }) {
+const directoryCallback = function (directory: ModifiedDree<dree.Dree>) {
   directory.uuid = uuidv4();
   logger.debug(`Add file ${directory.name} to map with uuid ${directory.uuid}`);
   directoryMap.set(directory.uuid, directory);

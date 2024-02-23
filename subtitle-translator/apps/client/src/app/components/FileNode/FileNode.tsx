@@ -2,7 +2,7 @@ import { Dree } from 'dree';
 import React, { useState } from 'react';
 import { FcFile } from 'react-icons/fc';
 import SubtitlesNode from '../SubtitlesNode/SubtitlesNode';
-import { ModifiedDree } from '../../type';
+import type { ModifiedDree } from '@subtitle-translator/shared';
 
 const FileNode = ({ node }: { node: ModifiedDree<Dree> }) => {
   const [showSubtitles, setShowSubtitles] = useState<boolean>(false);

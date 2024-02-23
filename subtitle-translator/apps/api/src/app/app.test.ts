@@ -3,7 +3,8 @@ import { app } from './app';
 import * as dree from 'dree';
 import { Type } from 'dree';
 import * as root from './routes/root';
-import * as getSubtitles from '../getSubtitles';
+import * as getSubtitles from '../utils/getSubtitles';
+import { ModifiedDree } from '@subtitle-translator/shared';
 
 describe('app', () => {
   let server: FastifyInstance;
@@ -30,7 +31,6 @@ describe('app', () => {
         type: Type.DIRECTORY,
         isSymbolicLink: false,
         sizeInBytes: 0,
-        // @ts-ignore
         uuid: 'c1d1a886-fa2e-4238-b85b-425b3ff12109',
       };
       const child2 = {
@@ -40,7 +40,6 @@ describe('app', () => {
         type: Type.DIRECTORY,
         isSymbolicLink: false,
         sizeInBytes: 0,
-        // @ts-ignore
         uuid: '1800a8ff-e810-43e3-a1c4-7b52358718eb',
       };
       const child3 = {
@@ -50,7 +49,6 @@ describe('app', () => {
         type: Type.DIRECTORY,
         isSymbolicLink: false,
         sizeInBytes: 0,
-        // @ts-ignore
         uuid: '616d7b98-afd5-4708-b265-54cba336a9a9',
       };
 
@@ -95,7 +93,7 @@ describe('app', () => {
       it.todo('returns an error code');
     });
     describe('ok', () => {
-      const filesInDirectory: dree.Dree = {
+      const filesInDirectory: ModifiedDree<dree.Dree> = {
         name: 'A Murder at The End of The Day',
         path: '/data/media/series_en_cours/A Murder at The End of The Day',
         relativePath: '.',
@@ -112,7 +110,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1822536247,
-            //@ts-ignore
             uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
           },
           {
@@ -124,7 +121,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1590857728,
-            //@ts-ignore
             uuid: '7f75f1ca-e440-48a7-8675-2cc20cbfbb40',
           },
           {
@@ -136,7 +132,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1609846931,
-            //@ts-ignore
             uuid: '4eb634f2-229a-4084-a33a-431db7805a15',
           },
           {
@@ -148,7 +143,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1580743882,
-            //@ts-ignore
             uuid: 'c28127f9-514a-4ed2-8008-515b5f47993f',
           },
           {
@@ -160,7 +154,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1071350864,
-            //@ts-ignore
             uuid: 'd4096574-5cf8-4cb4-9dba-d0268f35341a',
           },
           {
@@ -172,7 +165,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1530119122,
-            //@ts-ignore
             uuid: '040df02b-dcbd-4f78-a59b-77804999372d',
           },
           {
@@ -184,7 +176,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1054423135,
-            //@ts-ignore
             uuid: '91d54e6c-ed51-4025-bf9d-fa9b3ca0ae61',
           },
         ],
@@ -192,7 +183,7 @@ describe('app', () => {
       };
 
       beforeEach(() => {
-        const directory: dree.Dree & { uuid: string } = {
+        const directory: ModifiedDree<dree.Dree> = {
           name: 'A Murder at The End of The Day',
           path: '/data/media/series_en_cours/A Murder at The End of The Day',
           relativePath: 'A Murder at The End of The Day',
@@ -249,7 +240,7 @@ describe('app', () => {
         },
       ];
       beforeEach(() => {
-        const file: dree.Dree = {
+        const file: ModifiedDree<dree.Dree> = {
             name: 'DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
             path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
             relativePath:
@@ -258,7 +249,6 @@ describe('app', () => {
             isSymbolicLink: false,
             extension: 'mkv',
             sizeInBytes: 1054423135,
-            //@ts-ignore
             uuid: '91d54e6c-ed51-4025-bf9d-fa9b3ca0ae61',
           }
         jest.replaceProperty(root, 'fileMap', new Map([['1', file]]));
