@@ -1,7 +1,7 @@
 import search from './search';
-import { server } from '../mocks/node';
+import { server } from '../../mocks/node';
 import { http, HttpResponse } from 'msw';
-import { emptyResultPage } from '../mocks/data/emptyResultPage';
+import { emptyResultPage } from '../../mocks/data/emptyResultPage';
 
 describe('search', () => {
   describe(
@@ -98,7 +98,19 @@ describe('search', () => {
         ).toBeNull();
       });
 
-      it.todo('returns null if no url');
+      it('returns null if no url', async () => {
+        server.use(
+          http.get(
+            `https://www.addic7ed.com/srch.php`,
+            () => {
+              return new HttpResponse('');
+            },
+          ),
+        );
+        expect(
+          await search({ show: 'Evil', season: '03', episode: '08', languages: ['fre'] }),
+        ).toBeNull();
+      });
     },
   );
 

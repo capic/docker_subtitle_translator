@@ -9,13 +9,12 @@ import fs from 'fs';
 import { ModifiedDree } from '@subtitle-translator/shared';
 
 describe('getSubtitles', () => {
-  describe.skip('getSubtitlesFromFile', () => {
-    it('returns the subtitles', () => {
+  describe('getSubtitlesFromFile', () => {
+    it('returns the subtitles', async () => {
       const file: ModifiedDree<dree.Dree> = {
-        name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
-        path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
-        relativePath:
-          'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
+        name: 'test5.mkv',
+        path: 'apps/api/mocks/test5.mkv',
+        relativePath: '../../test5.mkv',
         type: Type.FILE,
         isSymbolicLink: false,
         extension: 'mkv',
@@ -23,14 +22,22 @@ describe('getSubtitles', () => {
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
-      expect(getSubtitlesFromFile(file)).toStrictEqual([]);
+      expect(await getSubtitlesFromFile(file)).toStrictEqual([
+        { number: 3, language: undefined, type: 'utf8', origin: 'Internal' },
+        { number: 4, language: 'hun', type: 'utf8', origin: 'Internal' },
+        { number: 5, language: 'ger', type: 'utf8', origin: 'Internal' },
+        { number: 6, language: 'fre', type: 'utf8', origin: 'Internal' },
+        { number: 8, language: 'spa', type: 'utf8', origin: 'Internal' },
+        { number: 9, language: 'ita', type: 'utf8', origin: 'Internal' },
+        { number: 11, language: 'jpn', type: 'utf8', origin: 'Internal' },
+        { number: 7, language: 'und', type: 'utf8', origin: 'Internal' },
+      ]);
     });
-    it('returns empty array if no subtitles', () => {
+    it('returns empty array if no subtitles', async() => {
       const file: ModifiedDree<dree.Dree> = {
-        name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
-        path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
-        relativePath:
-          'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv',
+        name: 'test5 sans sous titre.mkv',
+        path: 'apps/api/mocks/test5 sans sous titre.mkv',
+        relativePath: '../../test5 sans sous titre.mkv',
         type: Type.FILE,
         isSymbolicLink: false,
         extension: 'mkv',
@@ -38,7 +45,7 @@ describe('getSubtitles', () => {
         uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
       };
 
-      expect(getSubtitlesFromFile(file)).toStrictEqual([]);
+      expect(await getSubtitlesFromFile(file)).toStrictEqual([]);
     });
   });
 
