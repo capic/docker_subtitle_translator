@@ -155,10 +155,11 @@ export default async function (fastify: FastifyInstance) {
 
       try {
         const subtitlesFromDirectory = getSubtitlesFromDirectory(file);
-
+        logger.debug(`subtitlesFromDirectory: ${JSON.stringify(subtitlesFromDirectory)}`)
         const subtitlesFromAddic7ed = await getSubtitlesFromAddic7ed(file);
-
+        logger.debug(`subtitlesFromAddic7ed: ${JSON.stringify(subtitlesFromAddic7ed)}`)
         const subtitlesFromFile = await getSubtitlesFromFile(file);
+        logger.debug(`subtitlesFromFile: ${JSON.stringify(subtitlesFromFile)}`)
 
         return [
           ...subtitlesFromDirectory,
