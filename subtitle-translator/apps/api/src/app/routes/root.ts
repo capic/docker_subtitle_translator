@@ -259,7 +259,7 @@ export default async function (fastify: FastifyInstance) {
     },
   );
 
-  fastify.get('/api/subtitles', async() => {
+  fastify.get('/local/subtitles-addic7ed', async() => {
     const file: dree.Dree = {
       name: 'Séries VO',
       // path: '/data/media/series_vo',
@@ -269,5 +269,17 @@ export default async function (fastify: FastifyInstance) {
       isSymbolicLink: false,
     }
     return  await getSubtitlesFromAddic7ed(file)
+  })
+
+  fastify.get('/local/subtitles-file', async() => {
+    const file: dree.Dree = {
+      name: 'Reacher.S01E01.Welcome.to.Margrave.1080p.10bit.WEBRip.6CH.x265.HEVC-PSA.mkv',
+      // path: '/data/media/series_vo',
+      path: '/mnt/c/_D/Reacher/Reacher.S01E01.Welcome.to.Margrave.1080p.10bit.WEBRip.6CH.x265.HEVC-PSA.mkv',
+      type: dree.Type.FILE,
+      relativePath: '.',
+      isSymbolicLink: false,
+    }
+    return  [...(await getSubtitlesFromFile(file))]
   })
 }
