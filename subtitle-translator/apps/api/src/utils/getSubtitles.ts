@@ -68,10 +68,12 @@ export const getSubtitlesFromAddic7ed = async (file: dree.Dree) => {
     `Subtitles found on addic7ed: ${JSON.stringify(addic7edSubtitles)}`,
   );
 
-  return addic7edSubtitles?.downloadableSubtitles.map((addic7edSubtitle) => ({
-    language: 'fr',
-    name: addic7edSubtitle.version,
-    downloadUrl: addic7edSubtitle.link,
-    origin: 'Addic7ed',
-  }));
+  return addic7edSubtitles
+    ? addic7edSubtitles.downloadableSubtitles.map((addic7edSubtitle) => ({
+        language: 'fr',
+        name: addic7edSubtitle.version,
+        downloadUrl: addic7edSubtitle.link,
+        origin: 'Addic7ed',
+      }))
+    : [];
 };

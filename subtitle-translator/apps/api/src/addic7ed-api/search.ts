@@ -123,13 +123,13 @@ function getVersionInfo(availableSubtitle: HTMLElement) {
 function findSubtitles2({
   //type,
   body,
- // languages,
+  // languages,
 }: {
   type?: string;
   body: string;
   languages?: string[];
 }) {
-  console.log('findSubtitles')
+  console.log('findSubtitles');
   const dom = parse(body);
   const { episodeTitle, showTitle } = getTitleInfo(dom);
   const referer = dom
@@ -141,7 +141,7 @@ function findSubtitles2({
     'table.tabel95:has(td.NewsTitle)',
   );
 
-  logger.debug(`${availableSubtitles.length} found`)
+  logger.debug(`${availableSubtitles.length} found`);
 
   const downloadableSubtitles = availableSubtitles.map((availableSubtitle) => {
     const downloads = availableSubtitle
@@ -158,8 +158,6 @@ function findSubtitles2({
 
     logger.debug(
       `Subtitle found: ${{
-        episodeTitle,
-        showTitle,
         version,
         downloads,
         lang,
@@ -169,8 +167,6 @@ function findSubtitles2({
       }}`,
     );
     return {
-      episodeTitle,
-      showTitle,
       version,
       downloads,
       lang,
