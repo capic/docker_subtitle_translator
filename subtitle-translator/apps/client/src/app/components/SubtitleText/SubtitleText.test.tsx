@@ -12,6 +12,7 @@ describe('SubtitleText', () => {
           number: 1,
           type: 'utf',
           origin: 'Internal',
+          uuid: '1',
         }}
         isLoading={false}
       />,
@@ -29,6 +30,7 @@ describe('SubtitleText', () => {
           type: 'utf',
           name: 'the name',
           origin: 'Internal',
+          uuid: '1',
         }}
         isLoading={false}
       />,
@@ -46,6 +48,7 @@ describe('SubtitleText', () => {
           type: 'utf',
           name: 'the name',
           origin: 'Internal',
+          uuid: '1',
         }}
         isLoading={true}
       />,

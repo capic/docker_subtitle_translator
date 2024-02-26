@@ -94,10 +94,11 @@ export const Addic7edBase: Story = {
     <SubtitleText
       subtitle={{
         language: 'fr',
-        number: 1,
-        type: 'utf',
         origin: 'Addic7ed',
         uuid: '1',
+        name: "a",
+        link: '/a',
+        referer: "a"
       }}
       isLoading={false}
     />
@@ -109,11 +110,11 @@ export const Addic7edWithName: Story = {
     <SubtitleText
       subtitle={{
         language: 'fr',
-        number: 1,
-        type: 'utf',
         name: 'my name',
         origin: 'Addic7ed',
         uuid: '1',
+        link: '/a',
+        referer: "a"
       }}
       isLoading={false}
     />
@@ -125,11 +126,11 @@ export const Addic7edWithLoading: Story = {
     <SubtitleText
       subtitle={{
         language: 'fr',
-        number: 1,
-        type: 'utf',
         name: 'my name',
         origin: 'Addic7ed',
         uuid: '1',
+        link: '/a',
+        referer: "a"
       }}
       isLoading={true}
     />
