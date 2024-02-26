@@ -227,30 +227,39 @@ describe('app', () => {
     });
 
     describe('ok', () => {
-      const subtitlesFromDirectory = [{ name: 'External', language: 'fr', origin: 'External' }];
+      const subtitlesFromDirectory = [
+        { uuid: '1', name: 'External', language: 'fr', origin: 'External' },
+      ];
       const subtitlesFromFile = [
-        { language: 'fr', name: 'sous titre français', origin: 'Internal' },
+        {
+          uuid: '1',
+          language: 'fr',
+          name: 'sous titre français',
+          origin: 'Internal',
+        },
       ];
       const subtitlesFromAddic7ed = [
         {
+          uuid: '1',
           language: 'fr',
           name: 'sous titre français addic7ed',
-          downloadUrl: 'http://fake.com',
-          origin: 'Addic7ed'
+          link: 'http://fake.com',
+          origin: 'Addic7ed',
+          referer: '1',
         },
       ];
       beforeEach(() => {
         const file: ModifiedDree<dree.Dree> = {
-            name: 'DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
-            path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
-            relativePath:
-              'DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
-            type: Type.FILE,
-            isSymbolicLink: false,
-            extension: 'mkv',
-            sizeInBytes: 1054423135,
-            uuid: '91d54e6c-ed51-4025-bf9d-fa9b3ca0ae61',
-          }
+          name: 'DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
+          path: '/data/media/series_en_cours/A Murder at The End of The Day/DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
+          relativePath:
+            'DDLValley.me_a.MRDR.at.the.end.of.the.world.s01e06.1080p.web.h264-successfulcrab.mkv',
+          type: Type.FILE,
+          isSymbolicLink: false,
+          extension: 'mkv',
+          sizeInBytes: 1054423135,
+          uuid: '91d54e6c-ed51-4025-bf9d-fa9b3ca0ae61',
+        };
         jest.replaceProperty(root, 'fileMap', new Map([['1', file]]));
         jest
           .spyOn(getSubtitles, 'getSubtitlesFromDirectory')
@@ -301,5 +310,26 @@ describe('app', () => {
     });
 
     it.todo('translates the subtitle');
+  });
+
+  describe('/api/subtitles/download', () => {
+    describe('no uuid', () => {
+      it.todo('returns an error message');
+      it.todo('returns an error code');
+    });
+    describe('no referer', () => {
+      it.todo('returns an error message');
+      it.todo('returns an error code');
+    });
+    describe('no link', () => {
+      it.todo('returns an error message');
+      it.todo('returns an error code');
+    });
+    describe('no file found', () => {
+      it.todo('returns an error message');
+      it.todo('returns an error code');
+    });
+
+    it.todo('download the file');
   });
 });
