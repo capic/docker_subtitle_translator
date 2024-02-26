@@ -133,7 +133,7 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.get<{ Params: { uuid: string } }>(
     '/api/files/:uuid/subtitles',
-    async (request) => {
+    async (request, reply) => {
       const { uuid } = request.params;
 
       if (!uuid) {
@@ -173,6 +173,7 @@ export default async function (fastify: FastifyInstance) {
         ];
       } catch (error) {
         logger.debug(`Error: ${error}`);
+        reply.send(error)
       }
     },
   );
