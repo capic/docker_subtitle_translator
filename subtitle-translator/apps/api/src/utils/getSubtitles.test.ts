@@ -23,17 +23,81 @@ describe('getSubtitles', () => {
       };
 
       expect(await getSubtitlesFromFile(file)).toStrictEqual([
-        { number: 3, language: undefined, type: 'utf8', origin: 'Internal' },
-        { number: 4, language: 'hun', type: 'utf8', origin: 'Internal' },
-        { number: 5, language: 'ger', type: 'utf8', origin: 'Internal' },
-        { number: 6, language: 'fre', type: 'utf8', origin: 'Internal' },
-        { number: 8, language: 'spa', type: 'utf8', origin: 'Internal' },
-        { number: 9, language: 'ita', type: 'utf8', origin: 'Internal' },
-        { number: 11, language: 'jpn', type: 'utf8', origin: 'Internal' },
-        { number: 7, language: 'und', type: 'utf8', origin: 'Internal' },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 3,
+          language: undefined,
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 4,
+          language: 'hun',
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 5,
+          language: 'ger',
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 6,
+          language: 'fre',
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 8,
+          language: 'spa',
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 9,
+          language: 'ita',
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 11,
+          language: 'jpn',
+          type: 'utf8',
+          origin: 'Internal',
+        },
+        {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          number: 7,
+          language: 'und',
+          type: 'utf8',
+          origin: 'Internal',
+        },
       ]);
     });
-    it('returns empty array if no subtitles', async() => {
+    it('returns empty array if no subtitles', async () => {
       const file: ModifiedDree<dree.Dree> = {
         name: 'test5 sans sous titre.mkv',
         path: 'apps/api/mocks/test5 sans sous titre.mkv',
@@ -74,6 +138,9 @@ describe('getSubtitles', () => {
 
       expect(getSubtitlesFromDirectory(file)).toStrictEqual([
         {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
           language: 'fr',
           name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.S01E05.1080p.WEB.h264-ETHEL.mkv.fr.srt',
           origin: 'External',
@@ -104,6 +171,9 @@ describe('getSubtitles', () => {
 
       expect(getSubtitlesFromDirectory(file)).toStrictEqual([
         {
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
           language: 'fr',
           name: 'DDLValley.me_83_A.Murder.at.the.End.of.the.World.s01e05.1080p.WEB.h264-ETHEL.mkv.fr.srt',
           origin: 'External',
@@ -144,53 +214,84 @@ describe('getSubtitles', () => {
 
       expect(await getSubtitlesFromAddic7ed(file)).toEqual([
         {
-          downloadUrl: '/original/176864/1',
+          link: '/original/176864/1',
           language: 'fr',
           name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/1',
+          link: '/original/176864/1',
           language: 'fr',
           name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/0',
+          link: '/original/176864/0',
           language: 'fr',
           name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/0',
+          link: '/original/176864/0',
           language: 'fr',
           name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/3',
+          link: '/original/176864/3',
           language: 'fr',
-
           name: 'ION10+GLHF+GGEZ+AMZN-WEBRip+WEBDL',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/3',
+          link: '/original/176864/3',
           language: 'fr',
           name: 'ION10+GLHF+GGEZ+AMZN-WEBRip+WEBDL',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/2',
+          link: '/original/176864/2',
           language: 'fr',
           name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
         {
-          downloadUrl: '/original/176864/2',
+          link: '/original/176864/2',
           language: 'fr',
           name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
+          uuid: expect.stringMatching(
+            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
+          ),
+          referer: '/show/7414',
         },
       ]);
     });

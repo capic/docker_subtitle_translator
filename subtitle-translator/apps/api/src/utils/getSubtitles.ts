@@ -5,6 +5,8 @@ import * as dree from 'dree';
 import { SubtitleParser } from 'matroska-subtitles';
 import search from '../addic7ed-api/search';
 
+import { v4 as uuidv4 } from 'uuid';
+
 export const getSubtitlesFromFile = async (
   file: dree.Dree,
 ): Promise<
@@ -17,7 +19,13 @@ export const getSubtitlesFromFile = async (
     parser.once('tracks', (tracks) => {
       parser.destroy();
       logger.debug(`Tracks found in the file: ${JSON.stringify(tracks)}`);
-      resolve(tracks.map((track) => ({ ...track, origin: 'Internal' })));
+      resolve(
+        tracks.map((track) => ({
+          ...track,
+          origin: 'Internal',
+          uuid: uuidv4(),
+        })),
+      );
     });
   });
 
@@ -45,7 +53,12 @@ export const getSubtitlesFromDirectory = (file: dree.Dree) => {
     .map((filteredFileName) => {
       logger.debug(`Get language from ${filteredFileName}`);
       const language = filteredFileName.split('.').at(-2);
-      return { language, origin: 'External', name: filteredFileName };
+      return {
+        uuid: uuidv4(),
+        language,
+        origin: 'External',
+        name: filteredFileName,
+      };
     });
   logger.debug(`Subtitles: ${subs} in directory ${path.dirname(file.path)}`);
 
@@ -70,10 +83,12 @@ export const getSubtitlesFromAddic7ed = async (file: dree.Dree) => {
 
   return addic7edSubtitles
     ? addic7edSubtitles.downloadableSubtitles.map((addic7edSubtitle) => ({
+        uuid: uuidv4(),
         language: 'fr',
         name: addic7edSubtitle.version,
-        downloadUrl: addic7edSubtitle.link,
+        link: addic7edSubtitle.link,
         origin: 'Addic7ed',
+        referer: addic7edSubtitles.referer,
       }))
     : [];
 };

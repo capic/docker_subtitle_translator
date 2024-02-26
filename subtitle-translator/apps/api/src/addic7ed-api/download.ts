@@ -3,11 +3,7 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import iconv from 'iconv-lite';
 import { addic7edURL } from './helpers';
-
-interface SubInfo {
-  referer: string;
-  link: string;
-}
+import { SubInfo } from '@subtitle-translator/shared';
 
 export default async function download(subInfo: SubInfo, filename: string) {
   const response = await fetch(`${addic7edURL}${subInfo.link}`, {

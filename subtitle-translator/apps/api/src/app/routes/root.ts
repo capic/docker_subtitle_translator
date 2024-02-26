@@ -10,7 +10,8 @@ import {
   getSubtitlesFromDirectory,
   getSubtitlesFromFile,
 } from '../../utils/getSubtitles';
-import { ModifiedDree } from '@subtitle-translator/shared';
+import { ModifiedDree, SubInfo } from '@subtitle-translator/shared';
+import download from '../../addic7ed-api/download';
 
 const children: dree.Dree[] = [
   {
@@ -155,11 +156,15 @@ export default async function (fastify: FastifyInstance) {
 
       try {
         const subtitlesFromDirectory = getSubtitlesFromDirectory(file);
-        logger.debug(`subtitlesFromDirectory: ${JSON.stringify(subtitlesFromDirectory)}`)
+        logger.debug(
+          `subtitlesFromDirectory: ${JSON.stringify(subtitlesFromDirectory)}`,
+        );
         const subtitlesFromAddic7ed = await getSubtitlesFromAddic7ed(file);
-        logger.debug(`subtitlesFromAddic7ed: ${JSON.stringify(subtitlesFromAddic7ed)}`)
+        logger.debug(
+          `subtitlesFromAddic7ed: ${JSON.stringify(subtitlesFromAddic7ed)}`,
+        );
         const subtitlesFromFile = await getSubtitlesFromFile(file);
-        logger.debug(`subtitlesFromFile: ${JSON.stringify(subtitlesFromFile)}`)
+        logger.debug(`subtitlesFromFile: ${JSON.stringify(subtitlesFromFile)}`);
 
         return [
           ...subtitlesFromDirectory,
@@ -240,15 +245,7 @@ export default async function (fastify: FastifyInstance) {
         );
         fs.rmSync(`/data/temp/${path.basename(file.path)}.fr.srt`);
 
-        return {
-          status: true,
-          message: 'Srt extracted',
-          data: {
-            //name: avatar.name,
-            //mimetype: avatar.mimetype,
-            //size: avatar.size
-          },
-        };
+        return 'Sous titre extrait';
       } catch (error) {
         logger.error(`Error: ${error.message}`);
         return {
@@ -259,7 +256,36 @@ export default async function (fastify: FastifyInstance) {
     },
   );
 
-  fastify.get('/local/subtitles-addic7ed', async() => {
+  fastify.post<{ Body: SubInfo & { uuid: string } }>(
+    '/api/subtitles/download',
+    async (request) => {
+      const { referer, link, uuid } = request.body;
+
+      if (!link || !referer || !uuid) {
+        logger.error(`No referer or link or uuid provided`);
+        return {
+          status: false,
+          message: 'No referer uuid or link or uuid',
+        };
+      }
+
+      const file = fileMap.get(uuid);
+
+      if (!file) {
+        logger.error(`No file found with ${uuid}`);
+        return {
+          status: false,
+          message: 'No file path',
+        };
+      }
+
+      await download({ link, referer }, `${file.path}.srt`);
+
+      return 'Sous titre téléchargé';
+    },
+  );
+
+  fastify.get('/local/subtitles-addic7ed', async () => {
     const file: dree.Dree = {
       name: 'Séries VO',
       // path: '/data/media/series_vo',
@@ -267,11 +293,11 @@ export default async function (fastify: FastifyInstance) {
       type: dree.Type.FILE,
       relativePath: '.',
       isSymbolicLink: false,
-    }
-    return  await getSubtitlesFromAddic7ed(file)
-  })
+    };
+    return await getSubtitlesFromAddic7ed(file);
+  });
 
-  fastify.get('/local/subtitles-file', async() => {
+  fastify.get('/local/subtitles-file', async () => {
     const file: dree.Dree = {
       name: 'Reacher.S01E01.Welcome.to.Margrave.1080p.10bit.WEBRip.6CH.x265.HEVC-PSA.mkv',
       // path: '/data/media/series_vo',
@@ -279,7 +305,7 @@ export default async function (fastify: FastifyInstance) {
       type: dree.Type.FILE,
       relativePath: '.',
       isSymbolicLink: false,
-    }
-    return  [...(await getSubtitlesFromFile(file))]
-  })
+    };
+    return [...(await getSubtitlesFromFile(file))];
+  });
 }

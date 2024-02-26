@@ -1,4 +1,8 @@
 import { http, HttpResponse } from 'msw';
+import { ModifiedDree, Subtitles } from '@subtitle-translator/shared';
+import * as dree from 'dree';
+import { Type } from 'dree';
+import { root } from './data/files';
 
 /*
 const json = {
@@ -8084,155 +8088,127 @@ const json = {
 */
 export const handlers = [
   http.get('http://192.168.1.106:3333/api/files', () => {
-    return HttpResponse.json({
-      name: 'root',
-      path: '/',
-      type: 'directory',
-      relativePath: '.',
-      hash: '0',
-      isSymbolicLink: false,
-      children: [
-        {
-          name: 'series_en_cours',
-          path: '/data/media/series_en_cours',
-          relativePath: '.',
-          type: 'directory',
-          hash: '2',
-          isSymbolicLink: false,
-          sizeInBytes: 383100360543,
-        },
-        {
-          name: 'Westworld.S04E07.720p.WEB.x265-MiNX.mkv',
-          path: '/data/media/series_vo/Westworld/Westworld.S04E07.720p.WEB.x265-MiNX.mkv',
-          relativePath: 'Westworld/Westworld.S04E07.720p.WEB.x265-MiNX.mkv',
-          type: 'file',
-          hash: '3',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 267802658,
-        },
-        {
-          name: 'Westworld.S04E08.720p.WEB.x265-MiNX.mkv',
-          path: '/data/media/series_vo/Westworld/Westworld.S04E08.720p.WEB.x265-MiNX.mkv',
-          relativePath: 'Westworld/Westworld.S04E08.720p.WEB.x265-MiNX.mkv',
-          type: 'file',
-          hash: '4',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 308738316,
-        },
-      ],
-    });
+    return HttpResponse.json<ModifiedDree<dree.Dree>>(root);
   }),
-  http.get('http://192.168.1.106:3333/api/directories/:hash/files', () => {
-    return HttpResponse.json({
+  http.get('http://192.168.1.106:3333/api/directories/:uuid/files', () => {
+    return HttpResponse.json<ModifiedDree<dree.Dree>>({
       name: 'The Witcher',
       path: '/data/media/series_vo/The Witcher',
-      hash: '1',
       relativePath: 'The Witcher',
-      type: 'directory',
+      type: Type.DIRECTORY,
       isSymbolicLink: false,
       sizeInBytes: 54577080564,
+      uuid: '1',
       children: [
         {
           name: 'The Witcher (2019) S01E01 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E01 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E01 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1645163850,
+          uuid: '10',
         },
         {
           name: 'The Witcher (2019) S01E02 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E02 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E02 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1562139975,
+          uuid: '11',
         },
         {
           name: 'The Witcher (2019) S01E03 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E03 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E03 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1262750632,
+          uuid: '12',
         },
         {
           name: 'The Witcher (2019) S01E04 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E04 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E04 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1695763478,
+          uuid: '13',
         },
         {
           name: 'The Witcher (2019) S01E05 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E05 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E05 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1639925610,
+          uuid: '14',
         },
         {
           name: 'The Witcher (2019) S01E06 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E06 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E06 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 2116786773,
+          uuid: '15',
         },
         {
           name: 'The Witcher (2019) S01E07 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E07 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E07 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1089637934,
+          uuid: '16',
         },
         {
           name: 'The Witcher (2019) S01E08 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S01E08 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S01E08 1080p 10Bit NF WEB-DL x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 1593766853,
+          uuid: '17',
         },
         {
           name: 'The Witcher (2019) S02E01 1080p 10bit WEBRip x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E01 1080p 10bit WEBRip x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S02E01 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 787300649,
+          uuid: '18',
         },
         {
           name: 'The Witcher (2019) S02E02 1080p 10bit WEBRip x265 HEVC.mkv',
           path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E02 1080p 10bit WEBRip x265 HEVC.mkv',
           relativePath:
             'The Witcher/The Witcher (2019) S02E02 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
+          type: Type.FILE,
           isSymbolicLink: false,
           extension: 'mkv',
           sizeInBytes: 871590000,
+          uuid: '19',
         },
         {
           name: 'The Witcher (2019) S02E03 1080p 10bit WEBRip x265 HEVC.mkv',
@@ -8244,189 +8220,42 @@ export const handlers = [
           extension: 'mkv',
           sizeInBytes: 929032282,
         },
-        {
-          name: 'The Witcher (2019) S02E04 1080p 10bit WEBRip x265 HEVC.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E04 1080p 10bit WEBRip x265 HEVC.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S02E04 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 579372655,
-        },
-        {
-          name: 'The Witcher (2019) S02E05 1080p 10bit WEBRip x265 HEVC.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E05 1080p 10bit WEBRip x265 HEVC.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S02E05 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 654331487,
-        },
-        {
-          name: 'The Witcher (2019) S02E06 1080p 10bit WEBRip x265 HEVC.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E06 1080p 10bit WEBRip x265 HEVC.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S02E06 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 832669904,
-        },
-        {
-          name: 'The Witcher (2019) S02E07 1080p 10bit WEBRip x265 HEVC.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E07 1080p 10bit WEBRip x265 HEVC.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S02E07 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 862352964,
-        },
-        {
-          name: 'The Witcher (2019) S02E08 1080p 10bit WEBRip x265 HEVC.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E08 1080p 10bit WEBRip x265 HEVC.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S02E08 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 647473833,
-        },
-        {
-          name: 'The Witcher (2019) S03E08 2160p 4K UHD HDR10 DV NF WEBRip x265 10bit HEVC Multi Audio [Org NF Hindi-Tamil-Telugu DDP 5.1 ~ 640Kbps + English AAC 5.1] ESub ~ PSA.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S03E08 2160p 4K UHD HDR10 DV NF WEBRip x265 10bit HEVC Multi Audio [Org NF Hindi-Tamil-Telugu DDP 5.1 ~ 640Kbps + English AAC 5.1] ESub ~ PSA.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S03E08 2160p 4K UHD HDR10 DV NF WEBRip x265 10bit HEVC Multi Audio [Org NF Hindi-Tamil-Telugu DDP 5.1 ~ 640Kbps + English AAC 5.1] ESub ~ PSA.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 3163607429,
-        },
-        {
-          name: 'The.Witcher.S03E01.Shaerrawedd.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E01.Shaerrawedd.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E01.Shaerrawedd.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 2532399794,
-        },
-        {
-          name: 'The.Witcher.S03E02.Unbound.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E02.Unbound.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E02.Unbound.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 1991593071,
-        },
-        {
-          name: 'The.Witcher.S03E03.Reunion.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E03.Reunion.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E03.Reunion.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 2264959488,
-        },
-        {
-          name: 'The.Witcher.S03E04.The.Invitation.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E04.The.Invitation.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E04.The.Invitation.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 1963691206,
-        },
-        {
-          name: 'The.Witcher.S03E05.The.Art.of.the.Illusion.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E05.The.Art.of.the.Illusion.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E05.The.Art.of.the.Illusion.1080p.DS4K.SDR.10bit.NF.WEBRip.Multi.DDP.5.1.x265.HEVC-OlaM.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 1853558761,
-        },
-        {
-          name: 'The.Witcher.S03E06.Everybody.Has.a.Plan.til.They.Get.Punched.in.the.Face.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E06.Everybody.Has.a.Plan.til.They.Get.Punched.in.the.Face.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E06.Everybody.Has.a.Plan.til.They.Get.Punched.in.the.Face.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 1723466204,
-        },
-        {
-          name: 'The.Witcher.S03E06.Everybody.Has.a.Plan.til.They.Get.Punched.in.the.Face.2160p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E06.Everybody.Has.a.Plan.til.They.Get.Punched.in.the.Face.2160p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E06.Everybody.Has.a.Plan.til.They.Get.Punched.in.the.Face.2160p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 7491777135,
-        },
-        {
-          name: 'The.Witcher.S03E07.Out.of.the.Fire.Into.the.Frying.Pan.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E07.Out.of.the.Fire.Into.the.Frying.Pan.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E07.Out.of.the.Fire.Into.the.Frying.Pan.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 1935087452,
-        },
-        {
-          name: 'The.Witcher.S03E07.Out.of.the.Fire.Into.the.Frying.Pan.2160p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E07.Out.of.the.Fire.Into.the.Frying.Pan.2160p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E07.Out.of.the.Fire.Into.the.Frying.Pan.2160p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 8505612102,
-        },
-        {
-          name: 'The.Witcher.S03E08.The.Cost.of.Chaos.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          path: '/data/media/series_vo/The Witcher/The.Witcher.S03E08.The.Cost.of.Chaos.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          relativePath:
-            'The Witcher/The.Witcher.S03E08.The.Cost.of.Chaos.1080p.NF.WEB-DL.HIN-ENG-TAM-TEL.DDP5.1.Atmos.DoVi.HEVC-NTb.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 2381269043,
-        },
       ],
-    },);
+    });
   }),
   http.get(
-    `http://192.168.1.106:3333/api/files/:hash/subtitles`,
+    `http://192.168.1.106:3333/api/files/:uuid/subtitles`,
     async ({ params }) => {
-      const { hash } = params;
-
-      console.log({ hash });
-
-      return new HttpResponse(
-        JSON.stringify([
-          { number: 3, language: undefined, type: 'utf8' },
-          { number: 4, language: undefined, type: 'utf8', name: 'SDH' },
-          { number: 5, language: 'fre', type: 'utf8' },
-        ])
-      );
-    }
+      return HttpResponse.json<Subtitles>([
+        {
+          number: 3,
+          language: undefined,
+          type: 'utf8',
+          uuid: '0',
+          origin: 'Internal',
+        },
+        {
+          number: 4,
+          language: undefined,
+          type: 'utf8',
+          name: 'SDH',
+          uuid: '1',
+          origin: 'Internal',
+        },
+        {
+          number: 5,
+          language: 'fre',
+          type: 'utf8',
+          uuid: '2',
+          origin: 'Internal',
+        },
+      ]);
+    },
   ),
   http.post<{ hash: string; number: string }>(
     'http://192.168.1.106:3333/api/files/:hash/subtitles/:number/translate',
     async () => {
       return new HttpResponse(null, { status: 201 });
-    }
+    },
   ),
 ];

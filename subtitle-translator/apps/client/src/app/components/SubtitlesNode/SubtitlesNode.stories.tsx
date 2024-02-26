@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { handlers } from '../../../mocks/handlers'
 
-import SubtitlesNode from '.';
+import SubtitlesNode from './SubtitlesNode';
 import React from 'react';
 
 const meta: Meta<typeof SubtitlesNode> = {

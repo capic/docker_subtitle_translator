@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { handlers } from '../../../mocks/handlers'
 
-import FolderContent from '.';
+import FolderContent from './FolderContent';
 import React from 'react';
 
 const meta: Meta<typeof FolderContent> = {
