@@ -8210,16 +8210,6 @@ export const handlers = [
           sizeInBytes: 871590000,
           uuid: '19',
         },
-        {
-          name: 'The Witcher (2019) S02E03 1080p 10bit WEBRip x265 HEVC.mkv',
-          path: '/data/media/series_vo/The Witcher/The Witcher (2019) S02E03 1080p 10bit WEBRip x265 HEVC.mkv',
-          relativePath:
-            'The Witcher/The Witcher (2019) S02E03 1080p 10bit WEBRip x265 HEVC.mkv',
-          type: 'file',
-          isSymbolicLink: false,
-          extension: 'mkv',
-          sizeInBytes: 929032282,
-        },
       ],
     });
   }),
