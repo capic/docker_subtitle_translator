@@ -13,7 +13,7 @@ describe('getSubtitles', () => {
     it('returns the subtitles', async () => {
       const file: ModifiedDree<dree.Dree> = {
         name: 'test5.mkv',
-        path: 'apps/api/mocks/test5.mkv',
+        path: 'apps/api/src/mocks/test5.mkv',
         relativePath: '../../test5.mkv',
         type: Type.FILE,
         isSymbolicLink: false,
@@ -100,7 +100,7 @@ describe('getSubtitles', () => {
     it('returns empty array if no subtitles', async () => {
       const file: ModifiedDree<dree.Dree> = {
         name: 'test5 sans sous titre.mkv',
-        path: 'apps/api/mocks/test5 sans sous titre.mkv',
+        path: 'apps/api/src/mocks/test5 sans sous titre.mkv',
         relativePath: '../../test5 sans sous titre.mkv',
         type: Type.FILE,
         isSymbolicLink: false,
