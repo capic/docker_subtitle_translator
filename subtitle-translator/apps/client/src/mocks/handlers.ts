@@ -8239,6 +8239,14 @@ export const handlers = [
           uuid: '2',
           origin: 'Internal',
         },
+        {
+          referer: '/a/b',
+          origin: 'Addic7ed',
+          uuid: '1',
+          name: 'a',
+          link: '/abc.html',
+          language: 'fr'
+        }
       ]);
     },
   ),

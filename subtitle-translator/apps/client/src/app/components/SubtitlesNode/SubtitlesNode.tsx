@@ -14,9 +14,9 @@ const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   const { data } = await axios.get(
     `http://192.168.1.106:3333/api/files/${uuid}/subtitles`,
   );
+console.log(JSON.stringify(data))
 
   const parsed = subtitlesSchema.safeParse(data);
-
   if (!parsed.success) {
     throw new Error(parsed.error.message);
   }
