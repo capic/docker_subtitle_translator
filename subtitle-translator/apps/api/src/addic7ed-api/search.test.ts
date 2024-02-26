@@ -1,7 +1,7 @@
 import search from './search';
-import { server } from '../../mocks/node';
 import { http, HttpResponse } from 'msw';
-import { emptyResultPage } from '../../mocks/data/emptyResultPage';
+import { server } from '../mocks/node';
+import { emptyResultPage } from '../mocks/data/emptyResultPage';
 
 describe('search', () => {
   describe(
