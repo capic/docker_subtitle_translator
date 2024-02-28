@@ -1,6 +1,5 @@
 import { Buffer } from 'buffer';
 import fs from 'fs';
-import fetch from 'node-fetch';
 import iconv from 'iconv-lite';
 import { addic7edURL } from './helpers';
 import { SubInfo } from '@subtitle-translator/shared';
@@ -14,8 +13,7 @@ export default async function download(subInfo: SubInfo, filename: string) {
     //follow: 0,
   });
 
-  const body = await response.data.arrayBuffer();
-  const fileContentBuffer = Buffer.from(body);
+  const fileContentBuffer = Buffer.from(response.data);
   let fileContent = iconv.decode(fileContentBuffer, 'utf8');
 
   if (~fileContent.indexOf('�')) {

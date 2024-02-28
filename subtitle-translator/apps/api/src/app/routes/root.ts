@@ -310,4 +310,8 @@ export default async function (fastify: FastifyInstance) {
     };
     return [...(await getSubtitlesFromFile(file))];
   });
+
+  fastify.get('/local/subtitle/download', async () => {
+    await download({link: '/original/172709/2', referer: '/show/8778'}, 'temps.srt')
+  })
 }
