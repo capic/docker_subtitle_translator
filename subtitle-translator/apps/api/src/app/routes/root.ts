@@ -257,10 +257,10 @@ export default async function (fastify: FastifyInstance) {
     },
   );
 
-  fastify.post<{ Body: SubInfo & { uuid: string } }>(
+  fastify.post<{ Body: SubInfo & { uuid: string, language: string } }>(
     '/api/subtitles/download',
     async (request) => {
-      const { referer, link, uuid } = request.body;
+      const { referer, link, uuid, language } = request.body;
 
       if (!link || !referer || !uuid) {
         logger.error(`No referer or link or uuid provided`);
@@ -281,7 +281,7 @@ export default async function (fastify: FastifyInstance) {
       }
 
       logger.debug(`Download file ${file.path}.srt with link ${link} and referer ${referer}`);
-      await download({ link, referer }, `${file.path}.srt`);
+      await download({ link, referer },`${file.path}.${language}.srt`);
 
       return 'Sous titre téléchargé';
     },

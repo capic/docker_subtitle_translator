@@ -14,7 +14,6 @@ const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   const { data } = await axios.get(
     `http://192.168.1.106:3333/api/files/${uuid}/subtitles`,
   );
-console.log(JSON.stringify(data))
 
   const parsed = subtitlesSchema.safeParse(data);
   if (!parsed.success) {
@@ -36,7 +35,7 @@ const SubtitlesNode = ({ uuid }: Props) => {
   });
 
   const mutationTranslate = useMutation({
-    mutationFn: (number: number) => {
+    mutationFn: ({number}: { number: number }) => {
       return axios.post('http://192.168.1.106:3333/api/subtitles/translate', {
         uuid,
         number,
@@ -45,11 +44,12 @@ const SubtitlesNode = ({ uuid }: Props) => {
   });
 
   const mutationDownload = useMutation({
-    mutationFn: (subInfo: SubInfo) => {
+    mutationFn: ({ referer, link, language }: {referer:SubInfo['referer'], link:SubInfo['link'], language:string}) => {
       return axios.post('http://192.168.1.106:3333/api/subtitles/download', {
         uuid,
-        referer: subInfo.referer,
-        link: subInfo.link,
+        referer,
+        link,
+        language,
       });
     },
   });
@@ -71,15 +71,15 @@ const SubtitlesNode = ({ uuid }: Props) => {
       return;
     }
 
-    mutationTranslate.mutate(number);
+    mutationTranslate.mutate({ number });
   };
 
-  const download = (subInfo: SubInfo) => {
+  const download = (subInfo: SubInfo, language: string) => {
     if (!subInfo) {
       return;
     }
 
-    mutationDownload.mutate(subInfo);
+    mutationDownload.mutate({ referer: subInfo.referer, link: subInfo.link, language} );
   };
 
   const handleSubtitleAction = (subtitle: Subtitle) => {
@@ -90,10 +90,13 @@ const SubtitlesNode = ({ uuid }: Props) => {
         translate(subtitle.number);
         break;
       case 'Addic7ed':
-        download({
-          referer: subtitle.referer,
-          link: subtitle.link,
-        });
+        download(
+          {
+            referer: subtitle.referer,
+            link: subtitle.link,
+          },
+          subtitle.language,
+        );
         break;
     }
   };
@@ -104,7 +107,9 @@ const SubtitlesNode = ({ uuid }: Props) => {
         <li key={subtitle.uuid} onClick={() => handleSubtitleAction(subtitle)}>
           <SubtitleText
             subtitle={subtitle}
-            isLoading={mutationTranslate.isPending || mutationDownload.isPending}
+            isLoading={
+              mutationTranslate.isPending || mutationDownload.isPending
+            }
           />
         </li>
       ))}
