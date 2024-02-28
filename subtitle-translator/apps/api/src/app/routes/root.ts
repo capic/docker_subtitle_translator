@@ -173,7 +173,7 @@ export default async function (fastify: FastifyInstance) {
         ];
       } catch (error) {
         logger.debug(`Error: ${error}`);
-        reply.send(error)
+        reply.send(error);
       }
     },
   );
@@ -280,6 +280,7 @@ export default async function (fastify: FastifyInstance) {
         };
       }
 
+      logger.debug(`Download file ${file.path}.srt with link ${link} and referer ${referer}`);
       await download({ link, referer }, `${file.path}.srt`);
 
       return 'Sous titre téléchargé';

@@ -4,16 +4,17 @@ import fetch from 'node-fetch';
 import iconv from 'iconv-lite';
 import { addic7edURL } from './helpers';
 import { SubInfo } from '@subtitle-translator/shared';
+import axios from 'axios';
 
 export default async function download(subInfo: SubInfo, filename: string) {
-  const response = await fetch(`${addic7edURL}${subInfo.link}`, {
+  const response = await axios.get(`${addic7edURL}${subInfo.link}`, {
     headers: {
       Referer: `${addic7edURL}${subInfo.referer || '/show/1'}`,
     },
-    follow: 0,
+    //follow: 0,
   });
 
-  const body = await response.arrayBuffer();
+  const body = await response.data.arrayBuffer();
   const fileContentBuffer = Buffer.from(body);
   let fileContent = iconv.decode(fileContentBuffer, 'utf8');
 
