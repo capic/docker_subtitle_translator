@@ -3,6 +3,7 @@ import { addic7edURL, formatShowNumber, headers } from './helpers';
 import logger from '../utils/logger';
 import axios from 'axios';
 import { parse, HTMLElement } from 'node-html-parser';
+import download from './download';
 
 export default async function search({
   show,
@@ -123,13 +124,12 @@ function getVersionInfo(availableSubtitle: HTMLElement) {
 function findSubtitles2({
   //type,
   body,
-  // languages,
+  languages,
 }: {
   type?: string;
   body: string;
   languages?: string[];
 }) {
-  console.log('findSubtitles');
   const dom = parse(body);
   const { episodeTitle, showTitle } = getTitleInfo(dom);
   const referer = dom
@@ -156,16 +156,6 @@ function findSubtitles2({
       .querySelector('a.buttonDownload')
       .getAttribute('href');
 
-    logger.debug(
-      `Subtitle found: ${{
-        version,
-        downloads,
-        lang,
-        /*langId*/ team,
-        distribution,
-        link /*hearingImpaired*/,
-      }}`,
-    );
     return {
       version,
       downloads,
@@ -176,7 +166,14 @@ function findSubtitles2({
     };
   });
 
-  return { episodeTitle, showTitle, referer, downloadableSubtitles };
+  return {
+    episodeTitle,
+    showTitle,
+    referer,
+    downloadableSubtitles: downloadableSubtitles.filter((subtitle) =>
+      languages.includes(subtitle.lang.toLowerCase()),
+    ),
+  };
 }
 /*
 function findSubtitles({
