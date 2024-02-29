@@ -51,6 +51,7 @@ describe('SubtitlesNode', () => {
         link: '/abc.html',
         referer: '/a/b',
         uuid: '1',
+        language: "fr"
       },
     );
   });
