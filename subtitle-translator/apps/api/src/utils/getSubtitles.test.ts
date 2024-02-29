@@ -7,6 +7,11 @@ import * as dree from 'dree';
 import { Type } from 'dree';
 import fs from 'fs';
 import { ModifiedDree } from '@subtitle-translator/shared';
+import { server } from '../mocks/node';
+import { http, HttpResponse } from 'msw';
+import { addic7edURL } from '../addic7ed-api/helpers';
+import { resultPage } from '../mocks/data/resultPage';
+import { emptyResultPage } from '../mocks/data/emptyResultPage';
 
 describe('getSubtitles', () => {
   describe('getSubtitlesFromFile', () => {
@@ -214,46 +219,6 @@ describe('getSubtitles', () => {
 
       expect(await getSubtitlesFromAddic7ed(file)).toEqual([
         {
-          link: '/original/176864/1',
-          language: 'fr',
-          name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
-          origin: 'Addic7ed',
-          uuid: expect.stringMatching(
-            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
-          ),
-          referer: '/show/7414',
-        },
-        {
-          link: '/original/176864/1',
-          language: 'fr',
-          name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
-          origin: 'Addic7ed',
-          uuid: expect.stringMatching(
-            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
-          ),
-          referer: '/show/7414',
-        },
-        {
-          link: '/original/176864/0',
-          language: 'fr',
-          name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
-          origin: 'Addic7ed',
-          uuid: expect.stringMatching(
-            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
-          ),
-          referer: '/show/7414',
-        },
-        {
-          link: '/original/176864/0',
-          language: 'fr',
-          name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
-          origin: 'Addic7ed',
-          uuid: expect.stringMatching(
-            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
-          ),
-          referer: '/show/7414',
-        },
-        {
           link: '/original/176864/3',
           language: 'fr',
           name: 'ION10+GLHF+GGEZ+AMZN-WEBRip+WEBDL',
@@ -267,26 +232,6 @@ describe('getSubtitles', () => {
           link: '/original/176864/3',
           language: 'fr',
           name: 'ION10+GLHF+GGEZ+AMZN-WEBRip+WEBDL',
-          origin: 'Addic7ed',
-          uuid: expect.stringMatching(
-            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
-          ),
-          referer: '/show/7414',
-        },
-        {
-          link: '/original/176864/2',
-          language: 'fr',
-          name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
-          origin: 'Addic7ed',
-          uuid: expect.stringMatching(
-            /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
-          ),
-          referer: '/show/7414',
-        },
-        {
-          link: '/original/176864/2',
-          language: 'fr',
-          name: 'ION10+GGEZ+WEBDL-DVSUX+WEBDL-GGEZ',
           origin: 'Addic7ed',
           uuid: expect.stringMatching(
             /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/,
@@ -295,7 +240,29 @@ describe('getSubtitles', () => {
         },
       ]);
     });
-    it.todo('returns empty array if no subtitles');
+    it('returns empty array if the search returns null', async () => {
+      server.use(
+        http.get(
+          `${addic7edURL}/srch.php`,
+          () => {
+            return new HttpResponse(emptyResultPage);
+          },
+        ),
+      );
+
+      const file: ModifiedDree<dree.Dree> = {
+        name: 'DDLValley.me_83_A.Evil.S03E08.1080p.WEB.h264-ETHEL.mkv',
+        path: '/data/media/series_en_cours/Evil/DDLValley.me_83_A.Evil.S03E08.1080p.WEB.h264-ETHEL.mkv',
+        relativePath: 'DDLValley.me_83_A.Evil.S03E08.1080p.WEB.h264-ETHEL.mkv',
+        type: Type.FILE,
+        isSymbolicLink: false,
+        extension: 'mkv',
+        sizeInBytes: 1822536247,
+        uuid: 'dfc8745b-72ca-4bd5-9009-668e85cd4118',
+      };
+
+      expect(await getSubtitlesFromAddic7ed(file)).toEqual([]);
+    });
     it.todo('returns empty array if addic7ed raises an error');
   });
 });

@@ -170,8 +170,8 @@ function findSubtitles2({
     episodeTitle,
     showTitle,
     referer,
-    downloadableSubtitles: downloadableSubtitles.filter((subtitle) =>
-      languages.includes(subtitle.lang.toLowerCase()),
+    downloadableSubtitles: downloadableSubtitles.filter(({ lang }) =>
+      languages.includes(lang.toLowerCase()),
     ),
   };
 }
