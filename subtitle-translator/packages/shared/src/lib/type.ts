@@ -11,33 +11,41 @@ type ModifiedDreeProps<T> = {
 
 const originSchema = z.enum(['Addic7ed', 'External', 'Internal']);
 
-const subtitleSchema = z
-  .object({
-    uuid: z.string(),
-    number: z.number().optional(),
-    language: z.string().optional(),
-    type: z.string().optional(),
-    name: z.string().optional(),
-    origin: z
-      .literal(originSchema.Values.External)
-      .or(z.literal(originSchema.Values.Internal)),
-  })
-  .or(
-    z.object({
-      uuid: z.string(),
-      language: z.string(),
-      origin: z.literal(originSchema.Values.Addic7ed),
-      name: z.string(),
-      link: z.string(),
-      referer: z.string(),
-    }),
-  );
+const internalSubtitleSchema = z.object({
+  uuid: z.string(),
+  number: z.number(),
+  language: z.string().optional(),
+  type: z.string().optional(),
+  name: z.string().optional(),
+  origin: z.literal(originSchema.Values.Internal),
+});
+const externalSubtitleSchema = z.object({
+  uuid: z.string(),
+  language: z.string().optional(),
+  name: z.string().optional(),
+  origin: z.literal(originSchema.Values.External),
+});
+const addic7edSubtitleSchema = z.object({
+  uuid: z.string(),
+  language: z.string(),
+  origin: z.literal(originSchema.Values.Addic7ed),
+  name: z.string(),
+  link: z.string(),
+  referer: z.string(),
+});
+
+const subtitleSchema = internalSubtitleSchema
+  .or(externalSubtitleSchema)
+  .or(addic7edSubtitleSchema);
 export const subtitlesSchema = subtitleSchema.array();
 export const subInfoSchema = z.object({
   referer: z.string(),
   link: z.string(),
 });
 
+export type InternalSubtitle = z.infer<typeof internalSubtitleSchema>;
+export type ExternalSubtitle = z.infer<typeof externalSubtitleSchema>;
+export type Addic7edSubtitle = z.infer<typeof addic7edSubtitleSchema>;
 export type Subtitle = z.infer<typeof subtitleSchema>;
 export type Subtitles = z.infer<typeof subtitlesSchema>;
 export type Origin = z.infer<typeof originSchema>;

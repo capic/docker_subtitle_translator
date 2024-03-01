@@ -9,6 +9,7 @@ import {
   Subtitles,
   subtitlesSchema,
 } from '@subtitle-translator/shared';
+import SubtitleNode from '../SubtitleNode/SubtitleNode';
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   const { data } = await axios.get(
@@ -34,26 +35,6 @@ const SubtitlesNode = ({ uuid }: Props) => {
     refetchOnWindowFocus: false,
   });
 
-  const mutationTranslate = useMutation({
-    mutationFn: ({number}: { number: number }) => {
-      return axios.post('http://192.168.1.106:3333/api/subtitles/translate', {
-        uuid,
-        number,
-      });
-    },
-  });
-
-  const mutationDownload = useMutation({
-    mutationFn: ({ referer, link, language }: {referer:SubInfo['referer'], link:SubInfo['link'], language:string}) => {
-      return axios.post('http://192.168.1.106:3333/api/subtitles/download', {
-        uuid,
-        referer,
-        link,
-        language,
-      });
-    },
-  });
-
   if (isLoading) {
     return <>Loading...</>;
   }
@@ -66,52 +47,10 @@ const SubtitlesNode = ({ uuid }: Props) => {
     return <>No data</>;
   }
 
-  const translate = (number?: number) => {
-    if (!number) {
-      return;
-    }
-
-    mutationTranslate.mutate({ number });
-  };
-
-  const download = (subInfo: SubInfo, language: string) => {
-    if (!subInfo) {
-      return;
-    }
-
-    mutationDownload.mutate({ referer: subInfo.referer, link: subInfo.link, language} );
-  };
-
-  const handleSubtitleAction = (subtitle: Subtitle) => {
-    switch (subtitle.origin) {
-      case 'External':
-        break;
-      case 'Internal':
-        translate(subtitle.number);
-        break;
-      case 'Addic7ed':
-        download(
-          {
-            referer: subtitle.referer,
-            link: subtitle.link,
-          },
-          subtitle.language,
-        );
-        break;
-    }
-  };
-
   return (
     <ul>
       {data.map((subtitle) => (
-        <li key={subtitle.uuid} onClick={() => handleSubtitleAction(subtitle)}>
-          <SubtitleText
-            subtitle={subtitle}
-            isLoading={
-              mutationTranslate.isPending || mutationDownload.isPending
-            }
-          />
-        </li>
+        <SubtitleNode subtitle={subtitle}/>
       ))}
     </ul>
   );
