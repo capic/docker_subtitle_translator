@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import * as dree from 'dree';
+import { Type } from 'dree';
 import { v4 as uuidv4 } from 'uuid';
 import logger from '../../utils/logger';
 import path from 'path';
@@ -10,8 +11,13 @@ import {
   getSubtitlesFromDirectory,
   getSubtitlesFromFile,
 } from '../../utils/getSubtitles';
-import { ModifiedDree, SubInfo } from '@subtitle-translator/shared';
+import {
+  ExternalSubtitle,
+  ModifiedDree,
+  SubInfo,
+} from '@subtitle-translator/shared';
 import download from '../../addic7ed-api/download';
+import * as repl from 'node:repl';
 
 const children: dree.Dree[] = [
   {
@@ -180,7 +186,7 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.post<{ Body: { uuid: string; number: number } }>(
     '/api/subtitles/translate',
-    (request) => {
+    (request, reply) => {
       const { uuid, number } = request.body;
 
       if (!uuid || !number) {
@@ -246,7 +252,23 @@ export default async function (fastify: FastifyInstance) {
         );
         fs.rmSync(`/data/temp/${path.basename(file.path)}.fr.srt`);
 
-        return 'Sous titre extrait';
+        const dree: ModifiedDree<dree.Dree> = {
+          uuid: uuidv4(),
+          name: `${path.basename(file.path)}.fr.srt`,
+          path: `${path.dirname(file.path)}/${path.basename(file.path)}.fr.srt`,
+          type: Type.FILE,
+          relativePath: '.',
+          isSymbolicLink: false,
+        };
+
+        fileMap.set(dree.uuid, dree);
+
+        reply.status(201).send({
+          uuid: dree.uuid,
+          language: 'fr',
+          name: dree.name,
+          origin: 'External',
+        });
       } catch (error) {
         logger.error(`Error: ${error.message}`);
         return {
@@ -257,9 +279,9 @@ export default async function (fastify: FastifyInstance) {
     },
   );
 
-  fastify.post<{ Body: SubInfo & { uuid: string, language: string } }>(
+  fastify.post<{ Body: SubInfo & { uuid: string; language: string } }>(
     '/api/subtitles/download',
-    async (request) => {
+    async (request, reply) => {
       const { referer, link, uuid, language } = request.body;
 
       if (!link || !referer || !uuid) {
@@ -280,10 +302,28 @@ export default async function (fastify: FastifyInstance) {
         };
       }
 
-      logger.debug(`Download file ${file.path}.srt with link ${link} and referer ${referer}`);
-      await download({ link, referer },`${file.path}.${language}.srt`);
+      logger.debug(
+        `Download file ${file.path}.srt with link ${link} and referer ${referer}`,
+      );
+      await download({ link, referer }, `${file.path}.${language}.srt`);
 
-      return 'Sous titre téléchargé';
+      const dree: ModifiedDree<dree.Dree> = {
+        uuid: uuidv4(),
+        name: `${file.path}.${language}.srt`,
+        path: `${path.dirname(file.path)}/${file.path}.${language}.srt`,
+        type: Type.FILE,
+        relativePath: '.',
+        isSymbolicLink: false,
+      };
+
+      fileMap.set(dree.uuid, dree);
+
+      reply.status(201).send({
+        uuid: dree.uuid,
+        language: 'fr',
+        name: dree.name,
+        origin: 'External',
+      });
     },
   );
 
@@ -312,6 +352,9 @@ export default async function (fastify: FastifyInstance) {
   });
 
   fastify.get('/local/subtitle/download', async () => {
-    await download({link: '/original/172709/2', referer: '/show/8778'}, 'temps.srt')
-  })
+    await download(
+      { link: '/original/172709/2', referer: '/show/8778' },
+      'temps.srt',
+    );
+  });
 }

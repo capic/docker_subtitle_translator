@@ -1,5 +1,9 @@
 import { http, HttpResponse } from 'msw';
-import { ModifiedDree, Subtitles } from '@subtitle-translator/shared';
+import {
+  ExternalSubtitle,
+  ModifiedDree,
+  Subtitles,
+} from '@subtitle-translator/shared';
 import * as dree from 'dree';
 import { Type } from 'dree';
 import { root } from './data/files';
@@ -8245,15 +8249,33 @@ export const handlers = [
           uuid: '1',
           name: 'a',
           link: '/abc.html',
-          language: 'fr'
-        }
+          language: 'fr',
+        },
       ]);
     },
   ),
   http.post<{ hash: string; number: string }>(
-    'http://192.168.1.106:3333/api/files/:hash/subtitles/:number/translate',
+    'http://192.168.1.106:3333/api/subtitles/translate',
     async () => {
-      return new HttpResponse(null, { status: 201 });
+      const externalSubtitle: ExternalSubtitle = {
+        name: 'new subtitles.srt',
+        uuid: '1',
+        language: 'fr',
+        origin: 'External',
+      };
+      return HttpResponse.json(externalSubtitle, {status: 201});
+    },
+  ),
+  http.post<{ hash: string; number: string }>(
+    'http://192.168.1.106:3333/api/subtitles/download',
+    async () => {
+      const externalSubtitle: ExternalSubtitle = {
+        name: 'new subtitles.srt',
+        uuid: '1',
+        language: 'fr',
+        origin: 'External',
+      };
+      return HttpResponse.json(externalSubtitle, {status: 201});
     },
   ),
 ];

@@ -310,6 +310,7 @@ describe('app', () => {
     });
 
     it.todo('translates the subtitle');
+    it.todo('returns the translated subtitle');
   });
 
   describe('/api/subtitles/download', () => {
@@ -331,5 +332,6 @@ describe('app', () => {
     });
 
     it.todo('download the file');
+    it.todo('returns the downloaded file');
   });
 });

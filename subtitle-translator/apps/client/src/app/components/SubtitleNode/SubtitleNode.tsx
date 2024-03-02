@@ -1,7 +1,6 @@
 import SubtitleText from '../SubtitleText/SubtitleText';
 import {
   Addic7edSubtitle,
-  ExternalSubtitle,
   InternalSubtitle,
   SubInfo,
   Subtitle,
@@ -11,6 +10,7 @@ import axios from 'axios';
 
 interface Props {
   subtitle: Subtitle;
+  addSubtitle: (subtitle: Subtitle) => void;
 }
 
 const isInternalSubtitle = (
@@ -18,43 +18,44 @@ const isInternalSubtitle = (
 ): subtitle is InternalSubtitle => {
   return subtitle.origin === 'Internal';
 };
-const isExternalSubtitle = (
-  subtitle: Subtitle,
-): subtitle is ExternalSubtitle => {
-  return subtitle.origin === 'External';
-};
 const isAddic7edSubtitle = (
   subtitle: Subtitle,
 ): subtitle is Addic7edSubtitle => {
   return subtitle.origin === 'Addic7ed';
 };
 
-const SubtitleNode = ({ subtitle }: Props) => {
-  const mutationTranslate = useMutation({
-    mutationFn: ({ number }: { number: number }) => {
+const SubtitleNode = ({ subtitle, addSubtitle }: Props) => {
+  const mutationTranslate = useMutation<Subtitle, {}, { number: number }>({
+    mutationFn: ({ number }) => {
       return axios.post('http://192.168.1.106:3333/api/subtitles/translate', {
         uuid: subtitle.uuid,
         number,
       });
     },
+    onSuccess: (data) => {
+      addSubtitle(data);
+    },
   });
 
-  const mutationDownload = useMutation({
-    mutationFn: ({
-      referer,
-      link,
-      language,
-    }: {
+  const mutationDownload = useMutation<
+    Subtitle,
+    {},
+    {
       referer: SubInfo['referer'];
       link: SubInfo['link'];
       language: string;
-    }) => {
+    }
+  >({
+    mutationFn: ({ referer, link, language }) => {
       return axios.post('http://192.168.1.106:3333/api/subtitles/download', {
         uuid: subtitle.uuid,
         referer,
         link,
         language,
       });
+    },
+    onSuccess: (data) => {
+      addSubtitle(data);
     },
   });
 

@@ -1,15 +1,13 @@
 import axios from 'axios';
 import { Dree } from 'dree';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import SubtitleText from '../SubtitleText/SubtitleText';
 import {
-  ModifiedDree,
-  SubInfo,
-  Subtitle,
+  ModifiedDree, Subtitle,
   Subtitles,
-  subtitlesSchema,
+  subtitlesSchema
 } from '@subtitle-translator/shared';
 import SubtitleNode from '../SubtitleNode/SubtitleNode';
+import { useCallback, useState } from 'react';
 
 const fetchSubtiles = async (uuid: ModifiedDree<Dree>['uuid']) => {
   const { data } = await axios.get(
@@ -34,6 +32,11 @@ const SubtitlesNode = ({ uuid }: Props) => {
     queryFn: () => fetchSubtiles(uuid),
     refetchOnWindowFocus: false,
   });
+  const [subtitles, setSubtitles] = useState<Subtitles>([])
+
+  const addSubtitle = useCallback((subtitle: Subtitle) => {
+    setSubtitles([...subtitles, subtitle])
+  },[])
 
   if (isLoading) {
     return <>Loading...</>;
@@ -49,8 +52,8 @@ const SubtitlesNode = ({ uuid }: Props) => {
 
   return (
     <ul>
-      {data.map((subtitle) => (
-        <SubtitleNode subtitle={subtitle}/>
+      {subtitles.map((subtitle) => (
+        <SubtitleNode subtitle={subtitle} addSubtitle={addSubtitle}/>
       ))}
     </ul>
   );
