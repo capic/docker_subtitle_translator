@@ -71,7 +71,7 @@
       "!{projectRoot}/.storybook/**/*",
       "!{projectRoot}/tsconfig.storybook.json"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/../.github/workflows/ci.yml"]
   },
   "generators": {
     "@nx/react": {

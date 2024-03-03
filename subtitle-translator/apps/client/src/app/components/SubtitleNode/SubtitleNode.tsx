@@ -25,7 +25,7 @@ const isAddic7edSubtitle = (
 };
 
 const SubtitleNode = ({ subtitle, addSubtitle }: Props) => {
-  const mutationTranslate = useMutation<Subtitle, {}, { number: number }>({
+  const mutationTranslate = useMutation<Subtitle, void, { number: number }>({
     mutationFn: ({ number }) => {
       return axios.post('http://192.168.1.106:3333/api/subtitles/translate', {
         uuid: subtitle.uuid,
@@ -39,7 +39,7 @@ const SubtitleNode = ({ subtitle, addSubtitle }: Props) => {
 
   const mutationDownload = useMutation<
     Subtitle,
-    {},
+    void,
     {
       referer: SubInfo['referer'];
       link: SubInfo['link'];
